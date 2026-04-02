@@ -4,18 +4,18 @@
 
 ### 1. Tóm tắt Dự án (Executive Summary)
 
-Nền tảng NutriTrack  được thiết kế cho [Đối tượng mục tiêu / Nhóm người dùng, ví dụ: Gen Z / Millennials Việt Nam] nhằm nâng cao khả năng quản lý sức khỏe cá nhân và theo dõi dữ liệu dinh dưỡng. Nền tảng hỗ trợ [Quy mô người dùng, ví dụ: 5.000+ người dùng hoạt động], sử dụng giao diện di động đa nền tảng (React Native/Expo) để thu thập và phân tích dữ liệu chế độ ăn uống. Nền tảng tận dụng các dịch vụ AWS Serverless (AWS Amplify Gen 2, AppSync, Lambda) và Generative AI (Amazon Bedrock chạy Qwen3-VL) để cung cấp khả năng theo dõi dinh dưỡng thời gian thực, ghi nhật ký bằng AI dự đoán, cơ chế gamification (chuỗi ngày, tiến hóa thú cưng) và tối ưu chi phí, với quyền truy cập được bảo mật qua [Dịch vụ Xác thực, ví dụ: Amazon Cognito].
+Nền tảng NutriTrack 2.0 được thiết kế cho [Đối tượng mục tiêu / Nhóm người dùng, ví dụ: Gen Z / Millennials Việt Nam] nhằm nâng cao khả năng quản lý sức khỏe cá nhân và theo dõi dữ liệu dinh dưỡng. Nền tảng hỗ trợ [Quy mô người dùng, ví dụ: 5.000+ người dùng hoạt động], sử dụng giao diện di động đa nền tảng (React Native/Expo) để thu thập và phân tích dữ liệu chế độ ăn uống. Bám sát các nguyên tắc của AWS Well-Architected Framework, nền tảng tận dụng tối đa hệ sinh thái AWS Serverless (AWS Amplify Gen 2, AppSync, Lambda) và Generative AI (Amazon Bedrock dòng Qwen3-VL) nhằm mang đến hệ thống theo dõi dinh dưỡng thời gian thực, ghi nhật ký bằng AI dự đoán, cơ chế gamification (chuỗi ngày, tiến hóa thú cưng) và tối ưu chi phí, với quyền truy cập được bảo mật tuyệt đối qua [Dịch vụ Xác thực, ví dụ: Amazon Cognito].
 
 ### 2. Tuyên bố Vấn đề (Problem Statement)
 
 **Vấn đề là gì?**
-Các ứng dụng theo dõi dinh dưỡng hiện tại đòi hỏi người dùng phải nhập liệu thủ công một cách tẻ nhạt và thường thiếu các cơ sở dữ liệu món ăn Việt Nam cá nhân hóa phong phú. Chưa có một hệ thống thông minh, tập trung nào tích hợp AI theo thời gian thực để tạo ra các hồ sơ món ăn bị thiếu. Các API của bên thứ ba hiện có có thể đắt đỏ và quá cứng nhắc đối với các nhu cầu ăn kiêng năng động.
+Các ứng dụng theo dõi dinh dưỡng hiện tại đòi hỏi người dùng phải nhập liệu thủ công một cách tẻ nhạt và thường thiếu các cơ sở dữ liệu món ăn Việt Nam cá nhân hóa phong phú. Hơn nữa, người dùng thường gặp rắc rối trong việc lên thực đơn hàng ngày cũng như quản lý thực phẩm dự trữ, dễ dẫn đến lãng phí thức ăn và thói quen ăn uống không nhất quán. Chưa có một hệ thống thông minh nào tích hợp AI theo thời gian thực để tạo ra hồ sơ món ăn bị thiếu hay gợi ý công thức nấu ăn từ nguyên liệu sẵn có, trong khi những API của bên thứ ba hiện tại thường đắt đỏ và hạn chế.
 
 **Giải pháp**
-Nền tảng sử dụng AWS AppSync GraphQL API để tiếp nhận dữ liệu ăn uống của người dùng, AWS Lambda để xử lý logic backend, Amazon DynamoDB để lưu trữ có khả năng mở rộng, và Amazon Bedrock (Qwen3-VL) cho luồng AI phân tích ảnh đồ ăn và tạo dữ liệu dinh dưỡng bị hụt ngay lập tức. AWS Amplify Gen 2 kết hợp với React Native/Expo cung cấp giao diện người dùng. Các tính năng chính bao gồm biểu đồ thời gian thực (hiển thị Đạm, Carbs, Chất béo, Calo), tính năng ghi âm món ăn qua AWS Transcribe, hệ thống huấn luyện viên AI ("Ollie") và gamification xã hội.
+Nền tảng sử dụng AWS AppSync GraphQL API để tiếp nhận dữ liệu ăn uống của người dùng, AWS Lambda để xử lý logic backend, Amazon DynamoDB để lưu trữ có khả năng mở rộng, và Amazon Bedrock (Qwen3-VL) cho luồng AI phân tích ảnh đồ ăn và tạo dữ liệu dinh dưỡng bị hụt ngay lập tức. AWS Amplify Gen 2 kết hợp với React Native/Expo cung cấp giao diện người dùng. Các tính năng chính bao gồm biểu đồ thời gian thực (hiển thị Đạm, Carbs, Chất béo, Calo), tính năng ghi âm món ăn qua AWS Transcribe, quản lý tủ lạnh/nhà bếp (Kitchen inventory), chức năng AI gợi ý công thức nấu ăn, hệ thống huấn luyện viên AI ("Ollie") và gamification xã hội.
 
 **Lợi ích và Tỷ suất Hoàn vốn (ROI)**
-Giải pháp này thiết lập một hệ sinh thái nền tảng cố lõi giúp người dùng theo dõi sức khỏe và giúp đội ngũ phát triển mở rộng quy mô một ứng dụng sức khỏe tích hợp AI. Nó giảm bớt rào cản khi nhập liệu thủ công nhờ vào luồng AI, đơn giản hóa trải nghiệm người dùng và cải thiện độ tin cậy của dữ liệu. Chi phí vận hành hàng tháng được duy trì ở mức tối thiểu thông qua mô hình serverless. Thời gian hoàn vốn ước tính khoảng [Khoảng thời gian, ví dụ: 6-12 tháng], đạt được thông qua [Mô hình Doanh thu, ví dụ: phí đăng ký của người dùng hoặc sự tiết kiệm đáng kể thời gian / năng suất team].
+Giải pháp này thiết lập một hệ sinh thái nền tảng cố lõi giúp người dùng theo dõi sức khỏe và giúp đội ngũ phát triển mở rộng quy mô một ứng dụng sức khỏe tích hợp AI. Nó giảm bớt rào cản khi nhập liệu thủ công nhờ vào luồng AI, đơn giản hóa trải nghiệm người dùng và cải thiện độ tin cậy của dữ liệu. Nhờ tận dụng tối đa hạng mức AWS Free Tier và mô hình serverless pay-as-you-go, hệ thống giảm thiểu triệt để chi phí vận hành hàng tháng. Thời gian hoàn vốn ước tính khoảng [Khoảng thời gian, ví dụ: 6-12 tháng], đạt được thông qua [Mô hình Doanh thu, ví dụ: phí đăng ký của người dùng hoặc sự tiết kiệm đáng kể thời gian / năng suất team].
 
 ### 3. Kiến trúc Giải pháp
 
@@ -42,11 +42,11 @@ Nền tảng sử dụng kiến trúc serverless của AWS để quản lý dữ
 
 **Thiết kế Thành phần**
 
-* **Thiết bị Khách (Client Devices):** React Native/Expo di động thu thập đầu vào của người dùng (Camera, Mic) và trực quan hóa dữ liệu dinh dưỡng đi kèm giao diện gamification.
+* **Thiết bị Khách (Client Devices):** React Native/Expo di động thu thập đầu vào của người dùng (Camera, Mic) và trực quan hóa dữ liệu dinh dưỡng với giao diện gamification, đồng thời tích hợp tính năng quản lý thực phẩm trong bếp.
 * **Tiếp nhận Dữ liệu:** AppSync nhận các GraphQL mutations/queries từ ứng dụng di động.
 * **Lưu trữ Dữ liệu:** Các bảng DynamoDB quản lý an toàn 7 model dữ liệu (Food, user, FoodLog, FridgeItem, Challenge, Friendship, UserPublicStats).
-* **Xử lý AI:** Lambda `ai-engine` xử lý 10 tác vụ AI kết hợp (vd: phân tích ảnh, chuyển giọng nói sang đồ ăn, mẹo cho huấn luyện viên) giao tiếp với Bedrock API.
-* **Quản lý Người dùng:** Cognito xử lý đăng ký tài khoản, đăng nhập an toàn, và quản lý kiểm soát truy cập phân tán.
+* **Xử lý AI:** Lambda `ai-engine` xử lý 10 tác vụ AI kết hợp (vd: phân tích ảnh, chuyển giọng nói sang đồ ăn, tạo công thức nấu ăn từ tủ lạnh, mẹo cho huấn luyện viên) giao tiếp với Bedrock API.
+* **Quản lý Người dùng:** Cognito xử lý đăng ký, phân quyền, và quản lý kiểm soát truy cập phân tán, được tăng cường bởi bảo mật sinh trắc học (FaceID/TouchID) trên thiết bị.
 
 ### 4. Triển khai Kỹ thuật
 
@@ -122,7 +122,7 @@ Hoặc bạn có thể tải xuống Tệp Ước tính Ngân sách [Placeholder
 **Cải tiến Kỹ thuật:**
 
 * Thu thập dữ liệu dinh dưỡng tự động hoá tích tắc thay vì đi vào bước check list buồn chán lặp đi lặp lại.
-* Một thiết kế hạ tầng mở rộng serverless sẵn sàng chịu tải mượt cho [Placeholder, ví dụ: 10,0000+] người dùng cùng truy cập thời thực.
+* Một hạ tầng backend serverless phân tán toàn diện trên AWS, sẵn sàng chịu tải mượt cho [Placeholder, ví dụ: 10,0000+] người dùng đồng thời với chi phí rảnh rỗi (idle cost) gần như bằng không.
 
 **Giá trị Dài hạn**
 
