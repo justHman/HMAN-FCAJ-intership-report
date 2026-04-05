@@ -1,54 +1,54 @@
 ### Mục tiêu Tuần 5
 
-* Hoàn thiện sơ đồ kiến trúc NutriTrack.
-* Thiết lập môi trường phát triển AWS (IAM, S3, DynamoDB).
-* Bắt đầu viết tài liệu Proposal để nộp.
-* Học API Gateway và Lambda best practices.
+* Bắt đầu viết tài liệu NutriTrack Proposal.
+* Thiết lập AWS development environment (IAM, S3).
+* Nghiên cứu AI pipeline: food detection → segmentation → weight estimation → nutrition lookup.
+* Tìm hiểu VLM (Vision-Language Models) và khả năng nhận diện thực phẩm.
 
 ### Các nhiệm vụ thực hiện trong tuần
 
 | Ngày | Nhiệm vụ | Ngày BĐ | Ngày HT | Tài liệu tham khảo |
 | --- | --- | --- | --- | --- |
-| 1 | - Hoàn thiện Architecture <br>&emsp; + Hoàn thành sơ đồ kiến trúc AWS chi tiết <br>&emsp; + Chọn 6 dịch vụ cốt lõi: Cognito, API Gateway, Lambda, DynamoDB, S3, Bedrock | 02/02/2026 | 02/02/2026 | [Architecture v2.0] |
-| 2 | - Thiết lập môi trường AWS (Phần 1) <br>&emsp; + Tạo IAM roles với least privilege <br>&emsp; + Set up IAM user development cho team <br>&emsp; + Cấu hình MFA cho tất cả accounts | 03/02/2026 | 03/02/2026 | [IAM Config] |
-| 3 | - Thiết lập môi trường AWS (Phần 2) <br>&emsp; + Tạo S3 buckets cho media storage <br>&emsp; + Cấu hình bucket policies và CORS <br>&emsp; + Thiết lập lifecycle rules để tối ưu chi phí | 04/02/2026 | 04/02/2026 | [S3 Buckets] |
-| 4 | - Thiết kế DynamoDB <br>&emsp; + Thiết kế schema single-table cho NutriTrack <br>&emsp; + Tạo chiến lược partition key và sort key <br>&emsp; + Thiết lập GSI cho các query patterns | 05/02/2026 | 05/02/2026 | [DynamoDB Schema](https://docs.aws.amazon.com/dynamodb/) |
-| 5 | - Nghiên cứu API Gateway & Lambda <br>&emsp; + So sánh REST API vs HTTP API <br>&emsp; + Lambda function best practices <br>&emsp; + Kỹ thuật tối ưu cold start | 06/02/2026 | 06/02/2026 | [API Gateway Docs](https://docs.aws.amazon.com/apigateway/) |
-| 6-7 | - Viết tài liệu Proposal <br>&emsp; + Bắt đầu viết NutriTrack Proposal <br>&emsp; + Bao gồm problem statement, objectives, timeline <br>&emsp; + Tạo ước tính ngân sách | 07/02/2026 | 08/02/2026 | [Proposal Draft] |
+| 1 | - Tài liệu Proposal (Phần 1) <br>&emsp; + Phát biểu vấn đề và mục tiêu <br>&emsp; + Lựa chọn technology stack <br>&emsp; + Lập kế hoạch timeline | 02/02/2026 | 02/02/2026 | [Proposal Draft] |
+| 2 | - Thiết lập môi trường AWS <br>&emsp; + Tạo IAM roles với least privilege <br>&emsp; + Thiết lập development IAM user cho team <br>&emsp; + Tạo S3 buckets cho media storage | 03/02/2026 | 03/02/2026 | [IAM Config] |
+| 3 | - Nghiên cứu AI Pipeline (Phần 1) <br>&emsp; + Tìm hiểu vision models cho food detection <br>&emsp; + Nghiên cứu phương pháp ingredient segmentation <br>&emsp; + Tìm hiểu weight estimation (chuyển đổi pixel → cm bằng calibration) | 04/02/2026 | 04/02/2026 | [Research Notes] |
+| 4 | - Nghiên cứu AI Pipeline (Phần 2) <br>&emsp; + Tìm hiểu USDA food nutrition database <br>&emsp; + Thiết kế pipeline: detect → segment → estimate weight → USDA lookup → calculate nutrition <br>&emsp; + Test model Qwen VLM cho food recognition | 05/02/2026 | 05/02/2026 | [Pipeline Design] |
+| 5 | - Test Pipeline <br>&emsp; + Test end-to-end: detect ingredients → segment → estimate weight → USDA → nutrition <br>&emsp; + Phát hiện vấn đề: Qwen model rất tệ trong weight estimation <br>&emsp; + Pipeline chậm và thường xuyên OOM | 06/02/2026 | 06/02/2026 | [Test Results] |
+| 6-7 | - Tài liệu Proposal (Phần 2) <br>&emsp; + Vẽ architecture diagram với AWS services <br>&emsp; + Ước tính ngân sách <br>&emsp; + Nghiên cứu model VLM thay thế cho độ chính xác tốt hơn | 07/02/2026 | 08/02/2026 | [Proposal Draft v2] |
 
 ### Thành tựu Tuần 5
 
-* **Kiến trúc:**
-  * Hoàn thành sơ đồ kiến trúc AWS toàn diện với data flow.
-  * Chọn dịch vụ dựa trên serverless-first, tiết kiệm chi phí.
-  * Kiến trúc được team review và phê duyệt.
+* **Proposal:**
+  * Bản draft Proposal hoàn thành 70% với mục tiêu, timeline và kiến trúc rõ ràng.
+  * Timeline phát triển 3 tháng phù hợp với kỳ thực tập.
 
 * **Môi trường AWS:**
-  * IAM roles được cấu hình với Principle of Least Privilege.
-  * S3 buckets đã tạo: `nutritrack-media-dev`, `nutritrack-data-dev`.
-  * DynamoDB table được thiết kế với single-table pattern cho queries hiệu quả.
+  * IAM roles được cấu hình με Principle of Least Privilege.
+  * S3 buckets cho media storage với policies và CORS đúng.
 
-* **Tài liệu:**
-  * Proposal draft hoàn thành 70% với objectives và timeline rõ ràng.
-  * Ước tính timeline phát triển 3 tháng phù hợp với kỳ thực tập.
+* **Nghiên cứu AI Pipeline:**
+  * Thiết kế pipeline phân tích dinh dưỡng hoàn chỉnh: detect → segment → estimate weight → USDA lookup → calculate.
+  * Khám phá 4 phương pháp calibration khác nhau cho weight estimation (chuyển pixel sang cm).
+  * Phát hiện hạn chế: Qwen VLM model hoạt động kém trong weight estimation, pipeline chậm và tốn bộ nhớ.
 
 ### Khó khăn & Bài học
 
 * **Khó khăn:**
-  * Thiết kế single-table DynamoDB khác với tư duy relational truyền thống.
-  * Cân bằng giữa tối ưu chi phí và yêu cầu hiệu năng.
+  * Pipeline nhiều bước (detect → segment → estimate → lookup → calculate) tốn quá nhiều tài nguyên máy tính.
+  * Weight estimation từ ảnh bằng VLM models có độ chính xác rất thấp.
+  * Lỗi Out-of-Memory (OOM) thường xuyên khi chạy full pipeline trên local.
 
 * **Cách giải quyết:**
-  * Sử dụng sách DynamoDB của Alex DeBrie và các ví dụ làm tham khảo.
-  * Tạo document access patterns trước, sau đó thiết kế schema.
+  * Nghiên cứu hướng thay thế: dùng LLM tool-use thay vì multi-step vision pipeline.
+  * Cân nhắc dùng cloud-based models (Bedrock) để tránh giới hạn tài nguyên local.
 
 * **Bài học rút ra:**
-  * Access patterns phải được định nghĩa trước khi thiết kế DynamoDB schema.
-  * On-demand pricing tốt hơn cho development; provisioned cho production.
+  * Không phải vấn đề nào cũng cần pipeline nhiều model phức tạp — đôi khi 1 model thông minh hơn với approach đơn giản lại hiệu quả hơn.
+  * Cần xác định giới hạn tài nguyên sớm để không phí thời gian vào approach không khả thi.
 
 ### Kế hoạch Tuần 6
 
-* Hoàn thành và nộp NutriTrack Proposal để review.
-* Bắt đầu triển khai backend: cấu trúc API endpoints.
-* Thiết lập môi trường phát triển Lambda với SAM CLI.
-* Định nghĩa OpenAPI specification cho NutriTrack APIs.
+* Hoàn thiện và nộp NutriTrack Proposal để mentor review.
+* Pivot hướng AI: nghiên cứu LLM/VLM với tool-use capabilities.
+* Tìm hiểu VPC Endpoints và NAT Gateway để tối ưu chi phí networking.
+* Nghiên cứu các nguồn dữ liệu dinh dưỡng qua API.

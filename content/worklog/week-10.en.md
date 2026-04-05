@@ -1,60 +1,63 @@
 ### Week 10 Objectives
 
-* Conduct load testing and stress testing.
-* Implement cost optimization strategies.
-* Prepare demo for stakeholder presentation.
-* Start writing technical documentation.
+* Deploy NutriTrack API to ECS Fargate ARM + Spot instances.
+* Implement label detection pipeline for product images.
+* Build barcode scanning pipeline with 3 nutrition API clients.
+* Write comprehensive tests for all pipelines and API endpoints.
 
 ### Tasks carried out this week
 
 | Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| 1 | - Load Testing <br>&emsp; + Set up Artillery.io for load tests <br>&emsp; + Simulated 100 concurrent users <br>&emsp; + Identified bottlenecks in API endpoints | 09/03/2026 | 09/03/2026 | [Load Test Reports] |
-| 2 | - Stress Testing <br>&emsp; + Increased to 500 concurrent users <br>&emsp; + Tested Lambda scaling behavior <br>&emsp; + Verified DynamoDB auto-scaling | 10/03/2026 | 10/03/2026 | [Stress Test Reports] |
-| 3 | - Cost Optimization <br>&emsp; + Analyzed AWS Cost Explorer data <br>&emsp; + Implemented Reserved Capacity for DynamoDB <br>&emsp; + Set up S3 Intelligent-Tiering | 11/03/2026 | 11/03/2026 | [Cost Analysis](https://docs.aws.amazon.com/cost-management/) |
-| 4 | - Demo Preparation <br>&emsp; + Created demo script and flow <br>&emsp; + Set up demo data in staging <br>&emsp; + Practiced presentation with team | 12/03/2026 | 12/03/2026 | [Demo Script] |
-| 5 | - Technical Documentation (Part 1) <br>&emsp; + Started architecture documentation <br>&emsp; + Documented API specifications <br>&emsp; + Created deployment guide | 13/03/2026 | 13/03/2026 | [Tech Docs] |
-| 6-7 | - Technical Documentation (Part 2) <br>&emsp; + Wrote developer setup guide <br>&emsp; + Documented troubleshooting steps <br>&emsp; + Created runbook for operations | 14/03/2026 | 15/03/2026 | [Runbook] |
+| 1 | - ECS Fargate Deployment <br>&emsp; + Deployed API pipeline to ECS Fargate ARM + Spot <br>&emsp; + Deployed API pipeline to App Runner (comparison) <br>&emsp; + Configured task definitions and service settings | 10/03/2026 | 10/03/2026 | [ECS Docs](https://docs.aws.amazon.com/ecs/) |
+| 2 | - Label Detection Scripts <br>&emsp; + Wrote scripts for detecting nutrition labels from product images <br>&emsp; + Created API endpoint for label detection <br>&emsp; + Integrated VLM model for label text extraction | 11/03/2026 | 11/03/2026 | [Label Detection Code] |
+| 3 | - Label Detection Testing & Deploy <br>&emsp; + Tested scripts and API for label detection <br>&emsp; + Deployed label detection pipeline on AWS <br>&emsp; + Fixed image format handling issues | 12/03/2026 | 12/03/2026 | [Test Reports] |
+| 4 | - Barcode Client Scripts <br>&emsp; + Wrote script for OpenFoodFacts API client <br>&emsp; + Wrote script for Avocavo Nutrition API client <br>&emsp; + Wrote script for USDA FoodData Central client | 13/03/2026 | 13/03/2026 | [Client Scripts] |
+| 5 | - Client Testing <br>&emsp; + Wrote tests for OpenFoodFacts client <br>&emsp; + Wrote tests for Avocavo Nutrition client <br>&emsp; + Standardized mock data for DEMO_KEY fallback | 14/03/2026 | 14/03/2026 | [Test Suite] |
+| 6-7 | - Barcode Pipeline Integration <br>&emsp; + Synchronized barcode output format across 3 clients <br>&emsp; + Built end-to-end pipeline: detect barcode → search food → return nutrition <br>&emsp; + Created API endpoint and comprehensive tests <br>&emsp; + All tests passing | 15/03/2026 | 15/03/2026 | [Pipeline Tests] |
 
 ### Week 10 Achievements
 
-* **Load Testing:**
-  * System handles 100 concurrent users with <200ms response time.
-  * Stress test showed graceful degradation at 500 users.
-  * Lambda auto-scaling kicked in at 200 concurrent requests.
+* **ECS Deployment:**
+  * API successfully deployed to ECS Fargate ARM + Spot (cost-optimized).
+  * Compared ECS Fargate vs App Runner — chose ECS for more control over networking.
+  * Container running on ARM architecture for better price/performance.
 
-* **Cost Optimization:**
-  * Estimated 40% cost reduction with optimization strategies.
-  * S3 Intelligent-Tiering saves ~$15/month for infrequent data.
-  * Bedrock usage optimized with prompt caching.
+* **Label Detection Pipeline:**
+  * Complete pipeline: image → VLM extracts label text → parse nutrition facts.
+  * API endpoint working with < 5s processing time.
+  * Handles various image formats and quality levels.
 
-* **Demo:**
-  * Complete demo script covering all NutriTrack features.
-  * Staging environment prepared with realistic data.
-  * Team rehearsal completed successfully.
+* **Barcode Pipeline:**
+  * 3 API clients implemented: OpenFoodFacts, USDA, Avocavo Nutrition.
+  * Standardized output format across all 3 clients for consistent results.
+  * Complete pipeline: scan barcode → search across 3 databases → merge results.
+  * Comprehensive test suite with mock data fallback for DEMO_KEY.
 
-* **Documentation:**
-  * Architecture document with diagrams completed.
-  * API documentation with examples (Postman collection).
-  * Deployment and developer setup guides.
+* **Testing:**
+  * All pipeline tests passing.
+  * Mock data system implemented for testing without real API keys.
 
 ### Challenges & Lessons
 
 * **Challenges:**
-  * Lambda concurrent execution limits caused 429 errors at high load.
-  * Cost optimization required understanding complex pricing models.
+  * Each nutrition API returns data in completely different formats — standardization was complex.
+  * ECS Fargate ARM images need multi-architecture Docker builds.
+  * Image format handling caused unexpected errors (e.g., palette mode 'P' cannot save as JPEG).
 
 * **Solutions:**
-  * Requested Lambda quota increase through AWS Support.
-  * Used AWS Pricing Calculator to model different scenarios.
+  * Created unified data transformer for each client to normalize output.
+  * Used Docker buildx for multi-arch builds (AMD64 + ARM64).
+  * Added image mode conversion (P → RGB/RGBA) before compression.
 
 * **Lessons Learned:**
-  * Always plan for quota limits in serverless architecture.
-  * Cost optimization should be considered from design phase.
+  * ARM-based Fargate instances offer ~20% cost savings over x86.
+  * Standardizing API client outputs early prevents integration headaches later.
+  * Image processing needs comprehensive format handling — never assume input format.
 
 ### Next Week Plan
 
-* Complete Workshop documentation for internship report.
-* Prepare final presentation slides.
-* Conduct internal demo with mentors.
-* Finalize all project documentation.
+* Set up CI/CD pipeline with GitHub Actions for automated ECS deployment.
+* Optimize prompt engineering to reduce token usage and cost.
+* Implement cache crawling for pre-populating nutrition data.
+* Start Terraform infrastructure-as-code for reproducible deployments.

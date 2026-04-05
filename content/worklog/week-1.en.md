@@ -1,60 +1,60 @@
 ### Week 1 Objectives:
 
-* Establish a complete digital working environment for the NeuraX team (Discord, GitHub, Trello).
-* Successfully organize the Kick-off Meeting and align operational processes.
-* Research basic AWS services by role (IAM, S3, EC2).
-* Brainstorm project ideas for the internship.
+* Participate in the Kickoff and connect with First Cloud Journey members.
+* Form a team and establish an effective working process.
+* Understand basic AWS services and how to use the Console & CLI.
+* Complete hands-on labs to earn free AWS credits.
 
 ### Tasks to be carried out this week:
 
 | Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| 1 | - Set up Discord Server "NeuraX HQ" <br>&emsp; + Create channels by functional groups <br>&emsp; + Assign Roles for 5 members | 05/01/2026 | 06/01/2026 | - |
-| 2 | - Initialize GitHub Organization <br>&emsp; + Create 3 Repositories <br>&emsp; + Configure Branch Protection Rules <br>&emsp; + Invite members | 06/01/2026 | 07/01/2026 | [NeuraX-HQ](https://github.com/NeuraX-HQ) |
-| 3 | - Prepare Kick-off Meeting Agenda <br> - Host meeting with 5 members <br>&emsp; + Confirm roles & timeline <br>&emsp; + Discuss operating regulations | 07/01/2026 | 08/01/2026 | - |
-| 4 | - Learn AWS basics <br>&emsp; + What is AWS and main service groups <br>&emsp; + Compute, Storage, Networking, Database <br> - Research AWS IAM <br>&emsp; + Users, Groups, Policies <br>&emsp; + MFA Configuration | 08/01/2026 | 09/01/2026 | [AWS IAM Docs](https://docs.aws.amazon.com/IAM/) |
-| 5 | - Research Amazon S3 <br>&emsp; + Bucket, Objects, Permissions <br>&emsp; + Storage Classes <br> - Learn Amazon EC2 basics <br>&emsp; + Instance types, AMI <br>&emsp; + Security Groups | 09/01/2026 | 10/01/2026 | [AWS S3 Docs](https://docs.aws.amazon.com/s3/) |
-| 6 | - Brainstorm project ideas with team <br>&emsp; + Discuss possible directions <br>&emsp; + No specific idea finalized yet | 10/01/2026 | 11/01/2026 | - |
-| 7 | - Setup Personal Report Website <br>&emsp; + Using React + Vite <br>&emsp; + Deploy to GitHub Pages | 11/01/2026 | 11/01/2026 | - |
+| 1 | - Attend Kickoff session <br>&emsp; + Meet and connect with FCJ members <br>&emsp; + Form Team NeuraX (5 members) <br>&emsp; + Understand FCJ internship structure | 05/01/2026 | 05/01/2026 | - |
+| 2 | - Read and take note of internship rules and regulations <br>&emsp; + Working hours & attendance policy <br>&emsp; + Communication channels & reporting requirements | 06/01/2026 | 06/01/2026 | [FCJ Rules](https://rules.fcjuni.com/) |
+| 3 | - Create AWS Free Tier account <br>&emsp; + Learn AWS Console & AWS CLI <br>&emsp; + **Practice:** <br>&emsp;&emsp; + Create AWS account <br>&emsp;&emsp; + Install & configure AWS CLI <br>&emsp;&emsp; + How to use AWS CLI | 07/01/2026 | 07/01/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 4 | - Team meeting <br>&emsp; + Agree on working schedule & platform <br>&emsp; + Assign roles for each member <br>&emsp; + Establish team rules and working principles | 08/01/2026 | 09/01/2026 | [Team Rules Doc](https://docs.google.com/document/d/1z39r6Sw2q9YPsd6R7Pq0MtFdnxX9Dew8NnBnVD07WwM/edit?tab=t.0) |
+| 5 | - Complete 5 AWS hands-on labs for $100 free credit <br>&emsp; + Lab practice on core AWS services <br>&emsp; + EC2, S3, IAM, VPC basics | 09/01/2026 | 09/01/2026 | [FCJ First Lab](https://thinhnguyen1211.github.io/fcj-first-lab/) |
+| 6-7 | - Setup Personal Report Website <br>&emsp; + Using React + Vite <br>&emsp; + Deploy to GitHub Pages <br>&emsp; + Review week's learnings | 10/01/2026 | 11/01/2026 | - |
 
 ### Week 1 Achievements:
 
-* 100% of team members (5/5) have fully joined all work channels:
-  * Discord Server "NeuraX HQ"
-  * GitHub Organization
-  * Trello Board
+* **Team Formation & Onboarding:**
+  * Successfully attended the Kickoff session
+  * Formed Team NeuraX and connected with all FCJ members
+  * Understood the working culture and environment at FCJ
 
-* Published 02 important documents:
-  * Kick-off Meeting Minutes
-  * Team Operating Regulations
+* **Work Process Established:**
+  * Understood all internship rules and regulations
+  * Agreed on working hours, meeting schedule, and work platforms
+  * Clearly assigned roles for each team member
+  * Established team rules and working principles
 
-* Gained basic knowledge of AWS:
-  * Understood overview of AWS service groups (Compute, Storage, Networking, Database)
-  * Learned about IAM: Users, Groups, Policies and permission management
-  * Researched S3: Bucket, Objects, Storage Classes
-  * Familiarized with EC2: Instance types, AMI, Security Groups
+* **AWS Knowledge & Practice:**
+  * Created and configured AWS Free Tier account successfully
+  * Familiarized with AWS Management Console and web interface
+  * Installed and configured AWS CLI with Access Key, Secret Key, Region
+  * Performed basic CLI operations: check account info, manage EC2, key pairs
+  * Completed 5 hands-on labs and received $100 free credit
 
 * Completed Personal Report Website setup and deployed to GitHub Pages.
-
-* Brainstormed ideas with the team but no specific idea finalized yet, need to continue discussion next week.
 
 ### Challenges & Lessons:
 
 * **Challenges:** 
-  * Configuring Branch Protection Rules on GitHub initially failed due to insufficient Admin permissions for the Bot account.
-  * AWS services are numerous and complex, requiring time to fully understand.
+  * AWS services are numerous and complex, hard to know where to start as a beginner.
+  * Coordinating 5 team members' schedules and aligning on working processes took multiple discussions.
 
 * **Solutions:** 
-  * Referenced GitHub Docs and granted Owner/Admin permissions to the Bot account.
-  * Focused on learning one service at a time, starting with the most basic ones (IAM, S3, EC2).
+  * Followed FCJ's structured learning path on Cloud Journey instead of random exploration.
+  * Created a shared document for team rules to have a single source of truth.
 
 * **Lessons Learned:** 
-  * Need to carefully check Organization permissions before configuration.
-  * Should have a clear AWS learning roadmap, avoid learning too many services at once.
+  * Having a clear AWS learning roadmap prevents wasting time on too many services at once.
+  * Early team alignment on processes saves significant time in later weeks.
 
 ### Next Week Plan:
 
-* Continue learning more basic AWS services (VPC, Lambda, API Gateway).
-* Go to the company to get familiar with the actual working environment and meet the team.
-* Main goal: Finalize the official project idea in Week 2.
-* Start drafting the Proposal if the idea is confirmed.
+* Brainstorm and present project ideas, vote on the best one.
+* Deep dive into more AWS services (VPC, Lambda, EC2, RDS, ECS).
+* Learn about cloud computing fundamentals and High Availability design.
+* Start Coursera AWS Cloud Fundamentals course.

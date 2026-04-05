@@ -1,9 +1,9 @@
 export const profile = {
-    name: 'Le Nguyen Gia Hung',
-    nickname: 'hei',
+    name: 'Ngô Hoài Nam',
+    nickname: 'hman',
     role: {
-        en: 'Supervisor & AI Engineer',
-        vi: 'Giám sát viên & Kỹ sư AI',
+        en: 'AI & DevOps & Backend Engineer',
+        vi: 'Kỹ sư AI & DevOps & Backend',
     },
     team: 'NeuraX',
     company: {
@@ -20,8 +20,8 @@ export const profile = {
         weeks: 12,
     },
     contact: {
-        phone: '0394262651',
-        email: 'heiontheway@gmail.com',
+        phone: '0901620311',
+        email: 'hmanclubs11@gmail.com',
     },
     university: {
         name: {

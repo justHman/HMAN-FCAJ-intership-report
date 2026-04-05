@@ -1,60 +1,59 @@
 ### Week 7 Objectives
 
-* Implement Cognito authentication for NutriTrack.
-* Complete remaining Lambda functions for AI features.
-* Set up CI/CD pipeline with GitHub Actions.
-* Start frontend development with React.
+* Lunar New Year (Tết) holiday break — self-study period.
+* Study Load Balancer, ALB, and Auto Scaling concepts.
+* Learn Target Groups and health check configurations.
+* Design High Availability (HA) architecture for NutriTrack.
 
 ### Tasks carried out this week
 
 | Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| 1 | - Amazon Cognito Setup <br>&emsp; + Created User Pool for NutriTrack <br>&emsp; + Configured password policies <br>&emsp; + Set up email verification | 16/02/2026 | 16/02/2026 | [Cognito Docs](https://docs.aws.amazon.com/cognito/) |
-| 2 | - Cognito Integration <br>&emsp; + Integrated Cognito with API Gateway <br>&emsp; + Created JWT authorizer <br>&emsp; + Tested protected endpoints | 17/02/2026 | 17/02/2026 | [Auth Config] |
-| 3 | - AI Lambda Functions <br>&emsp; + Created Bedrock integration Lambda <br>&emsp; + Implemented meal suggestion endpoint <br>&emsp; + Added nutrition analysis function | 18/02/2026 | 18/02/2026 | [Bedrock Integration](https://docs.aws.amazon.com/bedrock/) |
-| 4 | - CI/CD Pipeline Setup <br>&emsp; + Created GitHub Actions workflow <br>&emsp; + Configured SAM deploy steps <br>&emsp; + Set up dev/staging environments | 19/02/2026 | 19/02/2026 | [GitHub Actions] |
-| 5 | - Frontend Project Setup <br>&emsp; + Initialized React + Vite project <br>&emsp; + Configured Tailwind CSS <br>&emsp; + Set up project structure | 20/02/2026 | 20/02/2026 | [Frontend Repo] |
-| 6-7 | - Frontend Development (Part 1) <br>&emsp; + Created authentication pages (Login, Register) <br>&emsp; + Integrated AWS Amplify for Cognito <br>&emsp; + Tested auth flow end-to-end | 21/02/2026 | 22/02/2026 | [UI Components] |
+| 1 | - **Tết Holiday** (Lunar New Year) <br>&emsp; + National holiday — no official work <br>&emsp; + Light reading on AWS documentation | 16/02/2026 | 16/02/2026 | - |
+| 2-3 | - **Tết Holiday** (continued) <br>&emsp; + Family time and celebrations <br>&emsp; + Reviewed AWS Well-Architected Framework during downtime | 17/02/2026 | 18/02/2026 | [Well-Architected](https://docs.aws.amazon.com/wellarchitected/) |
+| 4 | - Self-Study: Elastic Load Balancing <br>&emsp; + Application Load Balancer (ALB): HTTP/HTTPS routing, path-based routing <br>&emsp; + Network Load Balancer (NLB): TCP/UDP, ultra-low latency <br>&emsp; + ALB vs NLB comparison for different use cases | 19/02/2026 | 19/02/2026 | [ELB Docs](https://docs.aws.amazon.com/elasticloadbalancing/) |
+| 5 | - Self-Study: Auto Scaling & Target Groups <br>&emsp; + Auto Scaling policies: target tracking, step scaling, scheduled <br>&emsp; + Target Groups: instance, IP, Lambda targets <br>&emsp; + Health checks: ELB health check vs EC2 status check | 20/02/2026 | 20/02/2026 | [Auto Scaling Docs](https://docs.aws.amazon.com/autoscaling/) |
+| 6 | - HA Architecture Design <br>&emsp; + Multi-AZ deployment pattern <br>&emsp; + ALB + Auto Scaling + ECS Fargate for NutriTrack <br>&emsp; + Designed failover and self-healing mechanisms | 21/02/2026 | 21/02/2026 | [Architecture Notes] |
+| 7 | - Development Preparation <br>&emsp; + Set up FastAPI project structure locally <br>&emsp; + Installed Python dependencies for AI/ML <br>&emsp; + Prepared development environment for coding sprint | 22/02/2026 | 22/02/2026 | - |
 
 ### Week 7 Achievements
 
-* **Authentication:**
-  * Cognito User Pool created with secure password policy.
-  * API Gateway protected with JWT authorizer.
-  * Email verification flow working.
+* **Load Balancing Knowledge:**
+  * Understood ALB for HTTP/HTTPS with path-based and host-based routing.
+  * Learned NLB for high-performance TCP/UDP workloads.
+  * Chose ALB for NutriTrack: best fit for REST API routing.
 
-* **AI Integration:**
-  * Bedrock Claude 3 Sonnet integrated for meal suggestions.
-  * Nutrition analysis function providing calorie/macro breakdown.
-  * Rate limiting configured to manage Bedrock API costs.
+* **Auto Scaling & Target Groups:**
+  * Mastered Auto Scaling policies and when to use each type.
+  * Understood Target Groups as the connection between ALB and backend services.
+  * Learned health check configuration for reliable service discovery.
 
-* **CI/CD:**
-  * Automated deployment pipeline: Push → Test → Deploy.
-  * Separate stacks for dev and staging environments.
-  * Rollback mechanism configured.
+* **HA Architecture:**
+  * Designed Multi-AZ architecture: ALB → Auto Scaling Group → ECS Fargate tasks across 2 AZs.
+  * Planned for self-healing: unhealthy tasks automatically replaced.
+  * Estimated cost vs. availability trade-offs.
 
-* **Frontend:**
-  * React + Vite + Tailwind project initialized.
-  * Login and Registration pages completed.
-  * AWS Amplify configured for Cognito integration.
+* **Development Prep:**
+  * FastAPI project skeleton ready with proper directory structure.
+  * All Python dependencies installed and tested locally.
 
 ### Challenges & Lessons
 
 * **Challenges:**
-  * Bedrock API responses are async; needed proper error handling.
-  * Cognito token refresh flow was complex to implement.
+  * Maintaining productivity during a long holiday break is difficult.
+  * Understanding the relationship between ALB, Target Groups, and Auto Scaling requires careful study.
 
 * **Solutions:**
-  * Implemented retry logic with exponential backoff for Bedrock.
-  * Used AWS Amplify library which handles token refresh automatically.
+  * Set small daily learning goals during the break (1-2 hours of reading).
+  * Drew architecture diagrams to visualize the ALB → Target Group → ECS flow.
 
 * **Lessons Learned:**
-  * Bedrock prompts need careful engineering for consistent outputs.
-  * AWS Amplify simplifies frontend auth integration significantly.
+  * HA architecture is not just about redundancy — it's about automated recovery.
+  * Target Groups are the key connector that makes ALB + Auto Scaling work together.
 
 ### Next Week Plan
 
-* Complete all frontend pages (Dashboard, Meal Log, Analytics).
-* Implement image upload and meal photo analysis.
-* Integrate frontend with all backend APIs.
-* Begin unit testing for Lambda functions.
+* Start backend development: FastAPI with async processing.
+* Implement JWT authentication for API security.
+* Build the initial project structure with i18n support.
+* Begin implementing LLM/VLM tool-use loop for food analysis.

@@ -1,50 +1,54 @@
 ### Week 2 Objectives
 
-* Complete Week 1 of "AWS Cloud Fundamentals" course on Coursera.
-* Practice 5 basic Labs (Bedrock, RDS, Lambda, Budgets, EC2).
-* Deep dive into IAM and VPC (Networking & Security).
-* Participate in AWS x FCAJ uniform shirt collection activity.
+* Brainstorm and vote on project ideas with the team.
+* Deep dive into AWS core services: Compute, Storage, Database.
+* Understand High Availability design with Auto Scaling and Load Balancing.
+* Continue Coursera AWS Cloud Fundamentals course.
 
 ### Tasks to be carried out this week
 
 | Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| 1 | - AWS Hands-on Labs (Part 1) <br>&emsp; + Lab 1: Use Foundation Model in Amazon Bedrock <br>&emsp; + Lab 2: Create Amazon RDS Database <br>&emsp; + Lab 3: Create Web App using Lambda | 12/01/2026 | 12/01/2026 | [Screenshots / Lab Logs] |
-| 1 | - AWS Hands-on Labs (Part 2) <br>&emsp; + Lab 4: Set up Cost Budget (AWS Budgets) <br>&emsp; + Lab 5: Launch EC2 Instance | 12/01/2026 | 12/01/2026 | [Screenshots] |
-| 2 | - Deep Dive: AWS IAM <br>&emsp; + Study Users, Groups, Policies, Roles <br>&emsp; + Understand Principle of Least Privilege | 13/01/2026 | 13/01/2026 | [Notes on Notion] |
-| 3 | - Administrative & Team Bonding <br>&emsp; + Day off (Self-study) <br>&emsp; + Collected AWS x FCAJ Shirt <br>&emsp; + Networking with other teams | 14/01/2026 | 14/01/2026 | [Photo] |
-| 4 | - Deep Dive: Amazon VPC <br>&emsp; + Study Subnets, Route Tables, Internet Gateway <br>&emsp; + Understanding Public vs Private Subnets | 15/01/2026 | 15/01/2026 | [Architecture Draft] |
-| 4 | - Coursera Certification <br>&emsp; + Completed Week 1: AWS Cloud Fundamentals <br>&emsp; + Passed Quiz | 15/01/2026 | 15/01/2026 | [Certificate / Badge] |
-| 5-7 | - Self-Review & Plan Week 3 <br>&emsp; + Reviewed all labs <br>&emsp; + Updated Personal Report Website | 16/01/2026 | 18/01/2026 | [Web Link] |
+| 1 | - Brainstorm project ideas <br>&emsp; + List all ideas from team members <br>&emsp; + Present and discuss each idea <br>&emsp; + Vote on the final idea | 12/01/2026 | 12/01/2026 | [Ideas Sheet](https://docs.google.com/spreadsheets/d/1WJR0zmXseWhfJo8_mTW4GjgINczgDh7O5YfOSZGnum4/edit?usp=sharing) |
+| 2 | - Cloud Computing & AWS Fundamentals <br>&emsp; + Cloud computing concepts <br>&emsp; + AWS Global Infrastructure: Regions, AZs, Edge Locations <br>&emsp; + IAM: Users, Groups, Roles & Policies <br>&emsp; + Practice: Create VPC, Subnet, Security Group, EC2, RDS | 13/01/2026 | 13/01/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 3 | - AWS Storage Services <br>&emsp; + S3 (Simple Storage Service): object storage for files, images, backup <br>&emsp; + EBS (Elastic Block Store): block storage attached to EC2 <br>&emsp; + EFS (Elastic File System): shared file system <br>&emsp; + Understand differences: S3 vs EBS vs EFS | 14/01/2026 | 14/01/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 4 | - AWS Compute & Database Services <br>&emsp; + EC2: Instance types, AMI, Key Pairs <br>&emsp; + Lambda: Serverless, event-driven <br>&emsp; + ECS & EKS: Container management <br>&emsp; + RDS & DynamoDB: Relational vs NoSQL <br>&emsp; + ElastiCache: In-memory caching | 15/01/2026 | 15/01/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 4 | - High Availability Design <br>&emsp; + Auto Scaling Group: auto add/remove instances <br>&emsp; + Elastic Load Balancer: ALB vs NLB <br>&emsp; + CloudWatch monitoring for scaling triggers | 15/01/2026 | 15/01/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 5-7 | - Self-Review & Coursera <br>&emsp; + Completed Week 1: AWS Cloud Fundamentals <br>&emsp; + Reviewed all labs and practice <br>&emsp; + Updated Personal Report Website | 16/01/2026 | 18/01/2026 | [Coursera] |
 
 ### Week 2 Achievements
 
-* Hands-on Skills:
-  * Learned to initialize and manage 5 core services: **EC2** (Compute), **RDS** (Database), **Lambda** (Serverless), **Bedrock** (AI), **Budgets** (Cost).
-  * Successfully set up budget alarm (Budget Alarm) to avoid unexpected charges.
+* **Project Progress:**
+  * Successfully brainstormed and voted on project ideas with the team.
+  * Initial concept of a health & nutrition tracking app emerged.
 
-* Knowledge:
-  * Completed 100% of Coursera Week 1.
-  * Understood the **Shared Responsibility Model** and basic **VPC** network architecture.
+* **AWS Knowledge:**
+  * Understood core service groups: Compute (EC2, Lambda, ECS), Storage (S3, EBS, EFS), Database (RDS, DynamoDB).
+  * Learned High Availability design with Auto Scaling Group and Elastic Load Balancer.
+  * Completed Coursera Week 1: AWS Cloud Fundamentals.
 
-* Extracurricular Activities:
-  * Received uniform shirt, officially integrated into FCJ culture.
+* **Hands-on Practice:**
+  * Created and configured EC2 instances, connected via SSH.
+  * Set up VPC with Subnets, Security Groups, and Route Tables.
+  * Practiced with RDS database provisioning.
 
 ### Challenges & Lessons
 
 * **Challenges:**
-  * VPC concepts (Subnet, CIDR block) are quite abstract and difficult to visualize packet flow.
-  * RDS Lab took longer than expected provisioning time.
+  * VPC concepts (Subnet, CIDR block) are quite abstract and hard to visualize packet flow.
+  * Too many AWS services to learn at once — easy to feel overwhelmed.
 
 * **Solutions:**
-  * Redrew network diagrams on paper for better understanding.
-  * Read theory documentation while waiting for RDS to provision.
+  * Drew network diagrams on paper to better understand VPC architecture.
+  * Focused on learning services relevant to the project idea first.
 
 * **Lessons Learned:**
-  * Networking is core: Without understanding VPC, connecting services is impossible (e.g., Lambda cannot call RDS). Need to spend more time on this.
+  * Networking (VPC) is the foundation — without it, services can't communicate.
+  * Should prioritize learning based on project needs rather than trying to cover everything.
 
 ### Next Week Plan
 
-* Focus: Finalize Idea Proposal "NeuraX Knowledge Vault" (Secure-RAG).
-* Technical: Deep dive into **Amazon Bedrock Knowledge Base** (for RAG project).
-* Administrative: Register office schedule for next Tuesday.
+* Deep dive into Amazon Bedrock and AI/ML services on AWS.
+* Refine project ideas and narrow down to one proposal.
+* Research serverless architecture patterns (API Gateway + Lambda).
+* Study Bedrock Knowledge Base for RAG concepts.

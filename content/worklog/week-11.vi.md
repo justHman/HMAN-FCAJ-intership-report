@@ -1,60 +1,69 @@
 ### Mục tiêu Tuần 11
 
-* Hoàn thành Workshop documentation cho báo cáo thực tập.
-* Chuẩn bị final presentation slides.
-* Thực hiện internal demo với mentors.
-* Hoàn thiện tất cả project documentation.
+* Thiết lập CI/CD pipeline với GitHub Actions cho ECS Fargate deployment.
+* Tối ưu prompt engineering để giảm token usage và chi phí API.
+* Implement hệ thống cache crawling cho pre-populating nutrition data.
+* Bắt đầu Terraform infrastructure-as-code và deploy trên Fly.io.
 
 ### Các nhiệm vụ thực hiện trong tuần
 
 | Ngày | Nhiệm vụ | Ngày BĐ | Ngày HT | Tài liệu tham khảo |
 | --- | --- | --- | --- | --- |
-| 1 | - Workshop Documentation (Phần 1) <br>&emsp; + Tạo workshop overview <br>&emsp; + Tài liệu hóa prerequisites <br>&emsp; + Viết architecture description | 16/03/2026 | 16/03/2026 | [Workshop Docs] |
-| 2 | - Workshop Documentation (Phần 2) <br>&emsp; + Viết step-by-step deployment guide <br>&emsp; + Thêm screenshots cho mỗi bước <br>&emsp; + Tạo code snippets cho IaC | 17/03/2026 | 17/03/2026 | [Workshop Docs] |
-| 3 | - Workshop Documentation (Phần 3) <br>&emsp; + Tài liệu hóa testing procedures <br>&emsp; + Thêm clean-up instructions <br>&emsp; + Tạo troubleshooting FAQ | 18/03/2026 | 18/03/2026 | [Workshop Docs] |
-| 4 | - Chuẩn bị Presentation <br>&emsp; + Tạo presentation deck 25 slides <br>&emsp; + Bao gồm architecture diagrams <br>&emsp; + Thêm demo video clips | 19/03/2026 | 19/03/2026 | [Presentation Slides] |
-| 5 | - Internal Demo <br>&emsp; + Trình bày cho FCJ mentors <br>&emsp; + Demo tất cả tính năng NutriTrack <br>&emsp; + Thu thập feedback để cải thiện | 20/03/2026 | 20/03/2026 | [Demo Feedback] |
-| 6-7 | - Hoàn thiện Documentation <br>&emsp; + Áp dụng mentor feedback <br>&emsp; + Đọc lại tất cả documentation <br>&emsp; + Cập nhật bilingual content | 21/03/2026 | 22/03/2026 | [Final Docs] |
+| 1 | - Thiết lập CI/CD Pipeline <br>&emsp; + Tạo GitHub Actions workflow cho ECS deployment <br>&emsp; + Cấu hình ECS Fargate ARM với capacity provider (FARGATE_SPOT) <br>&emsp; + Implement crawl data pipeline cho cache clients | 16/03/2026 | 16/03/2026 | [GitHub Actions] |
+| 2 | - Đồng bộ Cache Data <br>&emsp; + Sync dữ liệu 3 nutrition API clients <br>&emsp; + Implement batch retrieval cho tool responses giảm latency <br>&emsp; + Hoàn thành testing cho cache sync | 18/03/2026 | 18/03/2026 | [Cache Sync Code] |
+| 3 | - Tối ưu Prompt & Token (Phần 1) <br>&emsp; + Tối ưu tokens cho food và label detection prompts <br>&emsp; + Giảm input/output token count <br>&emsp; + Dọn dẹp và đơn giản hóa function definitions | 20/03/2026 | 20/03/2026 | [Optimization Notes] |
+| 4 | - Tối ưu Prompt & Token (Phần 2) <br>&emsp; + Ép output format CSV để minimize output tokens <br>&emsp; + Tối ưu prompt speed và giảm chi phí API <br>&emsp; + Xử lý edge cases: không có items và nhiều items | 22/03/2026 | 22/03/2026 | [Token Analysis] |
+| 5 | - Deploy Fly.io <br>&emsp; + Thiết lập Fly.io làm nền tảng deploy thay thế <br>&emsp; + Cấu hình fly.toml và deployment scripts <br>&emsp; + Test deployment với Claude model integration | 22/03/2026 | 22/03/2026 | [Fly.io Docs] |
+| 6-7 | - Terraform & Documentation <br>&emsp; + Bắt đầu Terraform IaC cho AWS infrastructure <br>&emsp; + Viết tài liệu deployment <br>&emsp; + Setup pytest cho automated testing trong CI/CD <br>&emsp; + Code review và graph documentation | 22/03/2026 | 22/03/2026 | [Terraform Config] |
 
 ### Thành tựu Tuần 11
 
-* **Workshop Documentation:**
-  * Workshop hoàn chỉnh 4 phần (Overview, Setup, Implementation, Cleanup).
-  * 30+ screenshots với annotations.
-  * CloudFormation/SAM templates được bao gồm để reproducibility.
+* **CI/CD Pipeline:**
+  * GitHub Actions workflow deploy lên ECS Fargate ARM + Spot thành công.
+  * Automated pipeline: push → build Docker image → deploy ECS.
+  * Capacity provider strategy: FARGATE_SPOT cho tối ưu chi phí.
 
-* **Presentation:**
-  * Presentation deck chuyên nghiệp 25 slides covering project journey.
-  * Live demo tích hợp với pre-recorded backup.
-  * Value proposition và technical depth rõ ràng.
+* **Tối ưu Token & Prompt:**
+  * Ép **format output CSV** — giảm output tokens đáng kể (lên đến 60%).
+  * Tối ưu prompts cho cả food detection và label analysis.
+  * Implement batch tool calling giảm API call latency.
+  * Tiết kiệm chi phí đáng kể trên Bedrock API usage.
 
-* **Internal Demo:**
-  * Trình bày thành công cho 3 FCJ mentors.
-  * Nhận feedback tích cực về lựa chọn kiến trúc.
-  * Góp ý nhỏ: thêm các ví dụ error handling.
+* **Hệ thống Cache:**
+  * Cache 2 tầng triển khai hoàn chỉnh:
+    * **L1 Cache (User):** In-memory cache cho dữ liệu phiên hiện tại.
+    * **L2 Cache (File):** JSON file-based persistent cache trên volume storage.
+  * Cache crawling pipeline: pre-populate cache với dữ liệu thực phẩm phổ biến.
+  * Batch retrieval từ tools giảm latency cho multi-item queries.
 
-* **Documentation:**
-  * Tất cả documentation được review và finalize.
-  * Bilingual content (EN/VI) hoàn chỉnh.
-  * Sẵn sàng cho final submission.
+* **Multi-Platform Deployment:**
+  * ECS Fargate ARM + Spot cho production (AWS).
+  * Fly.io là alternative tiết kiệm cho development/staging.
+
+* **Terraform:**
+  * Bắt đầu infrastructure-as-code cho AWS deployments reproducible.
 
 ### Khó khăn & Bài học
 
 * **Khó khăn:**
-  * Viết instructions step-by-step rõ ràng khó hơn dự kiến.
-  * Cân bằng giữa độ sâu kỹ thuật và khả năng tiếp cận cho beginners.
+  * ECS FARGATE_SPOT instances có thể bị interrupt — cần xử lý graceful.
+  * Cân bằng prompt optimization: giảm quá mạnh có thể ảnh hưởng accuracy.
+  * Cache sync giữa Fly.io volume và S3 cần thiết kế cẩn thận.
 
 * **Cách giải quyết:**
-  * Cho team members làm theo instructions để xác định các bước không rõ ràng.
-  * Thêm các boxes "Beginner Tips" xuyên suốt documentation.
+  * Dùng capacity provider strategy với weight=1 cho Spot để có fallback.
+  * A/B test thay đổi prompt để đảm bảo accuracy được duy trì.
+  * Implement cache merge strategy: get từ Fly → merge local → upload S3.
 
 * **Bài học rút ra:**
-  * Documentation quan trọng như code.
-  * User testing cho documentation phát hiện các blind spots.
+  * CSV output format hiệu quả đáng ngạc nhiên trong việc giảm LLM token usage.
+  * Cache pre-population (crawling) có thể giảm runtime latency đáng kể.
+  * Multi-platform deployment (ECS + Fly.io) mang lại redundancy và flexibility chi phí.
 
 ### Kế hoạch Tuần 12
 
-* Final presentation cho tất cả stakeholders.
-* Hoàn thành self-evaluation và feedback sections.
-* Nộp báo cáo thực tập.
-* Ăn mừng hoàn thành dự án! 🎉
+* Chuẩn bị final presentation và rehearsal.
+* Implement JWT token return trong API responses.
+* Deploy ECS trong private subnet với full networking (ALB, NAT).
+* S3 cache synchronization cho persistent storage.
+* Hoàn thành tất cả documentation và báo cáo thực tập.

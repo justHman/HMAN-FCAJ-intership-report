@@ -1,59 +1,64 @@
 ### Mục tiêu Tuần 9
 
-* Hoàn thành end-to-end testing cho tất cả user flows.
-* Thiết lập CloudWatch monitoring và alarms.
-* Triển khai các tối ưu hóa hiệu năng.
-* Sửa bugs còn lại và polish UI.
+* Commit đầu tiên lên GitHub.
+* Implement pipeline OCR nhãn (trích xuất bảng thành phần dinh dưỡng).
+* Xây dựng pipeline quét barcode với cache đa tầng.
+* Tạo Dockerfile và Gradio web UI.
 
-### Các nhiệm vụ thực hiện trong tuần
+### Công việc thực hiện trong tuần
 
-| Ngày | Nhiệm vụ | Ngày BĐ | Ngày HT | Tài liệu tham khảo |
+| Ngày | Công việc | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo |
 | --- | --- | --- | --- | --- |
-| 1 | - End-to-End Testing <br>&emsp; + Tạo bộ test E2E với Playwright <br>&emsp; + Test auth flow, meal logging, analytics <br>&emsp; + Tự động hóa regression tests | 02/03/2026 | 02/03/2026 | [E2E Tests] |
-| 2 | - Thiết lập CloudWatch (Phần 1) <br>&emsp; + Tạo CloudWatch dashboards <br>&emsp; + Cấu hình visualization Lambda metrics <br>&emsp; + Thiết lập API Gateway metrics | 03/03/2026 | 03/03/2026 | [CloudWatch Docs](https://docs.aws.amazon.com/cloudwatch/) |
-| 3 | - Thiết lập CloudWatch (Phần 2) <br>&emsp; + Tạo alarms cho error rates <br>&emsp; + Thiết lập SNS notifications <br>&emsp; + Cấu hình cost monitoring alerts | 04/03/2026 | 04/03/2026 | [Alarm Config] |
-| 4 | - Tối ưu hóa hiệu năng <br>&emsp; + Tối ưu Lambda cold starts (Provisioned Concurrency) <br>&emsp; + Bật DynamoDB DAX cho caching <br>&emsp; + Triển khai CloudFront cho static assets | 05/03/2026 | 05/03/2026 | [Optimization Report] |
-| 5 | - Sửa Bugs <br>&emsp; + Sửa 8 bugs còn lại từ testing <br>&emsp; + Cải thiện error messages <br>&emsp; + Nâng cao mobile responsiveness | 06/03/2026 | 06/03/2026 | [Bug Tracker] |
-| 6-7 | - UI Polish <br>&emsp; + Thêm loading animations <br>&emsp; + Cải thiện accessibility (ARIA labels) <br>&emsp; + Review và sửa UI cuối cùng | 07/03/2026 | 08/03/2026 | [UI Review] |
+| 1 | - Commit đầu tiên <br>&emsp; + Commit chính thức: project với i18n và API <br>&emsp; + Cấu hình .env và environment <br>&emsp; + Push lên GitHub repository | 03/03/2026 | 03/03/2026 | [GitHub Repo](https://github.com/NeuraX-HQ) |
+| 2 | - Pipeline OCR Nhãn <br>&emsp; + Xây /analyze-label endpoint — VLM trích xuất chính xác nutrition facts từ ảnh sản phẩm <br>&emsp; + OCRER model xuất 4 bảng CSV: thông tin SP, dinh dưỡng, thành phần, dị ứng <br>&emsp; + Prompt engineering: CSV format nghiêm ngặt với pipe delimiters <br>&emsp; + Cùng async pattern: HTTP 202 → background job → poll /jobs/{id} | 05/03/2026 | 05/03/2026 | [Label Analyzer] |
+| 3 | - Pipeline Quét Barcode (Phần 1) <br>&emsp; + Xây /scan-barcode endpoint với pyrxing barcode decoder <br>&emsp; + Thiết kế cache 3 tầng: L1 LRU RAM (256 slots) → L2 disk JSON → L3 API fallback <br>&emsp; + L2 disk lookup: OpenFoodFacts → Avocavo → USDA <br>&emsp; + L3 API search: Avocavo → OpenFoodFacts → USDA (hit đầu tiên short-circuit) | 06/03/2026 | 06/03/2026 | [Cache Design] |
+| 4 | - Pipeline Quét Barcode (Phần 2) <br>&emsp; + Cache TTL: 30 ngày, entry hết hạn trigger L3 API refresh <br>&emsp; + L1→L2 promotion khi hit, L3→L1 promotion khi API thành công <br>&emsp; + Negative cache: cache kết quả "not found" tránh gọi API thừa <br>&emsp; + 3 API clients output format chuẩn hóa | 07/03/2026 | 07/03/2026 | [Client Scripts] |
+| 5 | - Gradio Web UI & Dockerfile <br>&emsp; + Build Gradio UI demo phân tích đồ ăn và OCR nhãn <br>&emsp; + Hỗ trợ chọn method "manual" hoặc "tools" <br>&emsp; + Tạo Dockerfile cho deployment <br>&emsp; + Nén ảnh trong tất cả pipelines: 768px, JPEG q75 | 08/03/2026 | 08/03/2026 | [Gradio Demo] |
+| 6-7 | - Phát hiện Nhiều Đồ ăn & Testing <br>&emsp; + Mở rộng phân tích phát hiện nhiều món trong 1 ảnh <br>&emsp; + Thống nhất output format giữa tool-use và manual <br>&emsp; + Viết tests cho cả 3 pipeline endpoints <br>&emsp; + Sửa lỗi image format (P→RGB conversion) | 08/03/2026 | 08/03/2026 | [Test Suite] |
 
 ### Thành tựu Tuần 9
 
-* **Testing:**
-  * Bộ test E2E với 15 scenarios tự động.
-  * 95% pass rate trên tất cả critical paths.
-  * Regression test chạy trên mỗi deployment.
+* **Pipeline OCR Nhãn:**
+  * Pipeline hoàn chỉnh: ảnh → VLM (OCRER model) → trích xuất chính xác nutrition facts → dữ liệu có cấu trúc.
+  * Xuất 4 bảng CSV: thông tin SP (tên, thương hiệu, khẩu phần), dinh dưỡng (giá trị mỗi phần), danh sách thành phần, chất gây dị ứng.
+  * Prompt tối ưu CSV format — cùng chiến lược giảm token.
 
-* **Monitoring:**
-  * CloudWatch dashboard với real-time metrics.
-  * Alarms được cấu hình: Error Rate > 5%, Latency > 3s, Cost > Budget.
-  * SNS email notifications cho critical alerts.
+* **Barcode Cache 3 Tầng:**
+  * **L1 (RAM):** LRU cache với OrderedDict, tối đa 256 slots, Thread-safe.
+  * **L2 (Disk):** JSON files mỗi client (openfoodfacts_cache.json, avocavo_cache.json, usda_cache.json), TTL 30 ngày.
+  * **L3 (API):** Fallback gọi API — Avocavo → OpenFoodFacts → USDA, hit đầu tiên short-circuit.
+  * Promotion: L2 hit → đẩy lên L1, L3 hit → đẩy lên L1.
+  * Negative cache: cache kết quả "not found" tránh lookup thừa.
 
-* **Hiệu năng:**
-  * Cold start giảm từ 3s xuống 0.5s với Provisioned Concurrency.
-  * DynamoDB queries nhanh hơn 80% với DAX caching.
-  * Static assets load nhanh hơn 60% với CloudFront CDN.
+* **Nén Ảnh:**
+  * `prepare_image_for_bedrock()`: resize 768px, JPEG q75, ép nén nếu > 200KB hoặc > max_pixels.
+  * Auto-convert image modes (P, RGBA, L → RGB) trước JPEG compression.
+  * Áp dụng cho cả 3 pipelines để tiết kiệm token đồng nhất.
 
-* **Bug Fixes:**
-  * 8 bugs đã sửa, 0 critical issues còn lại.
-  * Trải nghiệm mobile được cải thiện đáng kể.
+* **Containerization:**
+  * Dockerfile sẵn sàng deploy.
+  * Gradio demo UI test tương tác không cần frontend riêng.
 
-### Khó khăn & Bài học
+### Thử thách & Bài học
 
-* **Khó khăn:**
-  * Provisioned Concurrency tăng chi phí đáng kể.
-  * DAX setup yêu cầu thay đổi cấu hình VPC.
+* **Thử thách:**
+  * Label OCR cần trích xuất chính xác giá trị dinh dưỡng — VLM đôi khi hallucinate hoặc merge fields.
+  * Cache design: xử lý negative results, expired entries, multi-source fallback.
+  * Image format: palette mode 'P' không thể save JPEG trực tiếp.
 
-* **Cách giải quyết:**
-  * Sử dụng scheduled scaling cho Provisioned Concurrency (chỉ giờ cao điểm).
-  * Tạo private subnets cho DAX trong VPC hiện có.
+* **Giải pháp:**
+  * Strict CSV prompt với example rows — VLM follow format chính xác.
+  * Negative caching và TTL expiry với auto L3 refresh.
+  * Auto-convert image mode sang RGB trước JPEG.
 
-* **Bài học rút ra:**
-  * Tối ưu hóa hiệu năng phải cân bằng chi phí vs. tốc độ.
-  * Monitoring nên được thiết lập sớm, không phải là ý tưởng sau cùng.
+* **Bài học:**
+  * Cache 3 tầng hiệu quả hơn nhiều so với cache in-memory đơn giản — L2 disk persist qua restart.
+  * Negative caching ngăn gọi API thất bại lặp lại — quan trọng cho barcode databases.
+  * CSV format trong prompts cho output nhất quán hơn JSON.
 
-### Kế hoạch Tuần 10
+### Kế hoạch Tuần sau
 
-* Thực hiện load testing và stress testing.
-* Triển khai chiến lược tối ưu chi phí.
-* Chuẩn bị demo cho stakeholder presentation.
-* Bắt đầu viết technical documentation.
+* Deploy API lên ECS Fargate ARM + Spot.
+* Hoàn thiện cả 3 pipelines (/analyze-food, /analyze-label, /scan-barcode).
+* Xây 3 nutrition API clients (USDA, OpenFoodFacts, Avocavo) với tests.
+* Viết comprehensive tests cho tất cả endpoints.

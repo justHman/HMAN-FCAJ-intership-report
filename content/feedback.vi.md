@@ -2,63 +2,42 @@
 
 ## 1. Cảm nhận về chương trình
 
-Chương trình thực tập First Cloud AI Journey là một trải nghiệm học tập tuyệt vời. Tôi cảm thấy được thử thách và hỗ trợ trong suốt 12 tuần. Sự kết hợp giữa học lý thuyết và các dự án thực hành đã giúp củng cố hiểu biết của tôi về các dịch vụ AWS. Sự hướng dẫn từ đội AWS là vô giá.
+Chương trình thực tập First Cloud AI Journey là một trải nghiệm vô cùng thử thách và bổ ích. Trong 12 tuần qua, tôi đảm nhận các vai trò cốt lõi từ AI Integration, DevOps đến Backend API cho dự án NutriTrack. Chương trình đã đẩy tôi ra khỏi vùng an toàn — từ việc học các dịch vụ AWS cơ bản đến deploy một API production-ready với CI/CD tự động hóa hoàn toàn. Tính thực tiễn cao của chương trình khiến mỗi tuần đều cảm thấy như đang làm việc trong môi trường thực tế, không phải bài tập học thuật.
 
 ---
 
 ## 2. Mức độ hài lòng
 
-Tôi rất hài lòng với chương trình (9/10). Chương trình học được cấu trúc tốt, bao gồm các dịch vụ AWS thiết yếu từ cơ bản đến nâng cao. Các buổi học hàng tuần và sự kiện cộng đồng đã nâng cao đáng kể trải nghiệm học tập. Điểm duy nhất cần cải thiện là thêm thời gian cho các bài lab thực hành phức tạp.
+Tôi rất hài lòng với chương trình (9/10). Sự linh hoạt để thử nghiệm các hướng tiếp cận khác nhau — ví dụ chuyển từ multi-model vision pipeline sang LLM tool-use loop — là vô giá. Chương trình có đủ cấu trúc qua weekly check-ins nhưng vẫn cho tự do thử nghiệm với các dịch vụ AWS và chiến lược deployment khác nhau. Điểm duy nhất tôi đánh giá thấp hơn một chút là giai đoạn onboarding ban đầu, có thể cần thêm hướng dẫn hands-on cho các service phức tạp.
 
 ---
 
 ## 3. Kiến thức đạt được
 
-Trong suốt chương trình, tôi đã đạt được kiến thức sâu về:
-
-- Các dịch vụ cốt lõi AWS (EC2, S3, Lambda, DynamoDB)
-- Infrastructure as Code sử dụng CDK và CloudFormation
-- Các mẫu kiến trúc serverless
-- Best practices bảo mật với IAM
-- Triển khai ML sử dụng SageMaker
-
-Kiến thức này đóng góp trực tiếp vào dự án workshop của tôi.
+Trong suốt chương trình, tôi đã lĩnh hội các kiến thức chuyên sâu về:
+- **Hạ tầng AWS:** VPC, Subnets, VPC Endpoints, ALB, NAT Gateway, NAT Instance (tối ưu chi phí), Auto Scaling, Target Groups, và ECS Fargate (ARM + Spot).
+- **HA & Khả năng mở rộng:** Thiết kế và dựng kiến trúc High Availability với tự động hóa load balancing và auto scaling xuyên nhiều AZs.
+- **DevOps & CI/CD:** Pipeline deployment tự động end-to-end sử dụng Terraform, GitHub Actions, triển khai trên cả AWS ECS và Fly.io.
+- **API Backend:** Xây dựng API bất đồng bộ bảo mật với FastAPI, JWT authentication, xử lý job nền với ThreadPool, đạt < 100ms response time và < 5s bắt đầu xử lý nền.
+- **Tích hợp AI/LLM:** Implement tool-use loop cho LLM/VLM, tối ưu prompt, ép output format CSV giảm tokens (~60%), batch tool calling giảm latency.
+- **Caching:** Tự tay xây dựng hệ thống cache 2 tầng (L1 user-level in-memory cache, L2 file-based persistent cache) với cache crawling để pre-populate dữ liệu.
 
 ---
 
 ## 4. Kỹ năng cải thiện
 
-Ngoài kỹ năng kỹ thuật, tôi đã cải thiện các kỹ năng mềm bao gồm:
-
-- Viết tài liệu kỹ thuật
-- Trình bày các khái niệm phức tạp rõ ràng
-- Hợp tác trong môi trường nhóm
-- Quản lý thời gian với nhiều nhiệm vụ
-- Giải quyết vấn đề dưới áp lực
-
-Những kỹ năng này sẽ có giá trị trong suốt sự nghiệp của tôi.
+Ngoài kỹ năng lập trình, tôi đã cải thiện đáng kể khả năng đưa ra quyết định trade-off kiến trúc — ví dụ chọn ECS thay vì Lambda cho AI workloads, hay NAT Instance thay NAT Gateway để tiết kiệm chi phí. Kỹ năng thiết kế hệ thống end-to-end được nâng cao rõ rệt: từ viết dòng code API đầu tiên đến deploy trong private VPC với ALB routing. Tôi cũng tiến bộ trong prompt engineering và hiểu các pattern hành vi của LLM.
 
 ---
 
 ## 5. Điểm cần cải thiện (cho chương trình)
 
-Một số đề xuất để cải thiện chương trình:
-
-1. Thêm thời gian thực hành cho các bài lab phức tạp
-2. Giới thiệu sớm hơn về yêu cầu dự án workshop
-3. Thêm các buổi mentoring 1-1
-4. Thêm tài liệu bằng tiếng Việt
-5. Các buổi peer review cho nội dung workshop
+1. Hướng dẫn có cấu trúc hơn cho giai đoạn exploration ban đầu (Tuần 3-5) — có quá nhiều lựa chọn mà không có định hướng rõ ràng có thể làm chậm tiến độ dự án.
+2. Thêm bài tập thực tế về tối ưu chi phí — hiểu AWS pricing rất quan trọng nhưng thường bị bỏ qua vì ưu tiên phát triển tính năng.
+3. Cân nhắc thêm buổi review kiến trúc giữa chương trình với AWS Solution Architects.
 
 ---
 
 ## 6. Bạn có giới thiệu chương trình cho bạn bè không? Tại sao?
 
-Chắc chắn, tôi sẽ giới thiệu chương trình thực tập FCJ cho bất kỳ ai quan tâm đến điện toán đám mây. Chương trình cung cấp:
-
-- Kinh nghiệm thực tế với AWS
-- Tiếp cận với các mentor trong ngành
-- Một cộng đồng hỗ trợ
-- Cơ hội xây dựng dự án portfolio
-
-Đây là bàn đạp tuyệt vời cho sự nghiệp trong công nghệ đám mây.
+Chắc chắn rồi. Chương trình thực tập FCJ mang đến sự kết hợp độc đáo giữa kiến thức AWS lý thuyết và triển khai dự án thực tế mà rất khó tìm thấy ở nơi khác. Bạn sẽ xây dựng và deploy ứng dụng production-grade thực sự trên AWS, làm việc với mô hình AI tiên tiến, và học DevOps practices — tất cả trong một môi trường mentorship hỗ trợ. Với bất kỳ ai quan tâm đến cloud engineering hoặc AI infrastructure, chương trình này là một trong những điểm xuất phát tốt nhất.

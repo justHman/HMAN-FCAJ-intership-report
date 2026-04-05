@@ -1,60 +1,59 @@
 ### Mục tiêu Tuần 7
 
-* Triển khai Cognito authentication cho NutriTrack.
-* Hoàn thành các Lambda functions còn lại cho AI features.
-* Thiết lập CI/CD pipeline với GitHub Actions.
-* Bắt đầu frontend development với React.
+* Nghỉ Tết Nguyên Đán — thời gian tự học.
+* Tìm hiểu Load Balancer, ALB và Auto Scaling.
+* Học Target Groups và cấu hình health check.
+* Thiết kế kiến trúc High Availability (HA) cho NutriTrack.
 
 ### Các nhiệm vụ thực hiện trong tuần
 
 | Ngày | Nhiệm vụ | Ngày BĐ | Ngày HT | Tài liệu tham khảo |
 | --- | --- | --- | --- | --- |
-| 1 | - Thiết lập Amazon Cognito <br>&emsp; + Tạo User Pool cho NutriTrack <br>&emsp; + Cấu hình password policies <br>&emsp; + Thiết lập email verification | 16/02/2026 | 16/02/2026 | [Cognito Docs](https://docs.aws.amazon.com/cognito/) |
-| 2 | - Cognito Integration <br>&emsp; + Tích hợp Cognito với API Gateway <br>&emsp; + Tạo JWT authorizer <br>&emsp; + Test protected endpoints | 17/02/2026 | 17/02/2026 | [Auth Config] |
-| 3 | - AI Lambda Functions <br>&emsp; + Tạo Lambda tích hợp Bedrock <br>&emsp; + Triển khai endpoint gợi ý bữa ăn <br>&emsp; + Thêm function phân tích dinh dưỡng | 18/02/2026 | 18/02/2026 | [Bedrock Integration](https://docs.aws.amazon.com/bedrock/) |
-| 4 | - Thiết lập CI/CD Pipeline <br>&emsp; + Tạo GitHub Actions workflow <br>&emsp; + Cấu hình SAM deploy steps <br>&emsp; + Thiết lập môi trường dev/staging | 19/02/2026 | 19/02/2026 | [GitHub Actions] |
-| 5 | - Thiết lập Frontend Project <br>&emsp; + Khởi tạo React + Vite project <br>&emsp; + Cấu hình Tailwind CSS <br>&emsp; + Thiết lập cấu trúc project | 20/02/2026 | 20/02/2026 | [Frontend Repo] |
-| 6-7 | - Frontend Development (Phần 1) <br>&emsp; + Tạo authentication pages (Login, Register) <br>&emsp; + Tích hợp AWS Amplify cho Cognito <br>&emsp; + Test auth flow end-to-end | 21/02/2026 | 22/02/2026 | [UI Components] |
+| 1 | - **Nghỉ Tết** (Tết Nguyên Đán) <br>&emsp; + Ngày nghỉ lễ quốc gia <br>&emsp; + Đọc nhẹ tài liệu AWS | 16/02/2026 | 16/02/2026 | - |
+| 2-3 | - **Nghỉ Tết** (tiếp tục) <br>&emsp; + Thời gian gia đình và lễ hội <br>&emsp; + Đọc AWS Well-Architected Framework trong lúc rảnh | 17/02/2026 | 18/02/2026 | [Well-Architected](https://docs.aws.amazon.com/wellarchitected/) |
+| 4 | - Tự học: Elastic Load Balancing <br>&emsp; + Application Load Balancer (ALB): routing HTTP/HTTPS, path-based routing <br>&emsp; + Network Load Balancer (NLB): TCP/UDP, ultra-low latency <br>&emsp; + So sánh ALB vs NLB cho các use cases khác nhau | 19/02/2026 | 19/02/2026 | [ELB Docs](https://docs.aws.amazon.com/elasticloadbalancing/) |
+| 5 | - Tự học: Auto Scaling & Target Groups <br>&emsp; + Auto Scaling policies: target tracking, step scaling, scheduled <br>&emsp; + Target Groups: instance, IP, Lambda targets <br>&emsp; + Health checks: ELB health check vs EC2 status check | 20/02/2026 | 20/02/2026 | [Auto Scaling Docs](https://docs.aws.amazon.com/autoscaling/) |
+| 6 | - Thiết kế kiến trúc HA <br>&emsp; + Multi-AZ deployment pattern <br>&emsp; + ALB + Auto Scaling + ECS Fargate cho NutriTrack <br>&emsp; + Thiết kế failover và self-healing mechanisms | 21/02/2026 | 21/02/2026 | [Architecture Notes] |
+| 7 | - Chuẩn bị phát triển <br>&emsp; + Setup cấu trúc FastAPI project <br>&emsp; + Cài đặt Python dependencies cho AI/ML <br>&emsp; + Chuẩn bị môi trường cho sprint coding | 22/02/2026 | 22/02/2026 | - |
 
 ### Thành tựu Tuần 7
 
-* **Authentication:**
-  * Cognito User Pool đã tạo với secure password policy.
-  * API Gateway được bảo vệ với JWT authorizer.
-  * Email verification flow hoạt động.
+* **Kiến thức Load Balancing:**
+  * Hiểu ALB cho HTTP/HTTPS với path-based và host-based routing.
+  * Nắm NLB cho TCP/UDP workloads hiệu năng cao.
+  * Chọn ALB cho NutriTrack: phù hợp nhất cho REST API routing.
 
-* **AI Integration:**
-  * Bedrock Claude 3 Sonnet được tích hợp cho gợi ý bữa ăn.
-  * Nutrition analysis function cung cấp breakdown calories/macros.
-  * Rate limiting được cấu hình để quản lý chi phí Bedrock API.
+* **Auto Scaling & Target Groups:**
+  * Nắm vững các loại Auto Scaling policies và khi nào dùng từng loại.
+  * Hiểu Target Groups là cầu nối giữa ALB và backend services.
+  * Học cấu hình health check cho service discovery đáng tin cậy.
 
-* **CI/CD:**
-  * Pipeline deployment tự động: Push → Test → Deploy.
-  * Stacks riêng biệt cho môi trường dev và staging.
-  * Cơ chế rollback được cấu hình.
+* **Kiến trúc HA:**
+  * Thiết kế Multi-AZ: ALB → Auto Scaling Group → ECS Fargate tasks across 2 AZs.
+  * Lên kế hoạch self-healing: task lỗi tự động được thay thế.
+  * Ước tính trade-offs chi phí vs availability.
 
-* **Frontend:**
-  * React + Vite + Tailwind project đã khởi tạo.
-  * Trang Login và Registration hoàn thành.
-  * AWS Amplify được cấu hình cho Cognito integration.
+* **Chuẩn bị phát triển:**
+  * FastAPI project skeleton sẵn sàng với directory structure chuẩn.
+  * Tất cả Python dependencies đã cài đặt và test trên local.
 
 ### Khó khăn & Bài học
 
 * **Khó khăn:**
-  * Bedrock API responses là async; cần proper error handling.
-  * Cognito token refresh flow khá phức tạp để implement.
+  * Duy trì năng suất trong kỳ nghỉ dài là khó khăn.
+  * Hiểu mối quan hệ giữa ALB, Target Groups và Auto Scaling cần nghiên cứu kỹ.
 
 * **Cách giải quyết:**
-  * Triển khai retry logic với exponential backoff cho Bedrock.
-  * Sử dụng AWS Amplify library vì nó tự động xử lý token refresh.
+  * Đặt mục tiêu học nhỏ hàng ngày trong kỳ nghỉ (1-2 giờ đọc tài liệu).
+  * Vẽ architecture diagrams để visualize luồng ALB → Target Group → ECS.
 
 * **Bài học rút ra:**
-  * Bedrock prompts cần được engineering cẩn thận để đảm bảo output nhất quán.
-  * AWS Amplify đơn giản hóa đáng kể việc tích hợp auth frontend.
+  * HA architecture không chỉ là redundancy — mà là automated recovery.
+  * Target Groups là key connector khiến ALB + Auto Scaling hoạt động cùng nhau.
 
 ### Kế hoạch Tuần 8
 
-* Hoàn thành tất cả frontend pages (Dashboard, Meal Log, Analytics).
-* Triển khai upload ảnh và phân tích ảnh bữa ăn.
-* Tích hợp frontend với tất cả backend APIs.
-* Bắt đầu unit testing cho Lambda functions.
+* Bắt đầu phát triển backend: FastAPI với async processing.
+* Triển khai JWT authentication cho API security.
+* Xây dựng cấu trúc project với i18n support.
+* Bắt đầu implement LLM/VLM tool-use loop cho food analysis.

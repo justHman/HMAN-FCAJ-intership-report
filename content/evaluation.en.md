@@ -6,21 +6,21 @@ Evaluate based on the criteria below. For each criterion, select Good / Fair / A
 
 | # | Criteria | Good | Fair | Average | Comments |
 |---|----------|:----:|:----:|:-------:|----------|
-| 1 | Knowledge | ✓ |  |  | Solid understanding of AWS services and cloud concepts |
-| 2 | Learning Ability | ✓ |  |  | Quick to learn new technologies and apply them |
-| 3 | Proactivity | ✓ |  |  | Self-driven to explore beyond assigned tasks |
-| 4 | Discipline | ✓ |  |  | Consistent attendance and task completion |
-| 5 | Communication |  | ✓ |  | Room for improvement in presenting ideas clearly |
-| 6 | Teamwork | ✓ |  |  | Collaborated effectively with team members |
-| 7 | Problem Solving | ✓ |  |  | Approached problems methodically and found solutions |
-| 8 | Contribution to Project | ✓ |  |  | Delivered key workshop components successfully |
-| 9 | Time Management |  | ✓ |  | Occasionally needed deadline extensions |
-| 10 | Documentation | ✓ |  |  | Clear and comprehensive technical documentation |
+| 1 | Knowledge | ✓ |  |  | Solid understanding of AWS services (ECS, VPC, ALB, S3), LLM/VLM integration, and async backend architecture |
+| 2 | Learning Ability | ✓ |  |  | Quickly adapted from Lambda to ECS Fargate, pivoted AI approach from multi-model to tool-use loop effectively |
+| 3 | Proactivity | ✓ |  |  | Self-driven to optimize API latency (< 100ms), implement dual-layer cache, and reduce token costs via CSV format |
+| 4 | Discipline |  | ✓ |  | Delivered milestones consistently, but work schedule was sometimes irregular with late-night coding sessions |
+| 5 | Communication |  | ✓ |  | Technical decisions communicated clearly within team, but could improve on daily standup regularity |
+| 6 | Teamwork | ✓ |  |  | Collaborated well across AI, DevOps, and backend responsibilities; supported team members with AWS guidance |
+| 7 | Problem Solving | ✓ |  |  | Resolved critical issues: OOM errors, API bottlenecks, image format bugs, and ECS deployment failures |
+| 8 | Contribution to Project | ✓ |  |  | Delivered core systems: LLM tool-use loop, 3 API pipelines, CI/CD automation, and async backend |
+| 9 | Time Management |  | ✓ |  | Met major deadlines but could better distribute workload instead of intense sprints near milestones |
+| 10 | Documentation | ✓ |  |  | Comprehensive deployment docs, API documentation, and bilingual internship report |
 
 ---
 
 ## Summary
 
-- **Good:** 8 criteria
-- **Fair:** 2 criteria
+- **Good:** 7 criteria
+- **Fair:** 3 criteria
 - **Average:** 0 criteria

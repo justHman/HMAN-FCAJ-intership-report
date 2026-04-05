@@ -1,54 +1,58 @@
 ### Week 6 Objectives
 
-* Submit and get approval for NutriTrack Proposal.
-* Begin backend implementation with Lambda functions.
-* Set up SAM CLI for local development.
-* Create OpenAPI specification for all endpoints.
+* Submit NutriTrack Proposal for mentor approval.
+* Pivot AI approach: research LLM/VLM tool-use loop architecture.
+* Study VPC Endpoints, NAT Gateway, and NAT Instance for cost optimization.
+* Research alternative models and API-based nutrition data sources.
 
 ### Tasks carried out this week
 
 | Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| 1 | - Proposal Submission <br>&emsp; + Finalized NutriTrack Proposal document <br>&emsp; + Submitted for mentor review <br>&emsp; + Prepared presentation slides | 09/02/2026 | 09/02/2026 | [Final Proposal] |
-| 2 | - SAM CLI Setup <br>&emsp; + Installed AWS SAM CLI <br>&emsp; + Created sample template.yaml <br>&emsp; + Tested local Lambda invocation | 10/02/2026 | 10/02/2026 | [SAM Docs](https://docs.aws.amazon.com/serverless-application-model/) |
-| 3 | - OpenAPI Specification <br>&emsp; + Defined all 12 API endpoints <br>&emsp; + Documented request/response schemas <br>&emsp; + Created Swagger documentation | 11/02/2026 | 11/02/2026 | [OpenAPI Spec] |
-| 4 | - Lambda Functions (Part 1) <br>&emsp; + Created user management functions <br>&emsp; + POST /users, GET /users/{id} <br>&emsp; + Integrated with DynamoDB | 12/02/2026 | 12/02/2026 | [Lambda Code] |
-| 5 | - Lambda Functions (Part 2) <br>&emsp; + Created meal logging functions <br>&emsp; + POST /meals, GET /meals <br>&emsp; + Image upload to S3 presigned URL | 13/02/2026 | 13/02/2026 | [Lambda Code] |
-| 6-7 | - API Gateway Integration <br>&emsp; + Connected Lambda functions to API Gateway <br>&emsp; + Configured CORS settings <br>&emsp; + Tested endpoints with Postman | 14/02/2026 | 15/02/2026 | [API Tests] |
+| 1 | - Proposal Submission <br>&emsp; + Finalized NutriTrack Proposal document <br>&emsp; + Submitted for mentor review <br>&emsp; + Prepared presentation for defense | 09/02/2026 | 09/02/2026 | [Final Proposal] |
+| 2 | - LLM/VLM Tool-Use Research <br>&emsp; + Studied how LLMs use tools (function calling) <br>&emsp; + Researched tool-use loop patterns: model calls tool → gets result → reasons → calls next tool <br>&emsp; + Compared approaches: Bedrock vs direct API models | 10/02/2026 | 10/02/2026 | [LLM Research Notes] |
+| 3 | - AWS Networking Deep Dive (Part 1) <br>&emsp; + VPC Endpoints: Gateway vs Interface endpoints <br>&emsp; + NAT Gateway: managed, high availability, higher cost <br>&emsp; + NAT Instance: self-managed, lower cost alternative | 11/02/2026 | 11/02/2026 | [VPC Docs](https://docs.aws.amazon.com/vpc/) |
+| 4 | - AWS Networking Deep Dive (Part 2) <br>&emsp; + Cost comparison: NAT Gateway ($32/month) vs NAT Instance (t3.micro ~$8/month) <br>&emsp; + Private subnet architecture with NAT for ECS tasks <br>&emsp; + Internet Gateway vs NAT for outbound traffic | 12/02/2026 | 12/02/2026 | [VPC Endpoint Docs](https://docs.aws.amazon.com/vpc/latest/privatelink/) |
+| 5 | - Nutrition Data Sources Research <br>&emsp; + Evaluated USDA FoodData Central API <br>&emsp; + Tested OpenFoodFacts API for barcode lookup <br>&emsp; + Explored Avocavo Nutrition API for supplementary data | 13/02/2026 | 13/02/2026 | [API Docs] |
+| 6-7 | - Architecture Revision <br>&emsp; + Redesigned AI approach: single VLM + tool-use loop instead of multi-model pipeline <br>&emsp; + Drafted new architecture with FastAPI backend instead of Lambda <br>&emsp; + Studied containerized deployment with ECS Fargate | 14/02/2026 | 15/02/2026 | [Architecture v2] |
 
 ### Week 6 Achievements
 
 * **Proposal:**
   * ✅ NutriTrack Proposal submitted and **approved by mentor**.
-  * Received positive feedback on serverless architecture choice.
-  * Minor suggestions: add more detail on AI integration.
+  * Received positive feedback on the AI-powered approach.
+  * Suggestion: focus on tool-use pattern for better accuracy and flexibility.
 
-* **Development Environment:**
-  * SAM CLI configured for local Lambda development.
-  * Local testing working with Docker and DynamoDB Local.
+* **AI Architecture Pivot:**
+  * Shifted from complex multi-model pipeline to **LLM/VLM with tool-use loop**.
+  * This approach: model analyzes image → calls nutrition lookup tools → reasons about results → returns structured output.
+  * Much simpler, more accurate, and resource-efficient.
 
-* **Backend Progress:**
-  * 6 Lambda functions implemented and tested.
-  * API Gateway configured with proper CORS and authorization.
-  * OpenAPI documentation generated with Swagger UI.
+* **AWS Networking Knowledge:**
+  * Understood VPC Endpoints for private service access without NAT.
+  * Learned NAT Instance as cost-saving alternative to NAT Gateway (4x cheaper).
+  * Designed private subnet architecture for ECS tasks.
+
+* **Data Sources:**
+  * Identified 3 nutrition APIs: USDA, OpenFoodFacts, Avocavo — each with different strengths.
 
 ### Challenges & Lessons
 
 * **Challenges:**
-  * SAM CLI on Windows had some path issues with Docker.
-  * Presigned URL generation required specific IAM permissions.
+  * Deciding between Lambda (serverless) and ECS (containerized) for the backend.
+  * VLM models require significant compute resources, not ideal for Lambda's 15-min timeout.
 
 * **Solutions:**
-  * Used WSL2 for SAM CLI development instead of native Windows.
-  * Added S3 PutObject permission to Lambda execution role.
+  * Chose FastAPI + ECS Fargate for the backend: better for long-running AI inference tasks.
+  * Lambda still used for lightweight triggers and non-AI endpoints.
 
 * **Lessons Learned:**
-  * WSL2 + SAM CLI is the recommended setup for Windows developers.
-  * Always test IAM permissions with a minimal policy first.
+  * Not everything needs to be serverless — containers are better for AI workloads with unpredictable execution times.
+  * NAT Instance on t3.micro is a great cost-saving trick for non-production environments.
 
 ### Next Week Plan
 
-* Implement remaining Lambda functions (nutrition calculation, AI recommendations).
-* Set up Amazon Cognito for user authentication.
-* Create CI/CD pipeline with GitHub Actions.
-* Begin frontend development structure.
+* Lunar New Year (Tết) break — limited activity.
+* Self-study: Load Balancer, ALB, Auto Scaling, Target Groups.
+* Study HA architecture design patterns for production readiness.
+* Prepare development environment for post-Tết coding sprint.
