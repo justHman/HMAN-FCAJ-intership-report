@@ -11,18 +11,18 @@ export function WorklogPage() {
     const { language } = useLanguage();
 
     const weeks = [
-        { week: 1, task: { en: 'Getting familiar with AWS and basic AWS services', vi: 'Làm quen với AWS và các dịch vụ cơ bản' } },
-        { week: 2, task: { en: 'Doing task A...', vi: 'Thực hiện task A...' } },
-        { week: 3, task: { en: 'Doing task B...', vi: 'Thực hiện task B...' } },
-        { week: 4, task: { en: 'Doing task C...', vi: 'Thực hiện task C...' } },
-        { week: 5, task: { en: 'Doing task D...', vi: 'Thực hiện task D...' } },
-        { week: 6, task: { en: 'Doing task E...', vi: 'Thực hiện task E...' } },
-        { week: 7, task: { en: 'Doing task G...', vi: 'Thực hiện task G...' } },
-        { week: 8, task: { en: 'Doing task H...', vi: 'Thực hiện task H...' } },
-        { week: 9, task: { en: 'Doing task I...', vi: 'Thực hiện task I...' } },
-        { week: 10, task: { en: 'Doing task L...', vi: 'Thực hiện task L...' } },
-        { week: 11, task: { en: 'Doing task M...', vi: 'Thực hiện task M...' } },
-        { week: 12, task: { en: 'Doing task N...', vi: 'Thực hiện task N...' } },
+        { week: 1, task: { en: 'FCJ Kickoff, Team NeuraX setup, AWS account & CLI, 5 hands-on labs for $100 credits', vi: 'Kickoff FCJ, thành lập Team NeuraX, AWS account & CLI, 5 labs thực hành lấy $100 credits' } },
+        { week: 2, task: { en: 'AWS deep dive: EC2, S3, VPC, RDS, Lambda, HA design with ALB & Auto Scaling', vi: 'AWS chuyên sâu: EC2, S3, VPC, RDS, Lambda, thiết kế HA với ALB & Auto Scaling' } },
+        { week: 3, task: { en: 'Amazon Bedrock & RAG research, NutriTrack concept merged with SnapChef idea', vi: 'Nghiên cứu Bedrock & RAG, kết hợp SnapChef + NutriTrack thành concept AI-powered nutrition' } },
+        { week: 4, task: { en: 'Project approved, attended AWS re:Invent 2025 Recap — 5 sessions on Bedrock Agents, S3 Vector...', vi: 'Dự án được duyệt, tham dự re:Invent 2025 Recap — 5 phiên về Bedrock Agents, S3 Vector...' } },
+        { week: 5, task: { en: 'Wrote NutriTrack Proposal, designed multi-step AI pipeline — hit OOM errors, pivot needed', vi: 'Viết NutriTrack Proposal, thiết kế multi-step AI pipeline — gặp lỗi OOM, cần pivot' } },
+        { week: 6, task: { en: 'Proposal approved, pivoted to LLM tool-use loop, studied VPC Endpoints & NAT options', vi: 'Proposal được duyệt, pivot sang LLM tool-use loop, nghiên cứu VPC Endpoints & NAT' } },
+        { week: 7, task: { en: 'Lunar New Year break — self-studied ALB, Auto Scaling, Target Groups & HA architecture', vi: 'Nghỉ Tết Nguyên Đán — tự học ALB, Auto Scaling, Target Groups & kiến trúc HA' } },
+        { week: 8, task: { en: 'FastAPI + JWT auth, dual-method food analysis (manual + tool-use), CSV output & image compression', vi: 'FastAPI + JWT auth, phân tích đồ ăn 2 phương pháp (manual + tool-use), CSV output & nén ảnh' } },
+        { week: 9, task: { en: 'First GitHub commit, label OCR pipeline, barcode 3-tier cache (L1→L2→L3), Dockerfile', vi: 'Commit đầu tiên, pipeline OCR nhãn, barcode cache 3 tầng (L1→L2→L3), Dockerfile' } },
+        { week: 10, task: { en: 'ECS Fargate ARM+Spot deploy, finalized 3 API pipelines: food, label, barcode', vi: 'Deploy ECS Fargate ARM+Spot, hoàn thiện 3 API pipelines: food, label, barcode' } },
+        { week: 11, task: { en: 'GitHub Actions CI/CD, CSV token optimization (~60% savings), cache crawling pipeline', vi: 'GitHub Actions CI/CD, tối ưu token CSV (~60%), pipeline crawling cache' } },
+        { week: 12, task: { en: 'Private ECS + VPC Endpoints (no NAT), S3 cache sync, final presentation', vi: 'Private ECS + VPC Endpoints (không NAT), S3 cache sync, thuyết trình cuối' } },
     ];
 
     return (
@@ -33,16 +33,16 @@ export function WorklogPage() {
                 <SectionHeader icon="worklog" title="WORKLOG" />
 
                 <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-100 shadow-sm mb-12">
-                    <p className="text-text-secondary mb-6 text-lg leading-relaxed">
+                        <p className="text-text-secondary mb-6 text-lg leading-relaxed">
                         {language === 'en'
-                            ? 'On this page, you will need to introduce your worklog. How did you complete it? How many weeks did you take to complete the program? What did you do in those weeks?'
-                            : 'Trên trang này, bạn cần giới thiệu nhật ký làm việc của mình. Bạn đã hoàn thành nó như thế nào? Bạn mất bao nhiêu tuần để hoàn thành chương trình? Bạn đã làm gì trong những tuần đó?'}
+                            ? 'A 12-week internship at AWS Vietnam (05/01/2026 – 05/04/2026) as AI + DevOps + Backend Engineer for Team NeuraX. Built NutriTrack — an AI-powered nutrition tracking API with 3 core pipelines, private ECS infrastructure, and automated CI/CD.'
+                            : 'Thực tập 12 tuần tại AWS Vietnam (05/01/2026 – 05/04/2026) vai trò AI + DevOps + Backend Engineer cho Team NeuraX. Xây dựng NutriTrack — API theo dõi dinh dưỡng bằng AI với 3 pipelines chính, hạ tầng ECS private, và CI/CD tự động.'}
                     </p>
 
                     <p className="text-text-secondary text-lg leading-relaxed">
                         {language === 'en'
-                            ? 'Typically, and as a standard, a worklog is carried out over about 3 months (throughout the internship period) with weekly contents as follows:'
-                            : 'Thông thường, và theo tiêu chuẩn, nhật ký làm việc được thực hiện trong khoảng 3 tháng (suốt thời gian thực tập) với nội dung hàng tuần như sau:'}
+                            ? 'Click any week below to view detailed tasks, achievements, and technical notes for that period:'
+                            : 'Nhấn vào tuần bên dưới để xem chi tiết công việc, thành tựu và ghi chú kỹ thuật của từng giai đoạn:'}
                     </p>
                 </div>
 

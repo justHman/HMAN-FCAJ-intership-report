@@ -2,42 +2,43 @@
 
 ## 1. Cảm nhận về chương trình
 
-Chương trình thực tập First Cloud AI Journey là một trải nghiệm vô cùng thử thách và bổ ích. Trong 12 tuần qua, tôi đảm nhận các vai trò cốt lõi từ AI Integration, DevOps đến Backend API cho dự án NutriTrack. Chương trình đã đẩy tôi ra khỏi vùng an toàn — từ việc học các dịch vụ AWS cơ bản đến deploy một API production-ready với CI/CD tự động hóa hoàn toàn. Tính thực tiễn cao của chương trình khiến mỗi tuần đều cảm thấy như đang làm việc trong môi trường thực tế, không phải bài tập học thuật.
+Chương trình FCJ đã đẩy tôi vượt ra ngoài vùng an toàn. Xây dựng 3 API pipeline hoàn chỉnh — phân tích đồ ăn 2 phương pháp (thuần VLM prompt vs LLM tool-use loop), OCR nhãn trích xuất chính xác bảng nutrition facts thành CSV có cấu trúc, và quét barcode với cache 3 tầng (L1 LRU RAM → L2 disk JSON → L3 API fallback qua USDA, OpenFoodFacts, Avocavo) — tất cả deploy trên kiến trúc private ECS Fargate với VPC Endpoints và không NAT Gateway, là thử thách khó nhưng cực kỳ xứng đáng.
 
 ---
 
 ## 2. Mức độ hài lòng
 
-Tôi rất hài lòng với chương trình (9/10). Sự linh hoạt để thử nghiệm các hướng tiếp cận khác nhau — ví dụ chuyển từ multi-model vision pipeline sang LLM tool-use loop — là vô giá. Chương trình có đủ cấu trúc qua weekly check-ins nhưng vẫn cho tự do thử nghiệm với các dịch vụ AWS và chiến lược deployment khác nhau. Điểm duy nhất tôi đánh giá thấp hơn một chút là giai đoạn onboarding ban đầu, có thể cần thêm hướng dẫn hands-on cho các service phức tạp.
+Rất hài lòng (9/10). Chương trình cho tự do tối ưu kiến trúc sâu — từ chọn CSV output format giảm ~60% LLM tokens, đến nén ảnh (768px, JPEG q75) tiết kiệm chi phí Bedrock, đến thiết kế VPC hoàn toàn private với VPC Endpoints cho Bedrock Runtime, S3, ECR, Secrets Manager, và CloudWatch thay vì NAT Gateway. Weekly check-ins đủ structure mà vẫn tôn trọng engineering autonomy.
 
 ---
 
-## 3. Kiến thức đạt được
+## 3. Kiến thức thu được
 
-Trong suốt chương trình, tôi đã lĩnh hội các kiến thức chuyên sâu về:
-- **Hạ tầng AWS:** VPC, Subnets, VPC Endpoints, ALB, NAT Gateway, NAT Instance (tối ưu chi phí), Auto Scaling, Target Groups, và ECS Fargate (ARM + Spot).
-- **HA & Khả năng mở rộng:** Thiết kế và dựng kiến trúc High Availability với tự động hóa load balancing và auto scaling xuyên nhiều AZs.
-- **DevOps & CI/CD:** Pipeline deployment tự động end-to-end sử dụng Terraform, GitHub Actions, triển khai trên cả AWS ECS và Fly.io.
-- **API Backend:** Xây dựng API bất đồng bộ bảo mật với FastAPI, JWT authentication, xử lý job nền với ThreadPool, đạt < 100ms response time và < 5s bắt đầu xử lý nền.
-- **Tích hợp AI/LLM:** Implement tool-use loop cho LLM/VLM, tối ưu prompt, ép output format CSV giảm tokens (~60%), batch tool calling giảm latency.
-- **Caching:** Tự tay xây dựng hệ thống cache 2 tầng (L1 user-level in-memory cache, L2 file-based persistent cache) với cache crawling để pre-populate dữ liệu.
+Trong suốt chương trình, tôi đã có kiến thức sâu về:
+- **AWS Private Networking:** VPC 2 AZs, public subnets (ALB) + private subnets (ECS), VPC Endpoints (Bedrock Runtime, S3 Gateway, ECR API/DKR, Secrets Manager, CloudWatch Logs), không NAT Gateway — 100% private egress.
+- **Container Hosting:** ECS Fargate (ARM64 + FARGATE_SPOT), Target Groups, Auto Scaling (Min=1, Max=10), ECR image registry.
+- **Backend API:** FastAPI với JWT auth (jose, service claim validation), async BackgroundTasks, ThreadPool (AnyIO 100 threads), job store UUID tracking, HTTP 202 immediate response.
+- **AI/LLM Tích hợp:** Phân tích đồ ăn 2 phương pháp — (1) "manual" thuần VLM prompt → CSV output → optional USDA cross-validation, (2) "tools" LLM tool-use loop với get_batch tool calling tra cứu USDA batch. OCR Nhãn: OCRER model trích xuất chính xác nutrition facts thành 4 bảng CSV (sản phẩm, dinh dưỡng, thành phần, dị ứng).
+- **Tối ưu Token:** CSV output format (giảm ~60% so với JSON), nén ảnh qua prepare_image_for_bedrock() (768px, JPEG q75, ép nén > 200KB), prompt engineering với rules gọn ([ROLE], [TASK], [OUTPUT]).
+- **Caching:** Cache barcode 3 tầng (L1 LRU OrderedDict 256 slots → L2 disk JSON files mỗi client → L3 API fallback short-circuit), TTL 30 ngày, negative caching, promotion L2→L1 và L3→L1, S3 cache sync trong CI/CD.
+- **CI/CD:** GitHub Actions 6-job pipeline (Security Scan → Test → Build & Push ECR → S3 Cache Sync → Deploy ECS → Summary), Terraform IaC.
 
 ---
 
 ## 4. Kỹ năng cải thiện
 
-Ngoài kỹ năng lập trình, tôi đã cải thiện đáng kể khả năng đưa ra quyết định trade-off kiến trúc — ví dụ chọn ECS thay vì Lambda cho AI workloads, hay NAT Instance thay NAT Gateway để tiết kiệm chi phí. Kỹ năng thiết kế hệ thống end-to-end được nâng cao rõ rệt: từ viết dòng code API đầu tiên đến deploy trong private VPC với ALB routing. Tôi cũng tiến bộ trong prompt engineering và hiểu các pattern hành vi của LLM.
+Ngoài kỹ năng kỹ thuật, tôi cải thiện đáng kể khả năng ra quyết định trade-off kiến trúc — chọn private ECS + VPC Endpoints thay NAT Gateway cho chi phí và bảo mật, phân tích đồ ăn dual-method (nhanh vs chính xác), CSV thay JSON để tối ưu token. Kỹ năng thiết kế hệ thống end-to-end phát triển: từ dòng code API đầu tiên đến deploy trong VPC private hoàn chỉnh với ALB và auto-scaling. Tôi cũng có kinh nghiệm sâu về prompt engineering điều khiển chính xác output format VLM/LLM.
 
 ---
 
-## 5. Điểm cần cải thiện (cho chương trình)
+## 5. Đề xuất cải thiện (cho chương trình)
 
-1. Hướng dẫn có cấu trúc hơn cho giai đoạn exploration ban đầu (Tuần 3-5) — có quá nhiều lựa chọn mà không có định hướng rõ ràng có thể làm chậm tiến độ dự án.
-2. Thêm bài tập thực tế về tối ưu chi phí — hiểu AWS pricing rất quan trọng nhưng thường bị bỏ qua vì ưu tiên phát triển tính năng.
-3. Cân nhắc thêm buổi review kiến trúc giữa chương trình với AWS Solution Architects.
+1. Cần thêm hướng dẫn có cấu trúc trong giai đoạn exploration (Tuần 3-5) — quá nhiều lựa chọn không rõ hướng có thể làm chậm momentum dự án.
+2. Cần thêm bài tập tối ưu chi phí thực tế — hiểu giá VPC Endpoints vs NAT Gateway rất quan trọng nhưng ban đầu không rõ ràng.
+3. Nên thêm buổi review kiến trúc giữa chương trình với AWS Solution Architects để phát hiện vấn đề thiết kế sớm.
 
 ---
 
 ## 6. Bạn có giới thiệu chương trình cho bạn bè không? Tại sao?
 
-Chắc chắn rồi. Chương trình thực tập FCJ mang đến sự kết hợp độc đáo giữa kiến thức AWS lý thuyết và triển khai dự án thực tế mà rất khó tìm thấy ở nơi khác. Bạn sẽ xây dựng và deploy ứng dụng production-grade thực sự trên AWS, làm việc với mô hình AI tiên tiến, và học DevOps practices — tất cả trong một môi trường mentorship hỗ trợ. Với bất kỳ ai quan tâm đến cloud engineering hoặc AI infrastructure, chương trình này là một trong những điểm xuất phát tốt nhất.
+Chắc chắn rồi. Bạn sẽ xây dựng và deploy hệ thống AI production thật trên AWS, học cách tối ưu token cost và trade-offs kiến trúc, và được mentored bởi AWS Solution Architects. Chương trình bao phủ full stack: từ LLM prompt engineering đến VPC private networking, từ cache design đến CI/CD automation. Với ai muốn trở thành cloud hoặc AI engineer, FCJ internship là một trong những điểm xuất phát tốt nhất.
