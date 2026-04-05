@@ -1,23 +1,25 @@
 # Deployment & Upstream Sync Guide
 
-## 1. Deploying Update (GitHub Pages)
+## 1. Deploying Update (GitHub Actions)
 
-Whenever you add new content, modify configurations, or update code in this project, you can rebuild and push to GitHub Pages in a single command:
+Whenever you add new content, modify configurations, or update code in this project, **bạn chỉ cần push code lên nhánh `main`**. Hệ thống GitHub Actions sẽ tự động làm phần việc dọn dẹp và đẩy code lên `gh-pages` cho bạn!
 
 ```bash
-# Install dependencies (only required once or if package.json changes)
-npm install
+# Sau khi sửa code hoặc viết thêm bài mới
+git add .
+git commit -m "update: nội dung mới nhất"
 
-# Build and deploy the site
-npm run deploy
+# Push lên main
+git push origin main
 ```
 
-Running `npm run deploy` will:
-1. Re-compile the application and generate static files in the `dist` folder.
-2. Automatically push the `dist` folder to the `gh-pages` branch.
-3. Automatically update your live GitHub Pages site located at `https://justHman.github.io/HMAN-FCAJ-intership-report/`.
+**Workflow này hoạt động ra sao?**
+1. Khi có code mới trên `main`, GitHub Actions (`.github/workflows/pages-deploy.yml`) sẽ được kích hoạt.
+2. Máy chủ GitHub sẽ tự động cài NPM và Build ra thư mục `dist`.
+3. Cuối cùng server chủ động cập nhật nhánh `gh-pages` (chính là nhánh bạn cấu hình deploy).
+4. Bạn có thể bấm vào thẻ **Actions** trên giao diện repo của GitHub để xem tiến trình xanh (✅) là hoàn thành.
 
-*Note: Changes to GitHub Pages might take ~1-2 minutes to be visible online. Make sure to hard-refresh (Ctrl+F5 / Cmd+Shift+R).*
+*Note: Bạn không cần phải chạy `npm run deploy` bằng tay ở dưới máy nữa.*
 
 ## 2. Syncing Files from the Old Repository (Upstream)
 

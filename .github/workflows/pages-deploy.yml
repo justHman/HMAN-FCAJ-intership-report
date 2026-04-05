@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    # Chạy tự động mỗi khi bạn có code đẩy lên nhánh main
+    branches:
+      - main
+  # Lựa chọn cho phép bạn kích hoạt action thủ công bằng tay (nút "Run workflow")
+  workflow_dispatch:
+
+permissions:
+  contents: write # Quyền được phép tự ghi đè lên nhánh gh-pages
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }} 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Build and Push to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true # Giữ nhánh gh-pages sạch sẽ, chỉ chứa các file đã build.
+          commit_message: "deploy: automated deployment via github action"
