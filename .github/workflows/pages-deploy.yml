@@ -41,3 +41,9 @@ jobs:
           publish_branch: gh-pages
           force_orphan: true # Giữ nhánh gh-pages sạch sẽ, chỉ chứa các file đã build.
           commit_message: "deploy: automated deployment via github action"
+
+      - name: Report Live URL
+        run: |
+          echo "🎉 **Deploy thành công!** (Lưu ý: Đợi 1-2 phút rồi ấn Ctrl + F5 nếu chưa thấy web đổi)." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **Truy cập website tại đây:** [https://justHman.github.io/HMAN-FCAJ-intership-report/](https://justHman.github.io/HMAN-FCAJ-intership-report/)" >> $GITHUB_STEP_SUMMARY
