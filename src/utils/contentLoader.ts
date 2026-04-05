@@ -2,7 +2,7 @@
 // Flat files: /content/path.en.md or /content/path.vi.md
 // Subfolder (workshop): /content/workshop/section/index.en.md or index.vi.md
 
-const contentModules = import.meta.glob('/content/**/*.md', { as: 'raw', eager: true });
+const contentModules = import.meta.glob('/content/**/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
 export function loadContent(path: string, language: 'en' | 'vi'): string {
     // Try language-specific file first
