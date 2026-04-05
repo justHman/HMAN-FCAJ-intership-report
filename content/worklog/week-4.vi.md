@@ -1,6 +1,6 @@
 ### Mục tiêu Tuần 4
 
-* Chính thức chốt và phê duyệt NutriTrack 2.0 làm dự án của team.
+* Chính thức chốt và phê duyệt NutriTrack làm dự án của team.
 * Tham gia sự kiện AWS re:Invent 2025 Recap tại Văn phòng AWS Việt Nam.
 * Bắt đầu thiết kế kiến trúc chi tiết cho NutriTrack.
 * Học Amazon Cognito và các tính năng nâng cao của S3.
@@ -9,7 +9,7 @@
 
 | Ngày | Nhiệm vụ | Ngày BĐ | Ngày HT | Tài liệu tham khảo |
 | --- | --- | --- | --- | --- |
-| 1 | - Họp Team: Quyết định dự án cuối cùng <br>&emsp; + Trình bày proposal NutriTrack 2.0 hoàn chỉnh <br>&emsp; + Vote đồng thuận triển khai <br>&emsp; + Phân công vai trò cho từng thành viên | 26/01/2026 | 26/01/2026 | [Proposal v2.0] |
+| 1 | - Họp Team: Quyết định dự án cuối cùng <br>&emsp; + Trình bày proposal NutriTrack hoàn chỉnh <br>&emsp; + Vote đồng thuận triển khai <br>&emsp; + Phân công vai trò cho từng thành viên | 26/01/2026 | 26/01/2026 | [Proposal v2.0] |
 | 2 | - **Sự kiện AWS re:Invent 2025 Recap** <br>&emsp; + Địa điểm: Văn phòng AWS (Tầng 26 & 36) <br>&emsp; + Sự kiện cả ngày với 5 phiên kỹ thuật <br>&emsp; + Networking với AWS Solution Architects | 27/01/2026 | 27/01/2026 | [Event Notes] |
 | 3 | - Tổng kết Event & Chia sẻ kiến thức <br>&emsp; + Ghi chép các kiến thức chính từ re:Invent <br>&emsp; + Chia sẻ insights về Bedrock Agents với team <br>&emsp; + Tìm hiểu sự liên quan của SageMaker Unified Studio | 28/01/2026 | 28/01/2026 | [Internal Wiki] |
 | 4 | - Deep Dive: Amazon Cognito <br>&emsp; + User Pools vs Identity Pools <br>&emsp; + Quản lý JWT token <br>&emsp; + Tích hợp social login | 29/01/2026 | 29/01/2026 | [Cognito Docs](https://docs.aws.amazon.com/cognito/) |
@@ -19,7 +19,7 @@
 ### Thành tựu Tuần 4
 
 * **Cột mốc dự án:**
-  * ✅ **NutriTrack 2.0 chính thức được phê duyệt** làm dự án capstone của team.
+  * ✅ **NutriTrack chính thức được phê duyệt** làm dự án capstone của team.
   * Xác định phạm vi dự án: AI-powered nutrition tracking với gợi ý bữa ăn.
   * Phân công vai trò: Backend (2), Frontend (1), AI/ML (1), DevOps (1).
 

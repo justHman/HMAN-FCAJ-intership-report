@@ -8,15 +8,22 @@ interface LayoutProps {
     children: ReactNode;
 }
 
-// Flatten navigation for prev/next
-function flattenNav(items: typeof navigation): { path: string; label: { en: string; vi: string } }[] {
+type NavItemType = typeof navigation[0];
+
+// Recursively flatten navigation for prev/next buttons
+function flattenNav(items: NavItemType[]): { path: string; label: { en: string; vi: string } }[] {
     const result: { path: string; label: { en: string; vi: string } }[] = [];
-    items.forEach((item) => {
-        result.push({ path: item.path, label: item.label });
-        if (item.children) {
-            result.push(...item.children.map((c) => ({ path: c.path, label: c.label })));
-        }
-    });
+    
+    function traverse(navItems: NavItemType[]) {
+        navItems.forEach((item) => {
+            result.push({ path: item.path, label: item.label });
+            if (item.children) {
+                traverse(item.children);
+            }
+        });
+    }
+    
+    traverse(items);
     return result;
 }
 

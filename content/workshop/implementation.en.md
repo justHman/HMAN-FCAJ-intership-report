@@ -1,3 +1,0 @@
-# Implementation Steps
-
-Content for implementation goes here...

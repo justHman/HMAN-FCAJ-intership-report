@@ -12,10 +12,7 @@ import { ProposalPage } from './pages/ProposalPage';
 import { EventsPage } from './pages/EventsPage';
 import {
     WorkshopPage,
-    WorkshopOverviewPage,
-    WorkshopSetupPage,
-    WorkshopImplementationPage,
-    WorkshopCleanupPage,
+    WorkshopSectionPage,
 } from './pages/WorkshopPages';
 import { EvaluationPage } from './pages/EvaluationPage';
 import { FeedbackPage } from './pages/FeedbackPage';
@@ -47,12 +44,12 @@ function AppContent() {
                 <Route path="/proposal" element={<ProposalPage />} />
                 <Route path="/events" element={<EventsPage />} />
 
-                {/* Workshop Routes */}
+                {/* Workshop Routes - new dynamic routing */}
                 <Route path="/workshop" element={<WorkshopPage />} />
-                <Route path="/workshop/overview" element={<WorkshopOverviewPage />} />
-                <Route path="/workshop/setup" element={<WorkshopSetupPage />} />
-                <Route path="/workshop/implementation" element={<WorkshopImplementationPage />} />
-                <Route path="/workshop/cleanup" element={<WorkshopCleanupPage />} />
+                {/* Sub-section route (e.g. /workshop/5.3-foundation/5.3.1-s3-buckets) */}
+                <Route path="/workshop/:sectionId/:subId" element={<WorkshopSectionPage />} />
+                {/* Main section route (e.g. /workshop/5.1-overview) */}
+                <Route path="/workshop/:sectionId" element={<WorkshopSectionPage />} />
 
                 {/* Evaluation & Feedback */}
                 <Route path="/evaluation" element={<EvaluationPage />} />

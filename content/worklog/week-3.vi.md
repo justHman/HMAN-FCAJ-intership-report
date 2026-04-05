@@ -24,7 +24,7 @@
   * So sánh Foundation Models: Claude 3 (reasoning tốt nhất), Titan (AWS native), Llama 3 (open-source).
 
 * Tiến độ dự án:
-  * Team thu hẹp từ 3 proposal xuống 1 concept kết hợp: **NutriTrack 2.0** (NutriTrack + SnapChef).
+  * Team thu hẹp từ 3 proposal xuống 1 concept kết hợp: **NutriTrack** (NutriTrack + SnapChef).
   * Hoàn thành bản phác thảo kiến trúc ban đầu theo hướng serverless.
 
 * Kỹ năng Serverless:
@@ -47,7 +47,7 @@
 
 ### Kế hoạch Tuần 4
 
-* Chốt và vote chính thức cho project proposal (NutriTrack 2.0).
+* Chốt và vote chính thức cho project proposal (NutriTrack).
 * Bắt đầu thiết kế kiến trúc chi tiết cho NutriTrack.
 * Tham gia sự kiện AWS re:Invent 2025 Recap tại Văn phòng AWS Việt Nam.
 * Học về Amazon S3 advanced features và Amazon Cognito cho authentication.

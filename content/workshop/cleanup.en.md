@@ -1,3 +1,0 @@
-# Resource Cleanup
-
-Content for cleanup goes here...

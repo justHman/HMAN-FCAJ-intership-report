@@ -25,7 +25,7 @@
   * Team NeuraX ranked among top 3 projects in the cohort.
 
 * **Project Completion:**
-  * NutriTrack 2.0 fully deployed and operational.
+  * NutriTrack fully deployed and operational.
   * All documentation complete and bilingual.
   * GitHub repository public with comprehensive README.
   * Workshop ready for others to follow.

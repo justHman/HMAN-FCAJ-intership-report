@@ -24,7 +24,7 @@
   * Compared Foundation Models: Claude 3 (best reasoning), Titan (AWS native), Llama 3 (open-source).
 
 * Project Progress:
-  * Team narrowed down from 3 proposals to 1 merged concept: **NutriTrack 2.0** (combining NutriTrack + SnapChef).
+  * Team narrowed down from 3 proposals to 1 merged concept: **NutriTrack** (combining NutriTrack + SnapChef).
   * Initial architecture draft completed focusing on serverless design.
 
 * Serverless Skills:
@@ -47,7 +47,7 @@
 
 ### Next Week Plan
 
-* Finalize and vote on the official project proposal (NutriTrack 2.0).
+* Finalize and vote on the official project proposal (NutriTrack).
 * Begin detailed architecture design for NutriTrack.
 * Attend AWS re:Invent 2025 Recap Event at AWS Vietnam Office.
 * Learn about Amazon S3 advanced features and Amazon Cognito for authentication.

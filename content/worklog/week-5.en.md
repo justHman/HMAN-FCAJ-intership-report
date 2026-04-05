@@ -1,6 +1,6 @@
 ### Week 5 Objectives
 
-* Finalize NutriTrack 2.0 architecture diagram.
+* Finalize NutriTrack architecture diagram.
 * Set up AWS development environment (IAM, S3, DynamoDB).
 * Begin Proposal documentation for submission.
 * Learn API Gateway and Lambda best practices.

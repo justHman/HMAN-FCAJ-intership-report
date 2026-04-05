@@ -25,7 +25,7 @@
   * Team NeuraX được xếp hạng trong top 3 projects của cohort.
 
 * **Hoàn thành dự án:**
-  * NutriTrack 2.0 được deploy và hoạt động đầy đủ.
+  * NutriTrack được deploy và hoạt động đầy đủ.
   * Tất cả documentation hoàn chỉnh và bilingual.
   * GitHub repository public với README toàn diện.
   * Workshop sẵn sàng cho người khác làm theo.

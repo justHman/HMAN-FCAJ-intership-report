@@ -1,3 +1,0 @@
-# Các Bước Triển Khai
-
-Nội dung cho phần implementation viết ở đây...

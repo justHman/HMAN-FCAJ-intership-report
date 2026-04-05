@@ -1,3 +1,0 @@
-# Dọn Dẹp Tài Nguyên
-
-Nội dung cho phần cleanup viết ở đây...

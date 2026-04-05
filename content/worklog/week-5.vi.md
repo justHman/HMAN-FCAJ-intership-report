@@ -1,6 +1,6 @@
 ### Mục tiêu Tuần 5
 
-* Hoàn thiện sơ đồ kiến trúc NutriTrack 2.0.
+* Hoàn thiện sơ đồ kiến trúc NutriTrack.
 * Thiết lập môi trường phát triển AWS (IAM, S3, DynamoDB).
 * Bắt đầu viết tài liệu Proposal để nộp.
 * Học API Gateway và Lambda best practices.

@@ -1,3 +1,0 @@
-# Cài Đặt Môi Trường
-
-Nội dung cho phần setup viết ở đây...

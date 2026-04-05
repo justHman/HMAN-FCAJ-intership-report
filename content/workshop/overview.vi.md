@@ -1,3 +1,0 @@
-# Tổng Quan Workshop
-
-Nội dung cho phần overview viết ở đây...

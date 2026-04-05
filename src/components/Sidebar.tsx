@@ -67,10 +67,17 @@ const navigation: NavItem[] = [
         label: { en: '4. Workshop', vi: '4. Workshop' },
         icon: Wrench,
         children: [
-            { id: 'overview', path: '/workshop/overview', label: { en: '4.1 Overview', vi: '4.1 Tổng Quan' }, icon: ChevronRight },
-            { id: 'setup', path: '/workshop/setup', label: { en: '4.2 Setup', vi: '4.2 Cài Đặt' }, icon: ChevronRight },
-            { id: 'implementation', path: '/workshop/implementation', label: { en: '4.3 Implementation', vi: '4.3 Triển Khai' }, icon: ChevronRight },
-            { id: 'cleanup', path: '/workshop/cleanup', label: { en: '4.4 Clean Up', vi: '4.4 Dọn Dẹp' }, icon: ChevronRight },
+            { id: 'ws-overview', path: '/workshop/5.1-Workshop-overview', label: { en: '5.1 Overview', vi: '5.1 Tổng Quan' }, icon: ChevronRight },
+            { id: 'ws-prereq', path: '/workshop/5.2-Prerequiste', label: { en: '5.2 Prerequisites', vi: '5.2 Điều Kiện' }, icon: ChevronRight },
+            { id: 'ws-foundation', path: '/workshop/5.3-Foundation-Setup', label: { en: '5.3 Foundation Setup', vi: '5.3 Thiết Lập Nền Tảng' }, icon: ChevronRight },
+            { id: 'ws-monitoring', path: '/workshop/5.4-Monitoring-Setup', label: { en: '5.4 Data Layer', vi: '5.4 Tầng Dữ Liệu' }, icon: ChevronRight },
+            { id: 'ws-processing', path: '/workshop/5.5-Processing-Setup', label: { en: '5.5 Lambda & AI', vi: '5.5 Lambda & AI' }, icon: ChevronRight },
+            { id: 'ws-automation', path: '/workshop/5.6-Automation-Setup', label: { en: '5.6 API & Social', vi: '5.6 API & Xã Hội' }, icon: ChevronRight },
+            { id: 'ws-dashboard', path: '/workshop/5.7-Dashboard-Setup', label: { en: '5.7 Frontend', vi: '5.7 Frontend' }, icon: ChevronRight },
+            { id: 'ws-verify', path: '/workshop/5.8-Verify-Setup', label: { en: '5.8 ECS Deployment', vi: '5.8 Triển Khai ECS' }, icon: ChevronRight },
+            { id: 'ws-cdk', path: '/workshop/5.9-Use-CDK', label: { en: '5.9 CI/CD', vi: '5.9 CI/CD' }, icon: ChevronRight },
+            { id: 'ws-cleanup', path: '/workshop/5.10-Cleanup', label: { en: '5.10 Cleanup', vi: '5.10 Dọn Dẹp' }, icon: ChevronRight },
+            { id: 'ws-appendices', path: '/workshop/5.11-Appendices', label: { en: '5.11 Appendices', vi: '5.11 Phụ Lục' }, icon: ChevronRight },
         ],
     },
     { id: 'evaluation', path: '/evaluation', label: { en: '5. Self-Evaluation', vi: '5. Tự Đánh Giá' }, icon: CheckCircle },
@@ -137,15 +144,27 @@ export function Sidebar() {
         markAsVisited(location.pathname);
     }, [location.pathname, markAsVisited]);
 
-    // Auto-expand parent when child is active
+    // Auto-expand parent when item or child is active
     useEffect(() => {
-        navigation.forEach((item) => {
-            if (item.children?.some((child) => location.pathname.startsWith(child.path))) {
-                if (!expanded.includes(item.id)) {
-                    setExpanded((prev) => [...prev, item.id]);
+        const expandPath = (items: NavItem[], currentPath: string) => {
+            items.forEach((item) => {
+                // Determine if this item or any of its children are active
+                const isActiveOrChildActive = currentPath === item.path || currentPath.startsWith(item.path + '/');
+
+                if (isActiveOrChildActive && item.children) {
+                    setExpanded((prev) => {
+                        if (!prev.includes(item.id)) return [...prev, item.id];
+                        return prev;
+                    });
                 }
-            }
-        });
+
+                if (item.children) {
+                    expandPath(item.children, currentPath);
+                }
+            });
+        };
+
+        expandPath(navigation, location.pathname);
     }, [location.pathname]);
 
     // Search functionality
@@ -185,7 +204,7 @@ export function Sidebar() {
     const renderNavItem = (item: NavItem, depth = 0) => {
         const hasChildren = item.children && item.children.length > 0;
         const isExpanded = expanded.includes(item.id);
-        const isActive = location.pathname === item.path || (hasChildren && location.pathname.startsWith(item.path) && item.path !== '/');
+        const isActive = location.pathname === item.path || (hasChildren && location.pathname.startsWith(item.path + '/'));
         const isVisited = visitedPages.includes(item.path);
         const Icon = item.icon;
 
@@ -196,8 +215,8 @@ export function Sidebar() {
                         to={item.path}
                         onClick={() => setIsOpen(false)}
                         className={`
-                            group flex items-center justify-between py-3 px-4 transition-all duration-200
-                            ${depth === 0 ? '' : 'pl-11 pr-4'}
+                            group flex items-center justify-between py-3 transition-all duration-200
+                            ${depth === 0 ? 'px-4' : depth === 1 ? 'pl-10 pr-4' : 'pl-[3.5rem] pr-4'}
                             ${isActive
                                 ? 'bg-gradient-to-r from-accent-orange/10 to-transparent text-white border-l-[3px] border-accent-orange'
                                 : 'text-gray-400 hover:text-white hover:bg-white/5 border-l-[3px] border-transparent'
@@ -205,11 +224,26 @@ export function Sidebar() {
                         `}
                     >
                         <div className="flex items-center gap-3.5">
-                            <Icon
-                                size={depth === 0 ? 20 : 16}
-                                strokeWidth={1.5}
-                                className={`transition-colors duration-200 ${isActive ? 'text-accent-orange' : 'text-gray-500 group-hover:text-gray-300'}`}
-                            />
+                            {depth === 0 ? (
+                                <Icon
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    className={`transition-colors duration-200 ${isActive ? 'text-accent-orange' : 'text-gray-500 group-hover:text-gray-300'}`}
+                                />
+                            ) : hasChildren ? (
+                                <div
+                                    role="button"
+                                    onClick={(e) => toggleExpand(item.id, e)}
+                                    className={`transition-colors duration-200 p-0.5 rounded hover:bg-white/10 ${isActive ? 'text-accent-orange' : 'text-gray-500'}`}
+                                >
+                                    {isExpanded ? <ChevronDown size={14} strokeWidth={2.5} /> : <ChevronRight size={14} strokeWidth={2.5} />}
+                                </div>
+                            ) : (
+                                <div className="w-[18px] flex items-center justify-center">
+                                    <div className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-accent-orange' : 'bg-gray-600 group-hover:bg-gray-400'} transition-colors duration-200`}></div>
+                                </div>
+                            )}
+
                             <span className={`text-sm tracking-wide ${depth === 0 ? 'font-medium' : 'font-normal'}`}>
                                 {t(item.label)}
                             </span>
@@ -225,7 +259,8 @@ export function Sidebar() {
                                 />
                             )}
 
-                            {hasChildren && (
+                            {/* Right side expand toggle ONLY for top level parent */}
+                            {depth === 0 && hasChildren && (
                                 <div
                                     role="button"
                                     onClick={(e) => toggleExpand(item.id, e)}

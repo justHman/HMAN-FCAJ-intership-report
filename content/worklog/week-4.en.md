@@ -1,6 +1,6 @@
 ### Week 4 Objectives
 
-* Officially finalize and approve NutriTrack 2.0 as the team project.
+* Officially finalize and approve NutriTrack as the team project.
 * Attend AWS re:Invent 2025 Recap Event at AWS Vietnam Office.
 * Begin detailed architecture design for NutriTrack.
 * Learn Amazon Cognito and S3 advanced features.
@@ -9,7 +9,7 @@
 
 | Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| 1 | - Team Meeting: Final Project Decision <br>&emsp; + Presented refined NutriTrack 2.0 proposal <br>&emsp; + Unanimous vote to proceed <br>&emsp; + Assigned roles for each member | 26/01/2026 | 26/01/2026 | [Proposal v2.0] |
+| 1 | - Team Meeting: Final Project Decision <br>&emsp; + Presented refined NutriTrack proposal <br>&emsp; + Unanimous vote to proceed <br>&emsp; + Assigned roles for each member | 26/01/2026 | 26/01/2026 | [Proposal v2.0] |
 | 2 | - **AWS re:Invent 2025 Recap Event** <br>&emsp; + Location: AWS Office (Floor 26 & 36) <br>&emsp; + Full-day event with 5 technical sessions <br>&emsp; + Networking with AWS Solution Architects | 27/01/2026 | 27/01/2026 | [Event Notes] |
 | 3 | - Event Recap & Knowledge Sharing <br>&emsp; + Documented key learnings from re:Invent <br>&emsp; + Shared insights about Bedrock Agents with team <br>&emsp; + Explored SageMaker Unified Studio relevance | 28/01/2026 | 28/01/2026 | [Internal Wiki] |
 | 4 | - Deep Dive: Amazon Cognito <br>&emsp; + User Pools vs Identity Pools <br>&emsp; + JWT token management <br>&emsp; + Social login integration | 29/01/2026 | 29/01/2026 | [Cognito Docs](https://docs.aws.amazon.com/cognito/) |
@@ -19,7 +19,7 @@
 ### Week 4 Achievements
 
 * **Project Milestone:**
-  * ✅ **NutriTrack 2.0 officially approved** as the team's capstone project.
+  * ✅ **NutriTrack officially approved** as the team's capstone project.
   * Defined project scope: AI-powered nutrition tracking with meal recommendations.
   * Team roles assigned: Backend (2), Frontend (1), AI/ML (1), DevOps (1).
 
