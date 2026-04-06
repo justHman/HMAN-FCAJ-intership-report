@@ -183,7 +183,7 @@ export const content = {
             { name: 'AWS Secrets Manager', purpose: { en: 'API keys storage (via VPC Endpoint)', vi: 'Lưu trữ API keys (qua VPC Endpoint)' } },
             { name: 'Amazon ECR', purpose: { en: 'Docker image registry (via VPC Endpoint)', vi: 'Registry Docker image (qua VPC Endpoint)' } },
             { name: 'Amazon CloudWatch', purpose: { en: 'Monitoring & logging (via VPC Endpoint)', vi: 'Giám sát & ghi log (qua VPC Endpoint)' } },
-            { name: 'AWS Auto Scaling', purpose: { en: 'ECS service auto-scaling (Min=1, Max=10)', vi: 'Tự động co giãn ECS service (Min=1, Max=10)' } },
+            { name: 'AWS Auto Scaling', purpose: { en: 'ECS service auto-scaling (Min=1, Max=10) with CloudWatch alarms: CPU >70% → scale-out, CPU <20% → scale-in', vi: 'Tự động co giãn ECS service (Min=1, Max=10) với CloudWatch alarms: CPU >70% → tăng task, CPU <20% → giảm task' } },
         ],
     },
     events: {
