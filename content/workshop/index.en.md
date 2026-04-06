@@ -17,17 +17,17 @@ Everything in this workshop mirrors the actual deployed codebase — no placehol
 
 #### Contents
 
-1. [Overview](/workshop/4.1-Workshop-overview)
-2. [Prerequisites](/workshop/4.2-Prerequiste)
-3. [Foundation Setup — Amplify, Cognito, S3](/workshop/4.3-Foundation-Setup)
-4. [Data Layer — AppSync & DynamoDB](/workshop/4.4-Monitoring-Setup)
-5. [Compute & AI — Bedrock, Lambdas](/workshop/4.5-Processing-Setup)
-6. [API & Social — Friends, Realtime Subscriptions](/workshop/4.6-Automation-Setup)
-7. [Frontend — Expo, UI, Voice & Camera](/workshop/4.7-Dashboard-Setup)
-8. [ECS Deployment — VPC, ECR, Fargate, ALB](/workshop/4.8-Verify-Setup)
-9. [CI/CD — Amplify Multi-Environment](/workshop/4.9-Use-CDK)
-10. [Cleanup](/workshop/4.10-Cleanup)
-11. [Appendices — Budget, IAM, Troubleshooting, Prompts](/workshop/4.11-Appendices)
+1. [Overview](4.1-Workshop-overview/)
+2. [Prerequisites](4.2-Prerequiste/)
+3. [Foundation Setup — Amplify, Cognito, S3](4.3-Foundation-Setup/)
+4. [Data Layer — AppSync & DynamoDB](4.4-Monitoring-Setup/)
+5. [Compute & AI — Bedrock, Lambdas](4.5-Processing-Setup/)
+6. [API & Social — Friends, Realtime Subscriptions](4.6-Automation-Setup/)
+7. [Frontend — Expo, UI, Voice & Camera](4.7-Dashboard-Setup/)
+8. [ECS Deployment — VPC, ECR, Fargate, ALB](4.8-Verify-Setup/)
+9. [CI/CD — Amplify Multi-Environment](4.9-Use-CDK/)
+10. [Cleanup](4.10-Cleanup/)
+11. [Appendices — Budget, IAM, Troubleshooting, Prompts](4.11-Appendices/)
 
 #### Who this is for
 

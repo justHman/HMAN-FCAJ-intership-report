@@ -22,47 +22,6 @@ Sau khi hoàn thành workshop, bạn sẽ có một stack đang chạy gồm:
 
 ## Kiến trúc tổng quan
 
-```mermaid
-flowchart LR
-  subgraph Client
-    A[Expo App<br/>React Native 0.81]
-  end
-
-  subgraph AuthAPI[Auth va API]
-    B[Cognito User Pool<br/>Email OTP + Google OAuth]
-    C[AppSync GraphQL]
-  end
-
-  subgraph Data
-    D[(DynamoDB<br/>8 models)]
-  end
-
-  subgraph Compute[Lambdas - Node.js 22 ARM64]
-    E[ai-engine]
-    F[process-nutrition]
-    G[friend-request]
-    H[resize-image]
-  end
-
-  subgraph AI[AI va Media]
-    I[Bedrock<br/>qwen3-vl-235b-a22b<br/>ap-southeast-2]
-    J[Transcribe]
-    K[(S3 bucket<br/>incoming/ voice/ media/)]
-  end
-
-  subgraph Container[Container Tier]
-    L[ALB] --> M[ECS Fargate<br/>FastAPI]
-  end
-
-  A -->|signInWithRedirect| B
-  A -->|GraphQL over HTTPS| C
-  C --> D
-  C --> E
-  C --> F
-  C --> G
-  E --> I
-  E --> J
-  E --> K
   F --> D
   G --> D
   K -->|ObjectCreated: incoming/| H

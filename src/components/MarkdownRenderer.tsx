@@ -1,13 +1,47 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface MarkdownRendererProps {
     content: string;
 }
 
+/**
+ * Resolve a relative href against the current route path.
+ * E.g. current = "/workshop/4.6-Automation-Setup",
+ *      href    = "4.6.1-FriendRequest/"
+ *   → "/workshop/4.6-Automation-Setup/4.6.1-FriendRequest"
+ *
+ * Handles "../" navigation as well:
+ *      href    = "../4.5-Processing-Setup/"
+ *   → "/workshop/4.5-Processing-Setup"
+ */
+function resolveRelativeHref(href: string, currentPath: string): string {
+    // Strip trailing slash from href for cleanliness
+    const cleanHref = href.replace(/\/+$/, '');
+    // Split current path into segments
+    const segments = currentPath.split('/').filter(Boolean);
+
+    if (cleanHref.startsWith('../')) {
+        // Go up one directory
+        const parts = cleanHref.split('/');
+        let upCount = 0;
+        while (parts[0] === '..') {
+            parts.shift();
+            upCount++;
+        }
+        const base = segments.slice(0, segments.length - upCount);
+        return '/' + [...base, ...parts].filter(Boolean).join('/');
+    }
+
+    // Simple relative path — append to current
+    return currentPath.replace(/\/+$/, '') + '/' + cleanHref;
+}
+
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+    const location = useLocation();
+
     return (
         <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -43,23 +77,36 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
                 // Links - internal vs external
                 a: ({ href, children }) => {
-                    const isInternal = href?.startsWith('/');
-                    if (isInternal) {
+                    if (!href) {
+                        return <span className="text-accent-orange">{children}</span>;
+                    }
+                    // Absolute external link
+                    if (href.startsWith('http://') || href.startsWith('https://')) {
                         return (
-                            <Link to={href || '#'} className="text-accent-orange hover:underline">
+                            <a
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-accent-orange hover:underline"
+                            >
+                                {children}
+                            </a>
+                        );
+                    }
+                    // Internal absolute path (starts with /)
+                    if (href.startsWith('/')) {
+                        return (
+                            <Link to={href} className="text-accent-orange hover:underline">
                                 {children}
                             </Link>
                         );
                     }
+                    // Relative path — resolve against current route
+                    const resolved = resolveRelativeHref(href, location.pathname);
                     return (
-                        <a
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-accent-orange hover:underline"
-                        >
+                        <Link to={resolved} className="text-accent-orange hover:underline">
                             {children}
-                        </a>
+                        </Link>
                     );
                 },
 

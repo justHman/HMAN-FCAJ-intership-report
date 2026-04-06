@@ -1,12 +1,6 @@
 ## Giai đoạn 8: ECS Fargate — Triển khai Private Subnet
 
-Triển khai container FastAPI NutriTrack trên **AWS ECS Fargate** bên trong VPC hoàn toàn private. Luồng traffic:
-
-```
-Internet → IGW → ALB (Public Subnets) → Target Group → ECS Fargate (Private Subnets)
-                                                              ↓
-                        VPC Endpoints (Bedrock · S3 · ECR · Secrets Manager · CloudWatch)
-```
+Triển khai container FastAPI NutriTrack trên **AWS ECS Fargate** bên trong VPC hoàn toàn private.
 
 **Không dùng NAT Gateway** — 100% private qua VPC Endpoints để giảm chi phí.
 **Region:** `ap-southeast-2` · **AZs:** `ap-southeast-2a` và `ap-southeast-2c`

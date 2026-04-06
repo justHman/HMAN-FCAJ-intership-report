@@ -69,11 +69,42 @@ const navigation: NavItem[] = [
         children: [
             { id: 'ws-overview', path: '/workshop/4.1-Workshop-overview', label: { en: '4.1 Overview', vi: '4.1 Tổng Quan' }, icon: ChevronRight },
             { id: 'ws-prereq', path: '/workshop/4.2-Prerequiste', label: { en: '4.2 Prerequisites', vi: '4.2 Điều Kiện' }, icon: ChevronRight },
-            { id: 'ws-foundation', path: '/workshop/4.3-Foundation-Setup', label: { en: '4.3 Foundation Setup', vi: '4.3 Thiết Lập Nền Tảng' }, icon: ChevronRight },
-            { id: 'ws-monitoring', path: '/workshop/4.4-Monitoring-Setup', label: { en: '4.4 Data Layer', vi: '4.4 Tầng Dữ Liệu' }, icon: ChevronRight },
-            { id: 'ws-processing', path: '/workshop/4.5-Processing-Setup', label: { en: '4.5 Lambda & AI', vi: '4.5 Lambda & AI' }, icon: ChevronRight },
-            { id: 'ws-automation', path: '/workshop/4.6-Automation-Setup', label: { en: '4.6 API & Social', vi: '4.6 API & Xã Hội' }, icon: ChevronRight },
-            { id: 'ws-dashboard', path: '/workshop/4.7-Dashboard-Setup', label: { en: '4.7 Frontend', vi: '4.7 Frontend' }, icon: ChevronRight },
+            {
+                id: 'ws-foundation', path: '/workshop/4.3-Foundation-Setup', label: { en: '4.3 Foundation Setup', vi: '4.3 Thiết Lập Nền Tảng' }, icon: ChevronRight,
+                children: [
+                    { id: 'ws-4.3.1', path: '/workshop/4.3-Foundation-Setup/4.3.1-Amplify-Init', label: { en: '4.3.1 Amplify Init', vi: '4.3.1 Amplify Init' }, icon: ChevronRight },
+                    { id: 'ws-4.3.2', path: '/workshop/4.3-Foundation-Setup/4.3.2-Cognito-Auth', label: { en: '4.3.2 Cognito Auth', vi: '4.3.2 Cognito Auth' }, icon: ChevronRight },
+                    { id: 'ws-4.3.3', path: '/workshop/4.3-Foundation-Setup/4.3.3-S3-Storage', label: { en: '4.3.3 S3 Storage', vi: '4.3.3 S3 Storage' }, icon: ChevronRight },
+                ],
+            },
+            {
+                id: 'ws-monitoring', path: '/workshop/4.4-Monitoring-Setup', label: { en: '4.4 Data Layer', vi: '4.4 Tầng Dữ Liệu' }, icon: ChevronRight,
+                children: [
+                    { id: 'ws-4.4.1', path: '/workshop/4.4-Monitoring-Setup/4.4.1-AppSync', label: { en: '4.4.1 AppSync', vi: '4.4.1 AppSync' }, icon: ChevronRight },
+                    { id: 'ws-4.4.2', path: '/workshop/4.4-Monitoring-Setup/4.4.2-DynamoDB', label: { en: '4.4.2 DynamoDB', vi: '4.4.2 DynamoDB' }, icon: ChevronRight },
+                ],
+            },
+            {
+                id: 'ws-processing', path: '/workshop/4.5-Processing-Setup', label: { en: '4.5 Lambda & AI', vi: '4.5 Lambda & AI' }, icon: ChevronRight,
+                children: [
+                    { id: 'ws-4.5.1', path: '/workshop/4.5-Processing-Setup/4.5.1-Bedrock', label: { en: '4.5.1 Bedrock', vi: '4.5.1 Bedrock' }, icon: ChevronRight },
+                    { id: 'ws-4.5.2', path: '/workshop/4.5-Processing-Setup/4.5.2-AIEngine', label: { en: '4.5.2 AI Engine', vi: '4.5.2 AI Engine' }, icon: ChevronRight },
+                ],
+            },
+            {
+                id: 'ws-automation', path: '/workshop/4.6-Automation-Setup', label: { en: '4.6 API & Social', vi: '4.6 API & Xã Hội' }, icon: ChevronRight,
+                children: [
+                    { id: 'ws-4.6.1', path: '/workshop/4.6-Automation-Setup/4.6.1-FriendRequest', label: { en: '4.6.1 FriendRequest', vi: '4.6.1 FriendRequest' }, icon: ChevronRight },
+                    { id: 'ws-4.6.2', path: '/workshop/4.6-Automation-Setup/4.6.2-Realtime-Subscriptions', label: { en: '4.6.2 Realtime Subscriptions', vi: '4.6.2 Realtime Subscriptions' }, icon: ChevronRight },
+                ],
+            },
+            {
+                id: 'ws-dashboard', path: '/workshop/4.7-Dashboard-Setup', label: { en: '4.7 Frontend', vi: '4.7 Frontend' }, icon: ChevronRight,
+                children: [
+                    { id: 'ws-4.7.1', path: '/workshop/4.7-Dashboard-Setup/4.7.1-ReactNative', label: { en: '4.7.1 React Native', vi: '4.7.1 React Native' }, icon: ChevronRight },
+                    { id: 'ws-4.7.2', path: '/workshop/4.7-Dashboard-Setup/4.7.2-UIComponents', label: { en: '4.7.2 UI Components', vi: '4.7.2 UI Components' }, icon: ChevronRight },
+                ],
+            },
             { id: 'ws-verify', path: '/workshop/4.8-Verify-Setup', label: { en: '4.8 ECS Deployment', vi: '4.8 Triển Khai ECS' }, icon: ChevronRight },
             { id: 'ws-cdk', path: '/workshop/4.9-Use-CDK', label: { en: '4.9 CI/CD', vi: '4.9 CI/CD' }, icon: ChevronRight },
             { id: 'ws-cleanup', path: '/workshop/4.10-Cleanup', label: { en: '4.10 Cleanup', vi: '4.10 Dọn Dẹp' }, icon: ChevronRight },
@@ -216,7 +247,7 @@ export function Sidebar() {
                         onClick={() => setIsOpen(false)}
                         className={`
                             group flex items-center justify-between py-3 transition-all duration-200
-                            ${depth === 0 ? 'px-4' : depth === 1 ? 'pl-10 pr-4' : 'pl-[3.5rem] pr-4'}
+                            ${depth === 0 ? 'px-4' : depth === 1 ? 'pl-10 pr-4' : depth === 2 ? 'pl-[4.5rem] pr-4' : 'pl-[5.5rem] pr-4'}
                             ${isActive
                                 ? 'bg-gradient-to-r from-accent-orange/10 to-transparent text-white border-l-[3px] border-accent-orange'
                                 : 'text-gray-400 hover:text-white hover:bg-white/5 border-l-[3px] border-transparent'

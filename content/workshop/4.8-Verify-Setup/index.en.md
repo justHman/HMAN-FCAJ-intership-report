@@ -1,12 +1,6 @@
 ## Phase 8: ECS Fargate — Private Subnet Deployment
 
-Deploy the NutriTrack FastAPI container on **AWS ECS Fargate** inside a fully private VPC. Traffic flows:
-
-```
-Internet → IGW → ALB (Public Subnets) → Target Group → ECS Fargate (Private Subnets)
-                                                              ↓
-                        VPC Endpoints (Bedrock · S3 · ECR · Secrets Manager · CloudWatch)
-```
+Deploy the NutriTrack FastAPI container on **AWS ECS Fargate** inside a fully private VPC.
 
 **No NAT Gateway** — 100% private via VPC Endpoints to minimize cost.
 **Region:** `ap-southeast-2` · **AZs:** `ap-southeast-2a` and `ap-southeast-2c`
@@ -30,7 +24,7 @@ Before starting, make sure you have:
 
 ## Architecture Overview
 
-![Architecture Overview](/solution-architect/cicd-nutritrack-api-vpc.drawio.png)
+![Architecture Overview](solution-architect/cicd-nutritrack-api-vpc.drawio.png)
 
 **5 VPC Endpoints (no NAT needed):**
 
@@ -541,8 +535,8 @@ aws cloudwatch put-metric-alarm \
 
 **How Auto Scaling works:**
 
-| Alarm                | Trigger             | Action  | Cooldown |
-| -------------------- | ------------------- | ------- | -------- |
+| Alarm                | Trigger             | Action     | Cooldown |
+| -------------------- | ------------------- | ---------- | -------- |
 | `cpu-above-70-alarm` | CPU ≥ 70% for 2 min | +10% tasks | 300s     |
 | `cpu-below-20-alarm` | CPU ≤ 20% for 5 min | -10% tasks | 300s     |
 

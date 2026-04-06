@@ -35,30 +35,51 @@ const WORKSHOP_SECTIONS: WorkshopSection[] = [
         folderName: '4.3-Foundation-Setup',
         en: '4.3 Foundation Setup',
         vi: '4.3 Thiết Lập Nền Tảng',
+        children: [
+            { id: '4.3-Foundation-Setup/4.3.1-Amplify-Init', folderName: '4.3-Foundation-Setup/4.3.1-Amplify-Init', en: '4.3.1 Amplify Init', vi: '4.3.1 Amplify Init' },
+            { id: '4.3-Foundation-Setup/4.3.2-Cognito-Auth', folderName: '4.3-Foundation-Setup/4.3.2-Cognito-Auth', en: '4.3.2 Cognito Auth', vi: '4.3.2 Cognito Auth' },
+            { id: '4.3-Foundation-Setup/4.3.3-S3-Storage', folderName: '4.3-Foundation-Setup/4.3.3-S3-Storage', en: '4.3.3 S3 Storage', vi: '4.3.3 S3 Storage' },
+        ],
     },
     {
         id: '4.4-Monitoring-Setup',
         folderName: '4.4-Monitoring-Setup',
         en: '4.4 Data Layer',
         vi: '4.4 Tầng Dữ Liệu',
+        children: [
+            { id: '4.4-Monitoring-Setup/4.4.1-AppSync', folderName: '4.4-Monitoring-Setup/4.4.1-AppSync', en: '4.4.1 AppSync', vi: '4.4.1 AppSync' },
+            { id: '4.4-Monitoring-Setup/4.4.2-DynamoDB', folderName: '4.4-Monitoring-Setup/4.4.2-DynamoDB', en: '4.4.2 DynamoDB', vi: '4.4.2 DynamoDB' },
+        ],
     },
     {
         id: '4.5-Processing-Setup',
         folderName: '4.5-Processing-Setup',
         en: '4.5 Lambda & AI',
         vi: '4.5 Lambda & AI',
+        children: [
+            { id: '4.5-Processing-Setup/4.5.1-Bedrock', folderName: '4.5-Processing-Setup/4.5.1-Bedrock', en: '4.5.1 Bedrock', vi: '4.5.1 Bedrock' },
+            { id: '4.5-Processing-Setup/4.5.2-AIEngine', folderName: '4.5-Processing-Setup/4.5.2-AIEngine', en: '4.5.2 AI Engine', vi: '4.5.2 AI Engine' },
+        ],
     },
     {
         id: '4.6-Automation-Setup',
         folderName: '4.6-Automation-Setup',
         en: '4.6 API & Social',
         vi: '4.6 API & Xã Hội',
+        children: [
+            { id: '4.6-Automation-Setup/4.6.1-FriendRequest', folderName: '4.6-Automation-Setup/4.6.1-FriendRequest', en: '4.6.1 FriendRequest', vi: '4.6.1 FriendRequest' },
+            { id: '4.6-Automation-Setup/4.6.2-Realtime-Subscriptions', folderName: '4.6-Automation-Setup/4.6.2-Realtime-Subscriptions', en: '4.6.2 Realtime Subscriptions', vi: '4.6.2 Realtime Subscriptions' },
+        ],
     },
     {
         id: '4.7-Dashboard-Setup',
         folderName: '4.7-Dashboard-Setup',
         en: '4.7 Frontend',
         vi: '4.7 Frontend',
+        children: [
+            { id: '4.7-Dashboard-Setup/4.7.1-ReactNative', folderName: '4.7-Dashboard-Setup/4.7.1-ReactNative', en: '4.7.1 React Native', vi: '4.7.1 React Native' },
+            { id: '4.7-Dashboard-Setup/4.7.2-UIComponents', folderName: '4.7-Dashboard-Setup/4.7.2-UIComponents', en: '4.7.2 UI Components', vi: '4.7.2 UI Components' },
+        ],
     },
     {
         id: '4.8-Verify-Setup',
