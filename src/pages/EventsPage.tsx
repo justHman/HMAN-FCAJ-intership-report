@@ -5,6 +5,7 @@ import { AnimatedPage } from '../components/AnimatedPage';
 import { SectionHeader } from '../components/SectionHeader';
 import { loadEvents } from '../utils/eventLoader';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export function EventsPage() {
     const { language } = useLanguage();
@@ -91,7 +92,7 @@ export function EventsPage() {
                                         {language === 'en' ? 'Event Description' : 'Mô tả sự kiện'}
                                     </h3>
                                     <div className="text-text-secondary prose prose-sm max-w-none">
-                                        <ReactMarkdown>{event.description}</ReactMarkdown>
+                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{event.description}</ReactMarkdown>
                                     </div>
                                 </div>
                             )}
@@ -103,7 +104,7 @@ export function EventsPage() {
                                         {language === 'en' ? 'Main Activities' : 'Các hoạt động chính'}
                                     </h3>
                                     <div className="text-text-secondary prose prose-sm max-w-none">
-                                        <ReactMarkdown>{event.activities}</ReactMarkdown>
+                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{event.activities}</ReactMarkdown>
                                     </div>
                                 </div>
                             )}
@@ -116,7 +117,14 @@ export function EventsPage() {
                                     </h3>
                                     <ul className="list-disc list-inside space-y-1 text-text-secondary">
                                         {event.outcomes.map((item, i) => (
-                                            <li key={i}>{item}</li>
+                                            <li key={i}>
+                                                <ReactMarkdown
+                                                    remarkPlugins={[remarkGfm]}
+                                                    components={{ p: ({ children }) => <>{children}</> }}
+                                                >
+                                                    {item}
+                                                </ReactMarkdown>
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>

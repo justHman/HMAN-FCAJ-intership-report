@@ -24,12 +24,12 @@ NutriTrack solves these pain points with a fully serverless AWS-native architect
 
 Key features include:
 
-- 📸 **AI Food Analysis** — Snap a photo, get instant macronutrient breakdown
-- 🎙️ **Voice-to-Food Logging** — Speak your meal, AWS Transcribe converts it
-- 🍳 **Smart Kitchen/Fridge Tracker** — Manage grocery inventory, get AI recipe suggestions
-- 🤖 **AI Coach "Ollie"** — Personalized nutrition tips and weekly insights
-- 🎮 **Gamification** — Streaks, evolving virtual pet, community challenges
-- 👥 **Social Features** — Friend system with leaderboards and head-to-head challenges
+- **AI Food Analysis** — Snap a photo, get instant macronutrient breakdown
+- **Voice-to-Food Logging** — Speak your meal, AWS Transcribe converts it
+- **Smart Kitchen/Fridge Tracker** — Manage grocery inventory, get AI recipe suggestions
+- **AI Coach "Ollie"** — Personalized nutrition tips and weekly insights
+- **Gamification** — Streaks, evolving virtual pet, community challenges
+- **Social Features** — Friend system with leaderboards and head-to-head challenges
 
 **Benefits and Return on Investment**
 
@@ -41,7 +41,7 @@ The platform employs a multi-layer serverless AWS architecture to manage user da
 
 #### NutriTrack Platform Architecture
 
-![NutriTrack Solution Architecture](../public/solution-architect/nutritrack-api-vpc.drawio.png)
+![NutriTrack Solution Architecture](solution-architect/nutritrack-api-vpc.drawio.png)
 
 **AWS Services Used**
 

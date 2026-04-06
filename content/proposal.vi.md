@@ -24,12 +24,12 @@ NutriTrack giải quyết những bất cập trên bằng kiến trúc AWS-nati
 
 Các tính năng chính bao gồm:
 
-- 📸 **Phân tích Đồ ăn bằng AI** — Chụp một tấm ảnh, nhận ngay bảng phân tích dinh dưỡng chi tiết
-- 🎙️ **Ghi nhật ký bằng Giọng nói** — Nói tên món ăn, AWS Transcribe tự động chuyển đổi
-- 🍳 **Quản lý Tủ lạnh/Nhà bếp Thông minh** — Theo dõi thực phẩm, nhận gợi ý công thức nấu ăn từ AI
-- 🤖 **Huấn luyện viên AI "Ollie"** — Mẹo dinh dưỡng cá nhân hóa và phân tích tuần
-- 🎮 **Gamification** — Chuỗi ngày liên tục, thú cưng ảo tiến hóa, thử thách cộng đồng
-- 👥 **Tính năng Xã hội** — Hệ thống kết bạn với bảng xếp hạng và thử thách đối kháng
+- **Phân tích Đồ ăn bằng AI** — Chụp một tấm ảnh, nhận ngay bảng phân tích dinh dưỡng chi tiết
+- **Ghi nhật ký bằng Giọng nói** — Nói tên món ăn, AWS Transcribe tự động chuyển đổi
+- **Quản lý Tủ lạnh/Nhà bếp Thông minh** — Theo dõi thực phẩm, nhận gợi ý công thức nấu ăn từ AI
+- **Huấn luyện viên AI "Ollie"** — Mẹo dinh dưỡng cá nhân hóa và phân tích tuần
+- **Gamification** — Chuỗi ngày liên tục, thú cưng ảo tiến hóa, thử thách cộng đồng
+- **Tính năng Xã hội** — Hệ thống kết bạn với bảng xếp hạng và thử thách đối kháng
 
 **Lợi ích và Tỷ suất Hoàn vốn (ROI)**
 
@@ -41,7 +41,7 @@ Nền tảng sử dụng kiến trúc AWS serverless đa tầng để quản lý
 
 #### Kiến trúc Nền tảng NutriTrack
 
-![Kiến trúc Giải pháp NutriTrack](../public/solution-architect/nutritrack-api-vpc.drawio.png)
+![Kiến trúc Giải pháp NutriTrack](solution-architect/nutritrack-api-vpc.drawio.png)
 
 **Các dịch vụ AWS được sử dụng**
 
