@@ -82,7 +82,7 @@ export const content = {
                     en: 'Proposal approved by mentor. Pivoted AI approach to LLM/VLM tool-use loop. Studied VPC Endpoints, NAT Gateway vs NAT Instance, and 3 nutrition data APIs.',
                     vi: 'Proposal được mentor phê duyệt. Pivot sang LLM/VLM tool-use loop. Tìm hiểu VPC Endpoints, NAT Gateway vs NAT Instance, và 3 nutrition APIs.',
                 },
-                highlights: { en: ['Proposal Approved', 'LLM Tool-Use Loop', 'NAT Instance (Cost Saving)'], vi: ['Proposal được duyệt', 'LLM Tool-Use Loop', 'NAT Instance (Tiết kiệm chi phí)'] },
+                highlights: { en: ['Proposal Approved', 'VLM Tool-Use Loop', 'NAT Instance (Cost Saving)'], vi: ['Proposal được duyệt', 'VLM Tool-Use Loop', 'NAT Instance (Tiết kiệm chi phí)'] },
             },
             {
                 week: 7,

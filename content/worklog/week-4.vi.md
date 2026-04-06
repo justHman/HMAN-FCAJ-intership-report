@@ -7,19 +7,19 @@
 
 ### Các nhiệm vụ thực hiện trong tuần
 
-| Ngày | Nhiệm vụ | Ngày BĐ | Ngày HT | Tài liệu tham khảo |
-| --- | --- | --- | --- | --- |
-| 1 | - Họp Team: Quyết định dự án cuối cùng <br>&emsp; + Trình bày NutriTrack proposal hoàn thiện <br>&emsp; + Vote nhất trí thông qua <br>&emsp; + Phân vai trò: AI + DevOps + Backend (tôi), Frontend (2), AI/ML (1), PM (1) | 26/01/2026 | 26/01/2026 | [Proposal v2.0] |
-| 2 | - **Sự kiện AWS re:Invent 2025 Recap** <br>&emsp; + Địa điểm: Văn phòng AWS (Tầng 26 & 36) <br>&emsp; + Sự kiện cả ngày với 5 phiên kỹ thuật <br>&emsp; + Networking với AWS Solution Architects | 27/01/2026 | 27/01/2026 | [Event Notes] |
-| 3 | - Tổng hợp sự kiện & Chia sẻ kiến thức <br>&emsp; + Ghi chép key learnings từ re:Invent <br>&emsp; + Chia sẻ insights về Bedrock Agents với team <br>&emsp; + Khám phá SageMaker Unified Studio | 28/01/2026 | 28/01/2026 | [Internal Wiki] |
-| 4 | - Deep Dive: Amazon Cognito <br>&emsp; + User Pools vs Identity Pools <br>&emsp; + Quản lý JWT token <br>&emsp; + Social login integration patterns | 29/01/2026 | 29/01/2026 | [Cognito Docs](https://docs.aws.amazon.com/cognito/) |
-| 5 | - Thiết kế kiến trúc <br>&emsp; + Tạo sơ đồ kiến trúc high-level <br>&emsp; + Chọn các dịch vụ AWS cốt lõi cho NutriTrack <br>&emsp; + Xác định data flow và API structure | 30/01/2026 | 30/01/2026 | [Architecture Draft v1] |
-| 6-7 | - Tìm hiểu S3 Advanced Features <br>&emsp; + S3 Event Notifications <br>&emsp; + S3 Lifecycle Policies <br>&emsp; + S3 Transfer Acceleration <br>&emsp; + Cập nhật website với nội dung Tuần 4 | 31/01/2026 | 01/02/2026 | [S3 Docs](https://docs.aws.amazon.com/s3/) |
+| Ngày | Nhiệm vụ                                                                                                                                                                                                                  | Ngày BĐ    | Ngày HT    | Tài liệu tham khảo                                   |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------- | ---------------------------------------------------- |
+| 1    | - Họp Team: Quyết định dự án cuối cùng <br>&emsp; + Trình bày NutriTrack proposal hoàn thiện <br>&emsp; + Vote nhất trí thông qua <br>&emsp; + Phân vai trò: AI + DevOps + Backend (tôi), Frontend (2), AI/ML (1), PM (1) | 26/01/2026 | 26/01/2026 | [Proposal v2.0]                                      |
+| 2    | - **Sự kiện AWS re:Invent 2025 Recap** <br>&emsp; + Địa điểm: Văn phòng AWS (Tầng 26 & 36) <br>&emsp; + Sự kiện cả ngày với 5 phiên kỹ thuật <br>&emsp; + Networking với AWS Solution Architects                          | 27/01/2026 | 27/01/2026 | [Event Notes]                                        |
+| 3    | - Tổng hợp sự kiện & Chia sẻ kiến thức <br>&emsp; + Ghi chép key learnings từ re:Invent <br>&emsp; + Chia sẻ insights về Bedrock Agents với team <br>&emsp; + Khám phá SageMaker Unified Studio                           | 28/01/2026 | 28/01/2026 | [Internal Wiki]                                      |
+| 4    | - Deep Dive: Amazon Cognito <br>&emsp; + User Pools vs Identity Pools <br>&emsp; + Quản lý JWT token <br>&emsp; + Social login integration patterns                                                                       | 29/01/2026 | 29/01/2026 | [Cognito Docs](https://docs.aws.amazon.com/cognito/) |
+| 5    | - Thiết kế kiến trúc <br>&emsp; + Tạo sơ đồ kiến trúc high-level <br>&emsp; + Chọn các dịch vụ AWS cốt lõi cho NutriTrack <br>&emsp; + Xác định data flow và API structure                                                | 30/01/2026 | 30/01/2026 | [Architecture Draft v1]                              |
+| 6-7  | - Tìm hiểu S3 Advanced Features <br>&emsp; + S3 Event Notifications <br>&emsp; + S3 Lifecycle Policies <br>&emsp; + S3 Transfer Acceleration <br>&emsp; + Cập nhật website với nội dung Tuần 4                            | 31/01/2026 | 01/02/2026 | [S3 Docs](https://docs.aws.amazon.com/s3/)           |
 
 ### Thành tựu Tuần 4
 
 * **Dấu mốc dự án:**
-  * ✅ **NutriTrack chính thức được phê duyệt** làm dự án capstone.
+  * **NutriTrack chính thức được phê duyệt** làm dự án capstone.
   * Xác định scope: Theo dõi dinh dưỡng bằng AI với nhận diện thực phẩm từ ảnh.
   * Vai trò của tôi: **AI Integration + DevOps + Backend API** — chịu trách nhiệm kỹ thuật cốt lõi.
 
