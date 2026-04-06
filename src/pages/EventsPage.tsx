@@ -16,7 +16,7 @@ export function EventsPage() {
     const formatDate = (dateStr: string) => {
         if (!dateStr) return language === 'en' ? 'Invalid Date' : 'Ngày không hợp lệ';
 
-        try {
+        try { 
             // Try to parse the date string
             const date = new Date(dateStr);
             if (isNaN(date.getTime())) {
