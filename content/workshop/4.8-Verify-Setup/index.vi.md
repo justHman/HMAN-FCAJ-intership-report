@@ -14,11 +14,11 @@ Trước khi bắt đầu, hãy chắc chắn bạn có:
 - **Tài khoản AWS** đã kích hoạt billing và gắn thẻ tín dụng
 - **AWS CLI v2** đã cài đặt và cấu hình (`aws configure`)
 - **Docker** đã cài trên máy local (để build và push image)
-- **Terraform ≥ 1.5** đã cài (tùy chọn — cho đường dẫn IaC)
-- **GitHub repository** (cho đường dẫn CI/CD)
 - Mã nguồn NutriTrack API trên máy local (có `Dockerfile`)
 
 > Nếu chưa thiết lập ECR, hãy hoàn thành phần **4.2 Điều kiện tiên quyết** trước.
+
+> **Tìm AWS Account ID của bạn:** Đăng nhập AWS Console → nhấn vào tên tài khoản ở **góc trên bên phải** → **Account ID** 12 chữ số sẽ hiển thị ở đó. Bạn sẽ cần dùng nó để thay thế `<YOUR_ACCOUNT_ID>` trong toàn bộ hướng dẫn này.
 
 ---
 
@@ -26,7 +26,7 @@ Trước khi bắt đầu, hãy chắc chắn bạn có:
 
 ![Kiến trúc Tổng quan](solution-architect/cicd-nutritrack-api-vpc.drawio.png)
 
-**5 VPC Endpoints (không cần NAT):**
+**6 VPC Endpoints (không cần NAT):**
 
 | Tên Endpoint                    | Service           | Loại      | Mục đích                  |
 | ------------------------------- | ----------------- | --------- | ------------------------- |
@@ -39,17 +39,7 @@ Trước khi bắt đầu, hãy chắc chắn bạn có:
 
 ---
 
-## Chọn Đường dẫn
-
-| Đường dẫn                    | Phù hợp cho                       | Thời gian |
-| ---------------------------- | --------------------------------- | --------- |
-| **A — AWS Console**          | Học khái niệm từng bước           | ~2 giờ    |
-| **B — Terraform (IaC)**      | Hạ tầng tái tạo, quản lý code     | ~30 phút  |
-| **C — GitHub Actions CI/CD** | Tự động deploy mỗi lần `git push` | ~45 phút  |
-
----
-
-## Đường dẫn A — AWS Console (Từng bước)
+## Hướng dẫn Triển khai Từng Bước qua AWS Console
 
 ### Bước 1: Tạo VPC
 
@@ -98,18 +88,30 @@ Lặp lại **Create subnet** bốn lần trong `nutritrack-api-vpc`:
 1. Tạo hoặc tìm route table không có route `0.0.0.0/0`
 2. Gán `private-subnet-ecs01` và `private-subnet-ecs02` vào bảng này
 
+### Bước 4b: Tạo S3 Cache Bucket
+
+Ứng dụng dùng S3 để cache kết quả tra cứu cơ sở dữ liệu thực phẩm. Tạo bucket **trước** khi thiết lập task definition.
+
+1. Mở **Amazon S3 Console** → **Create bucket**
+2. Điền:
+   - **Bucket name:** chọn tên duy nhất, ví dụ `nutritrack-cache-<yourname>` — ghi lại tên này, bạn sẽ dùng sau
+   - **AWS Region:** `ap-southeast-2`
+3. **Object Ownership:** ACLs disabled (khuyến nghị)
+4. **Block Public Access:** giữ nguyên **tất cả** checkbox (Block all public access)
+5. **Versioning:** Disabled
+6. Nhấn **Create bucket**
+
+> **Lưu ý:** Tên S3 bucket phải duy nhất trên toàn cầu. Sau khi tạo, sao chép tên bucket — bạn sẽ dán vào giá trị `AWS_S3_CACHE_BUCKET` trong environment variables của task definition.
+
 ### Bước 5: Tạo ECR Repository
 
-```bash
-# AWS CLI — tạo repo lưu trữ Docker image
-aws ecr create-repository \
-  --repository-name backend/nutritrack-api-image \
-  --region ap-southeast-2 \
-  --image-scanning-configuration scanOnPush=true
-
-# Ghi lại repositoryUri từ output — sẽ cần ở bước sau
-# Định dạng: 966000660990.dkr.ecr.ap-southeast-2.amazonaws.com/backend/nutritrack-api-image
-```
+1. Mở **Amazon ECR Console** → **Repositories** → **Create repository**
+2. Điền:
+   - **Visibility:** Private
+   - **Repository name:** `backend/nutritrack-api-image`
+3. **Image scan settings:** bật **Scan on push**
+4. Nhấn **Create repository**
+5. Ghi lại **URI** — định dạng: `<YOUR_ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/backend/nutritrack-api-image`
 
 ### Bước 6: Build & Push Docker Image (ARM64)
 
@@ -119,7 +121,7 @@ ECS Fargate dùng ARM Graviton — build cho `linux/arm64` để tiết kiệm ~
 # Bước 6.1 — Đăng nhập ECR
 aws ecr get-login-password --region ap-southeast-2 \
   | docker login --username AWS --password-stdin \
-    966000660990.dkr.ecr.ap-southeast-2.amazonaws.com
+    <YOUR_ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com
 
 # Bước 6.2 — Bật multi-arch builds (chạy 1 lần)
 docker buildx create --use --name nutritrack-builder
@@ -127,7 +129,7 @@ docker buildx create --use --name nutritrack-builder
 # Bước 6.3 — Build ARM64 image và push trực tiếp lên ECR
 docker buildx build \
   --platform linux/arm64 \
-  --tag 966000660990.dkr.ecr.ap-southeast-2.amazonaws.com/backend/nutritrack-api-image:arm \
+  --tag <YOUR_ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/backend/nutritrack-api-image:arm \
   --push \
   .
 ```
@@ -138,19 +140,23 @@ docker buildx build \
 
 API keys (ví dụ: `NUTRITRACK_API_KEY`) không bao giờ nên lưu dưới dạng plaintext environment variables.
 
-```bash
-# Tạo secret chứa tất cả API keys trong một JSON blob
-aws secretsmanager create-secret \
-  --name "nutritrack/prod/api-keys" \
-  --region ap-southeast-2 \
-  --secret-string '{
-    "NUTRITRACK_API_KEY": "your_api_key_here",
-    "USDA_API_KEY": "your_usda_key_here"
-  }'
+1. Mở **AWS Secrets Manager Console** → **Store a new secret**
+2. **Secret type:** chọn **Other type of secret**
+3. **Key/value pairs** — thêm ba mục:
 
-# Ghi lại ARN từ output — định dạng:
-# arn:aws:secretsmanager:ap-southeast-2:966000660990:secret:nutritrack/prod/api-keys-XXXXXX
-```
+   | Key                         | Value                   |
+   | --------------------------- | ----------------------- |
+   | `NUTRITRACK_API_KEY`        | `your_api_key_here`     |
+   | `USDA_API_KEY`              | `your_usda_key_here`    |
+   | `AVOCAVO_NUTRITION_API_KEY` | `your_avocavo_key_here` |
+
+4. Nhấn **Next**
+5. **Secret name:** `nutritrack/prod/api-keys`
+6. **Tags** (tùy chọn): `Owner` = `your_name`
+7. Nhấn **Next** → **Next** → **Store**
+8. Ghi lại **Secret ARN** — định dạng: `arn:aws:secretsmanager:ap-southeast-2:<YOUR_ACCOUNT_ID>:secret:nutritrack/prod/api-keys-XXXXXX`
+
+> **Quan trọng:** Sao chép toàn bộ Secret ARN (bao gồm hậu tố 6 ký tự cuối, ví dụ `-AbCdEf`). Bạn sẽ cần dùng nó trong phần `secrets` của task definition.
 
 ### Bước 8: Tạo IAM Roles
 
@@ -159,53 +165,39 @@ ECS cần **hai role riêng biệt** — nhiều người mới hay nhầm lẫn
 | Role                   | Được dùng bởi                 | Mục đích                                                                              |
 | ---------------------- | ----------------------------- | ------------------------------------------------------------------------------------- |
 | `ecsTaskExecutionRole` | ECS Agent (hệ thống)          | Pull image từ ECR, ghi logs vào CloudWatch, đọc secrets trước khi container khởi động |
-| `ecsTaskRole`          | Code Python của bạn (runtime) | Gọi Bedrock, đọc/ghi S3 — mọi thứ `boto3` cần                                         |
+| `ecsTaskRole`          | Code Python của bạn (runtime) | Gọi Bedrock, đọc/ghi S3, ghi CloudWatch logs — mọi thứ `boto3` cần                    |
 
 **8.1 — Tạo `ecsTaskRole` (quyền runtime cho code)**
 
-Vào **IAM** → **Roles** → **Create role**:
-- **Trusted entity:** AWS Service → **Elastic Container Service Task**
-- Nhấn **Next** → bỏ qua managed policies
-- **Name:** `nutritrack-ecs-task-role`
-- **Create role**
+1. Vào **IAM Console** → **Roles** → **Create role**
+2. **Trusted entity type:** AWS Service
+3. **Use case:** Elastic Container Service → **Elastic Container Service Task**
+4. Nhấn **Next**
+5. **Gắn managed policies** — tìm và chọn ba policy:
+   - `AmazonBedrockFullAccess` — cho phép container gọi Bedrock models
+   - `AmazonS3FullAccess` — cho phép container đọc/ghi S3 cache bucket
+   - `CloudWatchLogsFullAccess` — cho phép container ghi application logs
+6. Nhấn **Next**
+7. **Role name:** `ecsTaskRole`
+8. Nhấn **Create role**
 
-Sau khi tạo, **Add permissions** → **Create inline policy** → dán:
+**8.2 — Tạo `ecsTaskExecutionRole` (quyền hệ thống cho ECS agent)**
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "BedrockAccess",
-      "Effect": "Allow",
-      "Action": [
-        "bedrock:InvokeModel",
-        "bedrock:InvokeModelWithResponseStream"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Sid": "S3CacheAccess",
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:ListBucket"
-      ],
-      "Resource": [
-        "arn:aws:s3:::nutritrack-cache-01apr26",
-        "arn:aws:s3:::nutritrack-cache-01apr26/*"
-      ]
-    }
-  ]
-}
-```
+1. Vào **IAM Console** → **Roles** → **Create role**
+2. **Trusted entity type:** AWS Service
+3. **Use case:** Elastic Container Service → **Elastic Container Service Task**
+4. Nhấn **Next**
+5. **Gắn managed policies** — tìm và chọn:
+   - `AmazonECS_FullAccess`
+   - `AmazonECSTaskExecutionRolePolicy` — bao gồm quyền pull ECR image và ghi CloudWatch logs
+6. Nhấn **Next**
+7. **Role name:** `ecsTaskExecutionRole`
+8. Nhấn **Create role**
 
-Đặt tên inline policy: `NutriTrackTaskPolicy`
+Sau khi tạo, thêm **inline policy** cho Secrets Manager:
 
-**8.2 — Cập nhật `ecsTaskExecutionRole` (thêm Secrets Manager & ECR access)**
-
-Tìm `ecsTaskExecutionRole` đã tồn tại (được ECS tạo tự động). Thêm inline policy:
+1. Mở role `ecsTaskExecutionRole` → tab **Permissions** → **Add permissions** → **Create inline policy**
+2. Chuyển sang tab **JSON**, dán:
 
 ```json
 {
@@ -215,13 +207,16 @@ Tìm `ecsTaskExecutionRole` đã tồn tại (được ECS tạo tự động). 
       "Sid": "SecretsAccess",
       "Effect": "Allow",
       "Action": "secretsmanager:GetSecretValue",
-      "Resource": "arn:aws:secretsmanager:ap-southeast-2:966000660990:secret:nutritrack/prod/api-keys-*"
+      "Resource": "arn:aws:secretsmanager:ap-southeast-2:<YOUR_ACCOUNT_ID>:secret:nutritrack/prod/api-keys-*"
     }
   ]
 }
 ```
 
-`AmazonECSTaskExecutionRolePolicy` đã có sẵn đã bao gồm quyền pull ECR image và ghi CloudWatch logs.
+> Thay `<YOUR_ACCOUNT_ID>` bằng AWS Account ID 12 chữ số của bạn (ví dụ `123456789012`).
+
+3. **Policy name:** `NutriTrackSecretsAccess`
+4. Nhấn **Create policy**
 
 ### Bước 9: Tạo ECS Cluster
 
@@ -235,7 +230,9 @@ Tìm `ecsTaskExecutionRole` đã tồn tại (được ECS tạo tự động). 
 
 1. **Task definitions** → **Create new task definition** → **Create new task definition with JSON**
 
-Dán JSON sau (thay ARN bằng giá trị thực tế của bạn):
+2. Tải task definition production: [`v8.json`](task-definitions/v8.json)
+
+Hoặc dán JSON sau (thay tất cả `<YOUR_ACCOUNT_ID>` và `<YOUR_S3_BUCKET_NAME>` bằng giá trị thực tế của bạn):
 
 ```json
 {
@@ -244,8 +241,8 @@ Dán JSON sau (thay ARN bằng giá trị thực tế của bạn):
   "networkMode": "awsvpc",
   "cpu": "1024",
   "memory": "2048",
-  "executionRoleArn": "arn:aws:iam::966000660990:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::966000660990:role/nutritrack-ecs-task-role",
+  "executionRoleArn": "arn:aws:iam::<YOUR_ACCOUNT_ID>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<YOUR_ACCOUNT_ID>:role/ecsTaskRole",
   "runtimePlatform": {
     "operatingSystemFamily": "LINUX",
     "cpuArchitecture": "ARM64"
@@ -253,63 +250,91 @@ Dán JSON sau (thay ARN bằng giá trị thực tế của bạn):
   "containerDefinitions": [
     {
       "name": "arm-nutritrack-api-container",
-      "image": "966000660990.dkr.ecr.ap-southeast-2.amazonaws.com/backend/nutritrack-api-image:arm",
+      "image": "<YOUR_ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/backend/nutritrack-api-image:arm",
       "essential": true,
       "portMappings": [
         {
+          "name": "arm-nutritrack-api-container-80-tcp",
           "containerPort": 8000,
           "hostPort": 8000,
-          "protocol": "tcp"
+          "protocol": "tcp",
+          "appProtocol": "http"
         }
       ],
       "environment": [
         { "name": "AWS_REGION", "value": "ap-southeast-2" },
-        { "name": "MODEL_ID", "value": "qwen.qwen3-vl-235b-a22b" }
+        { "name": "LOG_TO_FILE", "value": "False" },
+        { "name": "HOSTNAME", "value": "ECS" },
+        { "name": "AWS_S3_CACHE_BUCKET", "value": "<YOUR_S3_BUCKET_NAME>" }
       ],
       "secrets": [
         {
           "name": "NUTRITRACK_API_KEY",
-          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:966000660990:secret:nutritrack/prod/api-keys-XXXXXX:NUTRITRACK_API_KEY::"
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:<YOUR_ACCOUNT_ID>:secret:nutritrack/prod/api-keys-XXXXXX:NUTRITRACK_API_KEY::"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/arm-nutritrack-api-task",
+          "awslogs-create-group": "true",
           "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         }
-      },
-      "healthCheck": {
-        "command": ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"],
-        "interval": 30,
-        "timeout": 10,
-        "retries": 3,
-        "startPeriod": 60
       }
     }
   ]
 }
 ```
 
+> **Cách tìm hậu tố Secret ARN:** Sau khi tạo secret ở Bước 7, mở **Secrets Manager Console** → nhấn vào secret → sao chép toàn bộ ARN hiển thị ở đầu trang. Hậu tố (ví dụ `-AbCdEf`) là 6 ký tự sau dấu gạch cuối.
+
 > **Lưu ý cú pháp `secrets`:** Định dạng là `<secret-ARN>:<key-name>::` — hai dấu hai chấm cuối là bắt buộc. Thiếu chúng sẽ gây lỗi `ResourceInitializationError`.
+>
+> **Lưu ý `awslogs-create-group`:** Đặt `"true"` để tự động tạo CloudWatch log group `/ecs/arm-nutritrack-api-task` khi container khởi động lần đầu — không cần tạo thủ công.
 
 ### Bước 11: Tạo Security Groups
 
 **ALB Security Group (`nutritrack-api-vpc-alb-sg`):**
 
 1. EC2 Console → **Security Groups** → **Create security group**
-2. Name: `nutritrack-api-vpc-alb-sg` | VPC: `nutritrack-api-vpc`
-3. Inbound rules:
-   - Type: HTTP | Port: `80` | Source: `0.0.0.0/0, ::/0`
-4. Outbound: All traffic → Anywhere
+2. **Name:** `nutritrack-api-vpc-alb-sg` | **VPC:** `nutritrack-api-vpc`
+3. **Inbound rules:**
+
+   | Type  | Port Range | Source      | Mô tả           |
+   | ----- | ---------- | ----------- | --------------- |
+   | HTTP  | 80         | `0.0.0.0/0` | HTTP công khai  |
+   | HTTPS | 443        | `0.0.0.0/0` | HTTPS công khai |
+
+4. **Outbound rules:**
+
+   | Type       | Port Range | Destination                 | Mô tả                 |
+   | ---------- | ---------- | --------------------------- | --------------------- |
+   | HTTP       | 80         | `nutritrack-api-vpc-ecs-sg` | Forward đến ECS tasks |
+   | HTTPS      | 443        | `nutritrack-api-vpc-ecs-sg` | Forward đến ECS tasks |
+   | Custom TCP | 8000       | `nutritrack-api-vpc-ecs-sg` | Forward đến app port  |
+
+5. Nhấn **Create security group**
 
 **ECS Task Security Group (`nutritrack-api-vpc-ecs-sg`):**
 
-1. Tạo thêm security group: `nutritrack-api-vpc-ecs-sg`
-2. Inbound:
-   - Type: Custom TCP | Port: `8000` | Source: *chọn `nutritrack-api-vpc-alb-sg`* (không phải IP!)
-3. Outbound: All traffic → Anywhere
+1. Tạo thêm security group: `nutritrack-api-vpc-ecs-sg` | **VPC:** `nutritrack-api-vpc`
+2. **Inbound rules:**
+
+   | Type       | Port Range | Source                      | Mô tả           |
+   | ---------- | ---------- | --------------------------- | --------------- |
+   | HTTP       | 80         | `nutritrack-api-vpc-alb-sg` | Cho phép từ ALB |
+   | HTTPS      | 443        | `nutritrack-api-vpc-alb-sg` | Cho phép từ ALB |
+   | Custom TCP | 8000       | `nutritrack-api-vpc-alb-sg` | App port từ ALB |
+
+3. **Outbound rules:**
+
+   | Type  | Port Range | Destination | Mô tả                     |
+   | ----- | ---------- | ----------- | ------------------------- |
+   | HTTP  | 80         | `0.0.0.0/0` | Internet (VPC Endpoints)  |
+   | HTTPS | 443        | `0.0.0.0/0` | Dịch vụ AWS qua endpoints |
+
+4. Nhấn **Create security group**
 
 > **Chuỗi Security Group:** Fargate tasks chỉ nhận kết nối từ SG của ALB. Dù ai biết được internal IP cũng không thể kết nối trực tiếp — phải đi qua ALB. Đây là lý do ta không bao giờ dùng dải IP làm source cho inbound rule của ECS SG.
 
@@ -320,7 +345,7 @@ Dán JSON sau (thay ARN bằng giá trị thực tế của bạn):
    - Type: HTTPS | Port: `443` | Source: `10.0.0.0/16` (toàn bộ VPC CIDR)
 3. Outbound: All traffic
 
-### Bước 12: Tạo 5 VPC Endpoints
+### Bước 12: Tạo 6 VPC Endpoints
 
 VPC Endpoints thay thế NAT Gateway để truy cập dịch vụ AWS. Private subnets sử dụng chúng để kết nối Bedrock, ECR, v.v. mà không cần internet traffic.
 
@@ -366,7 +391,7 @@ Vào **VPC** → **Endpoints** → **Create endpoint** cho mỗi endpoint:
 - **Service:** `com.amazonaws.ap-southeast-2.logs` → **Interface**
 - Cùng subnets + SG, bật Private DNS
 
-> **Lưu ý chi phí:** Interface VPC Endpoints tốn ~$7.20/tháng mỗi endpoint mỗi AZ. Với 4 Interface endpoints × 2 AZs = ~$57.6/tháng cho endpoints + S3 Gateway (miễn phí). Vẫn rẻ hơn NAT Gateway (~$32/tháng/AZ chỉ riêng gateway, chưa tính data transfer).
+> **Lưu ý chi phí:** Interface VPC Endpoints tốn \~$7.20/tháng mỗi endpoint mỗi AZ. Với 5 Interface endpoints × 2 AZs = \~$72/tháng cho endpoints + S3 Gateway (miễn phí). Vẫn rẻ hơn NAT Gateway (\~$32/tháng/AZ chỉ riêng gateway, chưa tính data transfer).
 
 ### Bước 13: Tạo Target Group
 
@@ -430,119 +455,63 @@ Ghi lại **ALB DNS name** — đây là API endpoint public (ví dụ: `nutritr
 
 ### Bước 16: Cấu hình Auto Scaling
 
-Auto Scaling tự động thêm/bớt tasks dựa trên CPU utilization.
+Auto Scaling tự động thêm/bớt tasks dựa trên CPU utilization. Chúng ta sẽ cấu hình hoàn toàn qua **AWS Console**.
 
-**16.1 — Đăng ký Scalable Target**
+**16.1 — Bật Auto Scaling qua Console**
 
-```bash
-aws application-autoscaling register-scalable-target \
-  --service-namespace ecs \
-  --scalable-dimension ecs:service:DesiredCount \
-  --resource-id "service/nutritrack-api-cluster/spot-arm-nutritrack-api-task-service" \
-  --min-capacity 1 \
-  --max-capacity 10
-```
+1. Vào **ECS Console** → Cluster `nutritrack-api-cluster` → Service `spot-arm-nutritrack-api-task-service`
+2. Nhấn **Update Service**
+3. Cuộn đến **Service auto scaling** → mở rộng phần này
+4. Tick **Use Service Auto Scaling**
+5. Đặt:
+   - **Minimum number of tasks:** `1`
+   - **Maximum number of tasks:** `10`
+6. Nhấn **Update**
 
-**16.2 — Tạo Scale-Out Policy (CPU > 70% → thêm task)**
+**16.2 — Tạo Scale-Out Policy (CPU > 70% → thêm tasks)**
 
-```bash
-aws application-autoscaling put-scaling-policy \
-  --service-namespace ecs \
-  --scalable-dimension ecs:service:DesiredCount \
-  --resource-id "service/nutritrack-api-cluster/spot-arm-nutritrack-api-task-service" \
-  --policy-name "nutritrack-api-cluster-cpu-above-70" \
-  --policy-type StepScaling \
-  --step-scaling-policy-configuration '{
-    "AdjustmentType": "PercentChangeInCapacity",
-    "StepAdjustments": [
-      { "MetricIntervalLowerBound": 0, "ScalingAdjustment": 10 }
-    ],
-    "Cooldown": 300
-  }'
-```
+1. Sau khi update, quay lại service → tab **Auto Scaling** → **Add scaling policy**
+2. Chọn **Target tracking**
+3. Điền:
+   - **Scaling policy name:** `nutritrack-api-cluster-scale-out`
+   - **ECS service metric:** `ECSServiceAverageCPUUtilization`
+   - **Target value:** `70`
+   - **Scale-out cooldown period:** `120` giây
+   - **Scale-in cooldown period:** `300` giây
+4. Nhấn **Create**
 
-**16.3 — Tạo Scale-In Policy (CPU < 20% → giảm task)**
+> **Target Tracking** tự động tạo cả alarm scale-out và scale-in dựa trên giá trị CPU target. Khi CPU vượt 70% thì thêm tasks; khi giảm xuống dưới mức thấp thì bớt tasks — với cooldown phù hợp.
 
-```bash
-aws application-autoscaling put-scaling-policy \
-  --service-namespace ecs \
-  --scalable-dimension ecs:service:DesiredCount \
-  --resource-id "service/nutritrack-api-cluster/spot-arm-nutritrack-api-task-service" \
-  --policy-name "nutritrack-api-cluster-cpu-below-20" \
-  --policy-type StepScaling \
-  --step-scaling-policy-configuration '{
-    "AdjustmentType": "PercentChangeInCapacity",
-    "StepAdjustments": [
-      { "MetricIntervalUpperBound": 0, "ScalingAdjustment": -10 }
-    ],
-    "Cooldown": 300
-  }'
-```
+**16.3 — Xác nhận Auto Scaling Policy**
 
-**16.4 — Tạo CloudWatch Alarms**
+1. Vào **ECS Console** → Cluster → Service → tab **Auto Scaling**
+2. Xác nhận policy `nutritrack-api-cluster-scale-out` được liệt kê với trạng thái **Active**
+3. Vào **CloudWatch Console** → **Alarms** — hai alarm sẽ tự động được tạo:
+   - `TargetTracking-...AlarmHigh` (kích hoạt scale-out)
+   - `TargetTracking-...AlarmLow` (kích hoạt scale-in)
 
-Lấy policy ARNs từ các lệnh trước, sau đó tạo alarms:
+**16.4 — Giám sát Auto Scaling qua CloudWatch**
 
-```bash
-# Lấy ARN policy scale-out
-SCALEOUT_ARN=$(aws application-autoscaling describe-scaling-policies \
-  --service-namespace ecs \
-  --resource-id "service/nutritrack-api-cluster/spot-arm-nutritrack-api-task-service" \
-  --query "ScalingPolicies[?PolicyName=='nutritrack-api-cluster-cpu-above-70'].PolicyARN" \
-  --output text)
+Target Tracking tự động tạo CloudWatch alarms cho bạn. Để xem và xác nhận:
 
-# Alarm Scale-OUT: CPU > 70% trong 2 chu kỳ liên tiếp → thêm 10% capacity
-aws cloudwatch put-metric-alarm \
-  --alarm-name "nutritrack-api-cluster-cpu-above-70-alarm" \
-  --alarm-description "Scale out khi CPU vượt 70% trong 2 phút (thêm 10% capacity)" \
-  --metric-name CPUUtilization \
-  --namespace AWS/ECS \
-  --statistic Average \
-  --period 60 \
-  --evaluation-periods 2 \
-  --threshold 70 \
-  --comparison-operator GreaterThanOrEqualToThreshold \
-  --dimensions \
-    "Name=ClusterName,Value=nutritrack-api-cluster" \
-    "Name=ServiceName,Value=spot-arm-nutritrack-api-task-service" \
-  --alarm-actions "$SCALEOUT_ARN" \
-  --treat-missing-data notBreaching
-
-# Lấy ARN policy scale-in
-SCALEIN_ARN=$(aws application-autoscaling describe-scaling-policies \
-  --service-namespace ecs \
-  --resource-id "service/nutritrack-api-cluster/spot-arm-nutritrack-api-task-service" \
-  --query "ScalingPolicies[?PolicyName=='nutritrack-api-cluster-cpu-below-20'].PolicyARN" \
-  --output text)
-
-# Alarm Scale-IN: CPU < 20% trong 5 chu kỳ liên tiếp → giảm 10% capacity
-aws cloudwatch put-metric-alarm \
-  --alarm-name "nutritrack-api-cluster-cpu-below-20-alarm" \
-  --alarm-description "Scale in khi CPU giảm dưới 20% trong 5 phút (giảm 10% capacity)" \
-  --metric-name CPUUtilization \
-  --namespace AWS/ECS \
-  --statistic Average \
-  --period 60 \
-  --evaluation-periods 5 \
-  --threshold 20 \
-  --comparison-operator LessThanOrEqualToThreshold \
-  --dimensions \
-    "Name=ClusterName,Value=nutritrack-api-cluster" \
-    "Name=ServiceName,Value=spot-arm-nutritrack-api-task-service" \
-  --alarm-actions "$SCALEIN_ARN" \
-  --treat-missing-data notBreaching
-```
+1. Mở **CloudWatch Console** → **Alarms** → **All alarms**
+2. Tìm hai alarms có tên bắt đầu bằng `TargetTracking-service/nutritrack-api-cluster/...`
+   - `...AlarmHigh` — kích hoạt scale-out khi CPU vượt 70%
+   - `...AlarmLow` — kích hoạt scale-in khi CPU giảm xuống mức thấp
+3. Xác nhận cả hai alarms ở trạng thái **OK** khi không có traffic
 
 **Cách Auto Scaling hoạt động:**
 
-| Alarm                | Điều kiện kích hoạt    | Hành động  | Cooldown |
-| -------------------- | ---------------------- | ---------- | -------- |
-| `cpu-above-70-alarm` | CPU ≥ 70% trong 2 phút | +10% tasks | 300s     |
-| `cpu-below-20-alarm` | CPU ≤ 20% trong 5 phút | -10% tasks | 300s     |
+| Điều kiện           | Hành động              | Cooldown |
+| ------------------- | ---------------------- | -------- |
+| CPU > 70% kéo dài   | Thêm tasks (scale-out) | 120s     |
+| CPU giảm xuống thấp | Bớt tasks (scale-in)   | 300s     |
 
-> Cooldown đối xứng (300s cho cả hai) ngăn dao động — phản ứng cân bằng và ổn định với sự thay đổi capacity.
+> Target Tracking duy trì CPU mục tiêu ở 70%. Scale-out phản ứng nhanh (120s cooldown); scale-in thận trọng hơn (300s) để tránh xóa tasks trong giai đoạn traffic giảm tạm thời.
 
 ### Bước 17: Xác nhận Triển khai
+
+**17.1 — Xác nhận qua AWS CLI:**
 
 ```bash
 # 1. Kiểm tra trạng thái service
@@ -574,410 +543,36 @@ aws ec2 describe-vpc-endpoints \
   --output table
 ```
 
-> 🎯 **Checkpoint:** 2 Fargate tasks đang chạy, ALB trả về `{"status": "healthy"}`, cả hai CloudWatch alarms ở trạng thái `OK`.
+**17.2 — Xác nhận qua AWS Console:**
 
----
+**Kiểm tra ECS Tasks:**
 
-## Đường dẫn B — Terraform (Infrastructure as Code)
+1. Vào **ECS Console** → Cluster `nutritrack-api-cluster` → tab **Tasks**
+2. Xác nhận **2 tasks** với trạng thái **RUNNING** và **Last status** = `RUNNING`
+3. Nhấn vào một task → kiểm tra phần **Container** → **Health status** phải là `HEALTHY`
 
-Terraform cho phép định nghĩa toàn bộ hạ tầng bằng code, quản lý phiên bản, và tái tạo nhất quán.
+**Kiểm tra CloudWatch Logs:**
 
-### Bước B.1: Cấu trúc dự án
+1. Mở **CloudWatch Console** → **Log groups** → tìm `/ecs/arm-nutritrack-api-task`
+2. Nhấn vào log group → tab **Log streams** → nhấn vào stream mới nhất
+3. Xác nhận bạn thấy startup logs từ FastAPI (ví dụ: `Uvicorn running on 0.0.0.0:8000`)
+4. Nếu log group chưa tồn tại, kiểm tra `awslogs-create-group` đã đặt `"true"` trong task definition
 
-```
-infra/private-ecs/
-├── provider.tf      # AWS provider + backend config
-├── variables.tf     # Biến đầu vào
-├── vpc.tf           # VPC, subnets, IGW, route tables, VPC Endpoints
-├── security.tf      # Security groups
-├── iam.tf           # Task execution role + task role
-├── ecs.tf           # Cluster, task definition, service
-├── alb.tf           # ALB, target group, listener
-├── autoscaling.tf   # Auto scaling target + policy
-└── data.tf          # Data sources (AZs, ECR, Secrets Manager)
-```
+**Kiểm tra CloudWatch Alarms:**
 
-### Bước B.2: Các file chính
+1. **CloudWatch Console** → **Alarms** → **All alarms**
+2. Tìm `nutritrack-api-cluster-cpu-above-70-alarm` — trạng thái phải là **OK** (CPU dưới 70%)
+3. Tìm `nutritrack-api-cluster-cpu-below-20-alarm` — trạng thái có thể là **ALARM** nếu không có traffic (điều này bình thường, nó sẽ kích hoạt scale-in)
 
-**`provider.tf`**
-```hcl
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
+**Kiểm tra ECS Service Events:**
 
-provider "aws" {
-  region = var.aws_region
-}
-```
+1. Vào **ECS Console** → Cluster → Service `spot-arm-nutritrack-api-task-service` → tab **Events**
+2. Tìm các events như:
+   - `service ... has reached a steady state` — triển khai thành công
+   - `service ... registered 1 targets in target group ...` — tích hợp ALB hoạt động
+3. Nếu bạn thấy error events như `task stopped: ResourceInitializationError`, kiểm tra VPC endpoints và IAM roles
 
-**`variables.tf`**
-```hcl
-variable "aws_region"        { default = "ap-southeast-2" }
-variable "vpc_name"          { default = "nutritrack-api-vpc" }
-variable "vpc_cidr"          { default = "10.0.0.0/16" }
-variable "ecs_cluster_name"  { default = "nutritrack-api-cluster" }
-variable "ecs_service_name"  { default = "spot-arm-nutritrack-api-task-service" }
-variable "task_family"       { default = "arm-nutritrack-api-task" }
-variable "container_name"    { default = "arm-nutritrack-api-container" }
-variable "container_port"    { default = 8000 }
-```
-
-**`vpc.tf`** (phần chính — không NAT gateway)
-```hcl
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
-
-  name            = var.vpc_name
-  cidr            = var.vpc_cidr
-  azs             = ["ap-southeast-2a", "ap-southeast-2c"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  public_subnets  = ["10.0.11.0/24", "10.0.12.0/24"]
-
-  private_subnet_names = ["nutritrack-api-private-subnet-ecs01", "nutritrack-api-private-subnet-ecs02"]
-  public_subnet_names  = ["nutritrack-api-public-subnet-alb01",  "nutritrack-api-public-subnet-alb02"]
-
-  # Không NAT Gateway — 100% private qua VPC Endpoints
-  enable_nat_gateway = false
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-}
-
-# S3 Gateway Endpoint (miễn phí)
-resource "aws_vpc_endpoint" "s3" {
-  vpc_id            = module.vpc.vpc_id
-  service_name      = "com.amazonaws.${var.aws_region}.s3"
-  vpc_endpoint_type = "Gateway"
-  route_table_ids   = module.vpc.private_route_table_ids
-  tags = { Name = "nutritrack-api-vpc-s3-ep" }
-}
-
-# Interface Endpoints (Bedrock, ECR, Secrets Manager, CloudWatch)
-resource "aws_vpc_endpoint" "bedrock" {
-  vpc_id              = module.vpc.vpc_id
-  service_name        = "com.amazonaws.${var.aws_region}.bedrock-runtime"
-  vpc_endpoint_type   = "Interface"
-  private_dns_enabled = true
-  subnet_ids          = module.vpc.private_subnets
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  tags = { Name = "nutritrack-api-vpc-bedrock-ep" }
-}
-# (lặp lại cho ecr.api, ecr.dkr, secretsmanager, logs)
-```
-
-**`autoscaling.tf`**
-```hcl
-resource "aws_appautoscaling_target" "ecs_target" {
-  max_capacity       = 10
-  min_capacity       = 0
-  resource_id        = "service/${aws_ecs_cluster.api.name}/${aws_ecs_service.api.name}"
-  scalable_dimension = "ecs:service:DesiredCount"
-  service_namespace  = "ecs"
-}
-
-resource "aws_appautoscaling_policy" "cpu_scaling" {
-  name               = "nutritrack-api-cluster-cpu-above-70"
-  policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.ecs_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
-
-  target_tracking_scaling_policy_configuration {
-    predefined_metric_specification {
-      predefined_metric_type = "ECSServiceAverageCPUUtilization"
-    }
-    target_value       = 70.0   # Scale out khi CPU > 70%
-    scale_in_cooldown  = 300    # Đợi 5 phút trước khi scale in
-    scale_out_cooldown = 300    # Scale out (300s) để tránh thay đổi quá nhanh
-  }
-}
-```
-
-### Bước B.3: Triển khai
-
-```bash
-cd infra/private-ecs
-
-# Khởi tạo providers
-terraform init
-
-# Xem trước những gì sẽ tạo
-terraform plan
-
-# Áp dụng (mất ~5 phút)
-terraform apply -auto-approve
-
-# Lấy ALB DNS sau deploy
-terraform output alb_dns_name
-```
-
-### Bước B.4: Hủy (Dọn dẹp)
-
-```bash
-terraform destroy -auto-approve
-```
-
----
-
-## Đường dẫn C — GitHub Actions CI/CD
-
-Tự động hóa build và deploy mỗi lần push lên `main`.
-
-### Bước C.1: GitHub Repository Secrets
-
-Vào repo → **Settings** → **Secrets and variables** → **Actions**, thêm:
-
-| Tên Secret                  | Giá trị                        |
-| --------------------------- | ------------------------------ |
-| `AWS_ACCESS_KEY_ID`         | Access key của IAM user        |
-| `AWS_SECRET_ACCESS_KEY`     | Secret key của IAM user        |
-| `NUTRITRACK_API_KEY`        | API key NutriTrack (cho tests) |
-| `USDA_API_KEY`              | API key USDA FoodData Central  |
-| `AVOCAVO_NUTRITION_API_KEY` | API key Avocavo Nutrition      |
-
-### Bước C.2: Quyền IAM cần thiết cho `github-actions-deployer`
-
-Tạo IAM user với policy này:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "ECRPermissions",
-      "Effect": "Allow",
-      "Action": [
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage",
-        "ecr:PutImage",
-        "ecr:InitiateLayerUpload",
-        "ecr:UploadLayerPart",
-        "ecr:CompleteLayerUpload",
-        "ecr:DescribeImages",
-        "ecr:DescribeRepositories"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Sid": "ECSPermissions",
-      "Effect": "Allow",
-      "Action": [
-        "ecs:UpdateService",
-        "ecs:DescribeServices",
-        "ecs:DescribeTaskDefinition",
-        "ecs:ListTaskDefinitions",
-        "ecs:RegisterTaskDefinition"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Sid": "AutoScalingPermissions",
-      "Effect": "Allow",
-      "Action": [
-        "application-autoscaling:RegisterScalableTarget",
-        "application-autoscaling:DescribeScalableTargets",
-        "application-autoscaling:DescribeScalingPolicies"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Sid": "CloudWatchPermissions",
-      "Effect": "Allow",
-      "Action": [
-        "cloudwatch:DescribeAlarms",
-        "cloudwatch:PutMetricAlarm"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Sid": "SupportPermissions",
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:ListBucket",
-        "elbv2:DescribeLoadBalancers",
-        "elbv2:DescribeTargetGroups",
-        "elbv2:DescribeTargetHealth",
-        "secretsmanager:DescribeSecret",
-        "ec2:DescribeVpcEndpoints",
-        "iam:PassRole"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-```
-
-### Bước C.3: File Workflow
-
-Tạo `.github/workflows/deploy-private-ecs.yaml`:
-
-```yaml
-name: 🚀 Deploy NutriTrack API → Private ECS (ECR + Spot)
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-    inputs:
-      skip_tests:
-        description: "⚠️ Bỏ qua pytest dù tests fail"
-        required: false
-        default: "false"
-        type: choice
-        options: ["false", "true"]
-
-env:
-  AWS_REGION:         ap-southeast-2
-  ECR_REGISTRY:       966000660990.dkr.ecr.ap-southeast-2.amazonaws.com
-  ECR_REPOSITORY:     backend/nutritrack-api-image
-  ECS_CLUSTER:        nutritrack-api-cluster
-  ECS_SERVICE:        spot-arm-nutritrack-api-task-service
-  TASK_DEFINITION:    arm-nutritrack-api-task
-  CONTAINER_NAME:     arm-nutritrack-api-container
-  S3_BUCKET:          nutritrack-cache-01apr26
-  IMAGE_TAG:          arm
-
-jobs:
-  # JOB 1: Quét secret (gitleaks)
-  scan:
-    name: "🛡️ Quét Secrets"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # JOB 2: Chạy pytest
-  test:
-    name: "🧪 Test (pytest)"
-    runs-on: ubuntu-latest
-    needs: scan
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: "3.10.11", cache: pip }
-      - run: pip install -r requirements-dev.txt
-      - name: Chạy tests
-        env:
-          AWS_REGION:            ${{ env.AWS_REGION }}
-          AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          NUTRITRACK_API_KEY:    ${{ secrets.NUTRITRACK_API_KEY }}
-        run: pytest tests -v --tb=short || true
-        continue-on-error: true
-
-  # JOB 3: Build ARM64 image → ECR
-  build:
-    name: "🔨 Build ARM64 → ECR"
-    runs-on: ubuntu-latest
-    needs: test
-    outputs:
-      image_url: ${{ steps.set-image-url.outputs.image_url }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            ${{ env.AWS_REGION }}
-      - uses: aws-actions/amazon-ecr-login@v2
-      - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
-      - name: 🏗️ Build & Push ARM64 image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/arm64
-          push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-      - id: set-image-url
-        run: echo "image_url=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}" >> "$GITHUB_OUTPUT"
-
-  # JOB 4: Đồng bộ S3 cache
-  sync-cache:
-    name: "🗄️ Đồng bộ Cache → S3"
-    runs-on: ubuntu-latest
-    needs: build
-    if: always() && needs.build.result == 'success'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            ${{ env.AWS_REGION }}
-      - name: Đồng bộ cache files lên S3
-        run: |
-          for file in data/usda_cache.json data/avocavo_cache.json data/openfoodfacts_cache.json; do
-            [ -f "$file" ] && aws s3 cp "$file" "s3://${{ env.S3_BUCKET }}/$(basename $file)"
-          done
-
-  # JOB 5: Deploy lên ECS
-  deploy:
-    name: "🚀 Deploy → ECS Fargate Spot"
-    runs-on: ubuntu-latest
-    needs: [build, sync-cache]
-    if: always() && needs.build.result == 'success'
-    steps:
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            ${{ env.AWS_REGION }}
-      - name: Buộc deployment mới
-        run: |
-          aws ecs update-service \
-            --cluster ${{ env.ECS_CLUSTER }} \
-            --service ${{ env.ECS_SERVICE }} \
-            --task-definition ${{ env.TASK_DEFINITION }} \
-            --desired-count 2 \
-            --force-new-deployment \
-            --capacity-provider-strategy capacityProvider=FARGATE_SPOT,weight=1
-      - name: Đợi ổn định
-        run: |
-          aws ecs wait services-stable \
-            --cluster ${{ env.ECS_CLUSTER }} \
-            --services ${{ env.ECS_SERVICE }}
-      - name: Cập nhật giới hạn Auto Scaling
-        run: |
-          aws application-autoscaling register-scalable-target \
-            --service-namespace ecs \
-            --scalable-dimension ecs:service:DesiredCount \
-            --resource-id "service/${{ env.ECS_CLUSTER }}/${{ env.ECS_SERVICE }}" \
-            --min-capacity 1 \
-            --max-capacity 10
-```
-
-### Bước C.4: Luồng Pipeline
-
-```
-git push main
-     │
-     ├─► JOB 1: Gitleaks quét secrets (chặn pipeline nếu tìm thấy secrets)
-     │
-     ├─► JOB 2: pytest (soft fail — pipeline tiếp tục dù tests fail)
-     │
-     ├─► JOB 3: Build ARM64 image → push lên ECR (QEMU cross-compile)
-     │
-     ├─► JOB 4: Merge + upload cache JSONs lên S3
-     │
-     └─► JOB 5: Buộc ECS deployment mới → đợi ổn định → cập nhật Auto Scaling
-```
-
-**Tổng thời gian pipeline:** ~10-15 phút
+> **Checkpoint:** 2 Fargate tasks đang chạy, ALB trả về `{"status": "healthy"}`, cả hai CloudWatch alarms đã cấu hình, logs hiển thị trong CloudWatch.
 
 ---
 
@@ -1048,16 +643,16 @@ aws ecs update-service \
 
 ## Phân tích Chi phí
 
-| Thành phần                                       | Chi phí/Tháng  |
-| ------------------------------------------------ | -------------- |
-| ECS Fargate Spot ARM (1 vCPU, 2GB, 2 tasks 24/7) | ~$20           |
-| ALB (cố định + LCU)                              | ~$16-20        |
-| VPC Interface Endpoints (×4 loại × 2 AZs)        | ~$57           |
-| S3 Gateway Endpoint                              | Miễn phí       |
-| ECR storage (~500 MB)                            | ~$0.05         |
-| CloudWatch logs (lưu 14 ngày)                    | ~$0.50         |
-| Secrets Manager                                  | ~$0.40         |
-| **Tổng**                                         | **~$95/tháng** |
+| Thành phần                                       | Chi phí/Tháng   |
+| ------------------------------------------------ | --------------- |
+| ECS Fargate Spot ARM (1 vCPU, 2GB, 2 tasks 24/7) | ~$20            |
+| ALB (cố định + LCU)                              | ~$16-20         |
+| VPC Interface Endpoints (×5 loại × 2 AZs)        | ~$72            |
+| S3 Gateway Endpoint                              | Miễn phí        |
+| ECR storage (~500 MB)                            | ~$0.05          |
+| CloudWatch logs (lưu 14 ngày)                    | ~$0.50          |
+| Secrets Manager                                  | ~$0.40          |
+| **Tổng**                                         | **~$110/tháng** |
 
 > **Tiết kiệm so với NAT Gateway:** NAT Gateway tốn $32/AZ/tháng + $0.045/GB data processed. Với 2 AZs thì $64+ trước data costs. VPC Endpoints thường rẻ hơn khi kết hợp với Fargate.
 
@@ -1065,44 +660,72 @@ aws ecs update-service \
 
 ## Dọn dẹp
 
-Để ngừng phát sinh chi phí, xóa tài nguyên theo thứ tự:
+Để ngừng phát sinh chi phí, xóa tài nguyên **theo thứ tự** sau qua AWS Console:
 
-```bash
-# 1. Scale service xuống 0 tasks (dừng billing ngay lập tức)
-aws ecs update-service \
-  --cluster nutritrack-api-cluster \
-  --service spot-arm-nutritrack-api-task-service \
-  --desired-count 0
+**1. Giảm scale và xóa ECS Service**
 
-# 2. Xóa ECS service
-aws ecs delete-service \
-  --cluster nutritrack-api-cluster \
-  --service spot-arm-nutritrack-api-task-service \
-  --force
+1. Vào **ECS Console** → Cluster `nutritrack-api-cluster` → **Services** → chọn `spot-arm-nutritrack-api-task-service`
+2. Nhấn **Update** → đặt **Desired tasks** thành `0` → nhấn **Update** (đợi tasks dừng ~1 phút)
+3. Chọn lại service → **Delete** → xác nhận xóa
 
-# 3. Xóa ECS cluster
-aws ecs delete-cluster --cluster nutritrack-api-cluster
+**2. Xóa ECS Cluster**
 
-# 4. Xóa ALB và Target Group (qua Console hoặc CLI)
+1. Vào **ECS Console** → **Clusters** → chọn `nutritrack-api-cluster`
+2. Nhấn **Delete cluster** → xác nhận
 
-# 5. Xóa VPC Endpoints (5 endpoints)
+**3. Xóa Auto Scaling Policy**
 
-# 6. Xóa ECR repository (và tất cả images)
-aws ecr delete-repository \
-  --repository-name backend/nutritrack-api-image \
-  --force
+1. Trước khi xóa service, vào service → tab **Auto Scaling** → chọn policy → **Delete**
+2. Các CloudWatch alarms liên quan sẽ tự động bị xóa
 
-# 7. Xóa Secrets Manager secret
-aws secretsmanager delete-secret \
-  --secret-id nutritrack/prod/api-keys \
-  --force-delete-without-recovery
+**4. Xóa Application Load Balancer**
 
-# 8. Xóa S3 bucket (làm rỗng trước)
-aws s3 rm s3://nutritrack-cache-01apr26 --recursive
-aws s3 rb s3://nutritrack-cache-01apr26
+1. Vào **EC2 Console** → **Load Balancers** → chọn `nutritrack-api-vpc-alb`
+2. **Actions** → **Delete load balancer** → xác nhận
 
-# 9. Xóa VPC (subnets, route tables, IGW, SGs, rồi VPC)
-# Tốt nhất qua Console: VPC → Actions → Delete VPC (tự xóa cascading)
-```
+**5. Xóa Target Group**
 
-> 🎯 **Checkpoint cuối:** ALB DNS trả HTTP 200, 2 Fargate tasks chạy trong private subnets, CloudWatch alarms ở trạng thái `OK`, Auto Scaling Min=1/Max=10 đã cấu hình.
+1. **EC2 Console** → **Target Groups** → chọn `nutritrack-api-vpc-tg`
+2. **Actions** → **Delete** → xác nhận
+
+**6. Xóa VPC Endpoints (6 endpoints)**
+
+1. Vào **VPC Console** → **Endpoints**
+2. Chọn tất cả 6 endpoints (`nutritrack-api-vpc-bedrock-ep`, `nutritrack-api-vpc-api-ecr-ep`, `nutritrack-api-dkr-ecr-ep`, `nutritrack-api-vpc-s3-ep`, `nutritrack-api-vpc-sm-ep`, `nutritrack-api-vpc-cw-ep`)
+3. **Actions** → **Delete VPC endpoints** → xác nhận
+
+**7. Xóa ECR Repository**
+
+1. Vào **Amazon ECR Console** → **Repositories**
+2. Chọn `backend/nutritrack-api-image` → **Delete** → gõ `delete` để xác nhận
+
+**8. Xóa Secrets Manager Secret**
+
+1. Vào **Secrets Manager Console** → chọn `nutritrack/prod/api-keys`
+2. **Actions** → **Delete secret**
+3. Đặt **Waiting period** là `7 days` (tối thiểu) → **Schedule deletion**
+
+**9. Làm trống và xóa S3 Bucket**
+
+1. Vào **Amazon S3 Console** → chọn cache bucket của bạn (ví dụ `<YOUR_S3_BUCKET_NAME>`)
+2. Nhấn **Empty** → gõ `permanently delete` → **Empty**
+3. Sau khi làm trống, nhấn **Delete** → gõ tên bucket → **Delete bucket**
+
+**10. Xóa VPC và tài nguyên mạng**
+
+1. Vào **VPC Console** → **Security Groups** → xóa 3 SG tùy chỉnh (`alb-sg`, `ecs-sg`, `endpoints-sg`)
+2. **VPC Console** → **Your VPCs** → chọn `nutritrack-api-vpc`
+3. **Actions** → **Delete VPC** → AWS sẽ tự động xóa subnets, route tables và internet gateway liên quan → xác nhận
+
+**11. Xóa IAM Roles**
+
+1. Vào **IAM Console** → **Roles**
+2. Tìm `ecsTaskRole` → chọn → **Delete** → xác nhận
+3. Tìm `ecsTaskExecutionRole` → chọn → **Delete** → xác nhận
+
+**12. Xóa CloudWatch Log Groups**
+
+1. Vào **CloudWatch Console** → **Log groups**
+2. Chọn `/ecs/arm-nutritrack-api-task` → **Actions** → **Delete log group(s)** → xác nhận
+
+> **Checkpoint cuối:** ALB DNS trả HTTP 200, 2 Fargate tasks chạy trong private subnets, CloudWatch alarms đã cấu hình, Auto Scaling Min=1/Max=10 đã cấu hình.

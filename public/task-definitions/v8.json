@@ -1,0 +1,120 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-southeast-2:966000660990:task-definition/arm-nutritrack-api-task:8",
+    "containerDefinitions": [
+        {
+            "name": "arm-nutritrack-api-container",
+            "image": "966000660990.dkr.ecr.ap-southeast-2.amazonaws.com/backend/nutritrack-api-image:arm",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "arm-nutritrack-api-container-80-tcp",
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "AWS_REGION",
+                    "value": "ap-southeast-2"
+                },
+                {
+                    "name": "LOG_TO_FILE",
+                    "value": "False"
+                },
+                {
+                    "name": "HOSTNAME",
+                    "value": "ECS"
+                },
+                {
+                    "name": "AWS_S3_CACHE_BUCKET",
+                    "value": "nutritrack-cache-01apr26"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "NUTRITRACK_API_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:966000660990:secret:nutritrack/prod/api-keys-Mzpde9:NUTRITRACK_API_KEY::"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/arm-nutritrack-api-task",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "ap-southeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "arm-nutritrack-api-task",
+    "taskRoleArn": "arn:aws:iam::966000660990:role/ecsTaskRole",
+    "executionRoleArn": "arn:aws:iam::966000660990:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 8,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "MANAGED_INSTANCES",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "2048",
+    "runtimePlatform": {
+        "cpuArchitecture": "ARM64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2026-04-03T08:57:41.713Z",
+    "registeredBy": "arn:aws:iam::966000660990:user/ai-02",
+    "enableFaultInjection": false,
+    "tags": [
+        {
+            "key": "Owner",
+            "value": "ai_02"
+        }
+    ]
+}

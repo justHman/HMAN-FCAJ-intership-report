@@ -23,8 +23,8 @@
   * So sánh ECS Fargate vs App Runner — chọn ECS để control networking tốt hơn.
   * Container chạy trên ARM architecture cho price/performance tốt hơn.
   * Cấu hình **CloudWatch Alarms cho Auto Scaling:**
-    * `nutritrack-api-cluster-cpu-above-70-alarm` — kích hoạt scale-out (+1 task) khi CPU ≥ 70% trong 2 phút liên tiếp (cooldown: 60s)
-    * `nutritrack-api-cluster-cpu-below-20-alarm` — kích hoạt scale-in (-1 task) khi CPU ≤ 20% trong 5 phút liên tiếp (cooldown: 300s)
+    * `nutritrack-api-cluster-cpu-above-70-alarm` — kích hoạt scale-out (+10% tasks) khi CPU ≥ 70% trong 2 phút liên tiếp (cooldown: 120s)
+    * `nutritrack-api-cluster-cpu-below-20-alarm` — kích hoạt scale-in (-10% tasks) khi CPU ≤ 20% trong 5 phút liên tiếp (cooldown: 300s)
   * Auto Scaling target: Min=1, Max=10 tasks trên 2 AZs (`ap-southeast-2a/c`)
 
 * **Label Detection Pipeline:**

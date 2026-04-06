@@ -23,8 +23,8 @@
   * Compared ECS Fargate vs App Runner — chose ECS for more control over networking.
   * Container running on ARM architecture for better price/performance.
   * Configured **CloudWatch Alarms for Auto Scaling:**
-    * `nutritrack-api-cluster-cpu-above-70-alarm` — triggers scale-out (+1 task) when CPU ≥ 70% for 2 consecutive minutes (cooldown: 60s)
-    * `nutritrack-api-cluster-cpu-below-20-alarm` — triggers scale-in (-1 task) when CPU ≤ 20% for 5 consecutive minutes (cooldown: 300s)
+    * `nutritrack-api-cluster-cpu-above-70-alarm` — triggers scale-out (+10% tasks) when CPU ≥ 70% for 2 consecutive minutes (cooldown: 120s)
+    * `nutritrack-api-cluster-cpu-below-20-alarm` — triggers scale-in (-10% tasks) when CPU ≤ 20% for 5 consecutive minutes (cooldown: 300s)
   * Auto Scaling target: Min=1, Max=10 tasks across 2 AZs (`ap-southeast-2a/c`)
 
 
