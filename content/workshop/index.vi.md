@@ -1,20 +1,34 @@
 
-# NutriTrack — Workshop Triển khai Full-Stack trên AWS
+# NutriTrack — Workshop Triển Khai Full-Stack Trên AWS
 
 #### Tổng quan
 
-Workshop này cung cấp hướng dẫn chi tiết từng bước để triển khai **NutriTrack** — nền tảng theo dõi dinh dưỡng serverless full-stack trên AWS. Bạn sẽ xây dựng ứng dụng di động React Native (Expo) hỗ trợ bởi **AWS Amplify Gen 2**, **Amazon Bedrock AI** (Qwen3-VL), **AppSync GraphQL**, **DynamoDB**, cùng backend **FastAPI** containerized trên **ECS Fargate**. Hệ thống sử dụng AI để phân tích ảnh đồ ăn, xử lý ghi âm giọng nói, và cung cấp tư vấn dinh dưỡng cá nhân hóa.
+Workshop này là hướng dẫn từng bước để triển khai **NutriTrack**, một nền tảng theo dõi dinh dưỡng serverless mức production trên AWS. Bạn sẽ xây dựng ứng dụng mobile React Native (Expo SDK 54) kết nối tới **AWS Amplify Gen 2**, **Amazon Bedrock** (Qwen3-VL 235B đa phương thức), **AWS AppSync** GraphQL, **Amazon DynamoDB**, và một dịch vụ **FastAPI** đóng gói container chạy trên **ECS Fargate**. Hệ thống hoàn chỉnh nhận ảnh món ăn, chuyển giọng nói tiếng Việt thành văn bản, gọi AI coach tên **Ollie**, và lưu nhật ký dinh dưỡng với real-time GraphQL subscriptions.
+
+Toàn bộ nội dung workshop phản ánh đúng codebase đang chạy thật — không có kiến trúc giả, không có ví dụ đồ chơi. Mọi IAM statement, mọi `runtime: 22` của Lambda, mọi GSI DynamoDB, và mọi S3 prefix đều trùng với môi trường `main` hiện tại.
+
+#### Bạn sẽ xây dựng những gì
+
+- **Frontend**: Ứng dụng Expo Router (React Native 0.81, React 19) với xác thực sinh trắc, camera/voice capture, Zustand stores, và màn hình pet evolution dùng `@react-three/fiber`.
+- **Backend**: Amplify Gen 2 (`defineBackend`) cấp phát Cognito + Google OAuth, 8 model DynamoDB thông qua AppSync, một S3 bucket với 4 access prefix, và 4 Lambda (`aiEngine`, `processNutrition`, `friendRequest`, `resizeImage`).
+- **Lớp AI**: Bedrock Qwen3-VL (`qwen.qwen3-vl-235b-a22b`) ở `ap-southeast-2`, được gọi qua một Lambda multi-action duy nhất điều phối 10 AI action (phân tích ảnh, voice-to-food, phản hồi coach, sinh công thức, insight hàng tuần…).
+- **Tầng container**: FastAPI trên ECS Fargate đứng sau ALB, deploy từ ECR, chạy trong một VPC riêng.
+- **Vận hành**: Amplify CI/CD qua ba môi trường (sandbox, `feat/phase3`, `main`), log CloudWatch, và playbook dọn dẹp.
 
 #### Nội dung
 
-1. [Tổng Quan](5.1-overview/)
-2. [Điều Kiện Tiên Quyết](5.2-prerequisite/)
-3. [Giai đoạn 1: Thiết Lập AWS Amplify Gen 2](5.3-foundation/)
-4. [Giai đoạn 2: Tầng Dữ Liệu — DynamoDB & GraphQL](5.4-monitoring/)
-5. [Giai đoạn 3: Lambda Functions & Tích Hợp AI](5.5-processing/)
-6. [Giai đoạn 4: AppSync API & Tính Năng Xã Hội](5.6-automation/)
-7. [Giai đoạn 5: Frontend React Native](5.7-dashboard/)
-8. [Giai đoạn 6: Triển Khai ECS Fargate Container](5.8-verify/)
-9. [Giai đoạn 7: CI/CD & Đa Môi Trường](5.9-cdk/)
-10. [Dọn Dẹp](5.10-cleanup/)
-11. [Phụ Lục & Tham Khảo](5.11-appendices/)
+1. [Tổng Quan](4.1-Workshop-overview/)
+2. [Điều Kiện Tiên Quyết](4.2-Prerequiste/)
+3. [Thiết Lập Nền Tảng — Amplify, Cognito, S3](4.3-Foundation-Setup/)
+4. [Tầng Dữ Liệu — AppSync & DynamoDB](4.4-Monitoring-Setup/)
+5. [Compute & AI — Bedrock, Lambda](4.5-Processing-Setup/)
+6. [API & Xã Hội — Friends, Realtime Subscriptions](4.6-Automation-Setup/)
+7. [Frontend — Expo, UI, Giọng Nói & Camera](4.7-Dashboard-Setup/)
+8. [Triển Khai ECS — VPC, ECR, Fargate, ALB](4.8-Verify-Setup/)
+9. [CI/CD — Amplify Đa Môi Trường](4.9-Use-CDK/)
+10. [Dọn Dẹp](4.10-Cleanup/)
+11. [Phụ Lục — Ngân Sách, IAM, Xử Lý Lỗi, Prompt](4.11-Appendices/)
+
+#### Workshop dành cho ai
+
+Các kỹ sư đã quen với TypeScript, có kinh nghiệm AWS ở mức cơ bản, và muốn thấy cấu trúc end-to-end của một dự án Amplify Gen 2 thực tế. Bạn **không** cần kinh nghiệm trước về Bedrock, Amplify Gen 2, hay React Native — mỗi bước đều kèm command, đường dẫn file, và IAM policy cụ thể để sao chép.
