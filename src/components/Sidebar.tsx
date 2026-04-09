@@ -89,6 +89,8 @@ const navigation: NavItem[] = [
                 children: [
                     { id: 'ws-4.5.1', path: '/workshop/4.5-Processing-Setup/4.5.1-Bedrock', label: { en: '4.5.1 Bedrock', vi: '4.5.1 Bedrock' }, icon: ChevronRight },
                     { id: 'ws-4.5.2', path: '/workshop/4.5-Processing-Setup/4.5.2-AIEngine', label: { en: '4.5.2 AI Engine', vi: '4.5.2 AI Engine' }, icon: ChevronRight },
+                    { id: 'ws-4.5.3', path: '/workshop/4.5-Processing-Setup/4.5.3-ProcessNutrition', label: { en: '4.5.3 ProcessNutrition', vi: '4.5.3 ProcessNutrition' }, icon: ChevronRight },
+                    { id: 'ws-4.5.4', path: '/workshop/4.5-Processing-Setup/4.5.4-ResizeImage', label: { en: '4.5.4 ResizeImage', vi: '4.5.4 ResizeImage' }, icon: ChevronRight },
                 ],
             },
             {

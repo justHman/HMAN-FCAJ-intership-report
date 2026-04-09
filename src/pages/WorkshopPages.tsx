@@ -59,6 +59,8 @@ const WORKSHOP_SECTIONS: WorkshopSection[] = [
         children: [
             { id: '4.5-Processing-Setup/4.5.1-Bedrock', folderName: '4.5-Processing-Setup/4.5.1-Bedrock', en: '4.5.1 Bedrock', vi: '4.5.1 Bedrock' },
             { id: '4.5-Processing-Setup/4.5.2-AIEngine', folderName: '4.5-Processing-Setup/4.5.2-AIEngine', en: '4.5.2 AI Engine', vi: '4.5.2 AI Engine' },
+            { id: '4.5-Processing-Setup/4.5.3-ProcessNutrition', folderName: '4.5-Processing-Setup/4.5.3-ProcessNutrition', en: '4.5.3 ProcessNutrition', vi: '4.5.3 ProcessNutrition' },
+            { id: '4.5-Processing-Setup/4.5.4-ResizeImage', folderName: '4.5-Processing-Setup/4.5.4-ResizeImage', en: '4.5.4 ResizeImage', vi: '4.5.4 ResizeImage' },
         ],
     },
     {

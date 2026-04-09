@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -5,6 +6,77 @@ import { Link, useLocation } from 'react-router-dom';
 
 interface MarkdownRendererProps {
     content: string;
+}
+
+declare global {
+    interface Window {
+        mermaid?: {
+            initialize: (config: Record<string, unknown>) => void;
+            render: (id: string, definition: string) => Promise<{ svg: string }>;
+        };
+    }
+}
+
+const MERMAID_SCRIPT_ID = 'mermaid-cdn-script';
+
+function renderMermaidBlocks() {
+    if (!window.mermaid) return;
+
+    window.mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: 'loose',
+        theme: 'default',
+    });
+
+    const blocks = Array.from(document.querySelectorAll<HTMLElement>('.markdown-mermaid'));
+
+    blocks.forEach((block, idx) => {
+        if (block.dataset.processed === 'true') return;
+
+        const definition = block.dataset.mermaid ?? block.textContent ?? '';
+        if (!definition.trim()) return;
+
+        const renderId = `mermaid-${Date.now()}-${idx}`;
+        window.mermaid
+            ?.render(renderId, definition)
+            .then(({ svg }) => {
+                block.innerHTML = svg;
+                block.dataset.processed = 'true';
+            })
+            .catch(() => {
+                // Keep raw Mermaid text visible as a fallback if rendering fails.
+                block.dataset.processed = 'error';
+            });
+    });
+}
+
+function loadMermaidAndRender() {
+    if (typeof window === 'undefined') return;
+
+    if (window.mermaid) {
+        renderMermaidBlocks();
+        return;
+    }
+
+    const existing = document.getElementById(MERMAID_SCRIPT_ID) as HTMLScriptElement | null;
+    if (existing) {
+        if (existing.dataset.loaded === 'true') {
+            renderMermaidBlocks();
+            return;
+        }
+        existing.addEventListener('load', renderMermaidBlocks, { once: true });
+        return;
+    }
+
+    const script = document.createElement('script');
+    script.id = MERMAID_SCRIPT_ID;
+    script.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
+    script.async = true;
+    script.onload = () => {
+        script.dataset.loaded = 'true';
+        renderMermaidBlocks();
+    };
+    document.body.appendChild(script);
 }
 
 /**
@@ -41,6 +113,11 @@ function resolveRelativeHref(href: string, currentPath: string): string {
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     const location = useLocation();
+
+    useEffect(() => {
+        if (!content.includes('```mermaid')) return;
+        loadMermaidAndRender();
+    }, [content]);
 
     return (
         <ReactMarkdown
@@ -148,6 +225,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
                 // Code blocks
                 code: ({ className, children }) => {
+                    const language = className?.replace('language-', '').toLowerCase();
                     const isInline = !className;
                     if (isInline) {
                         return (
@@ -156,10 +234,22 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
                             </code>
                         );
                     }
+
+                    if (language === 'mermaid') {
+                        const definition = String(children).replace(/\n$/, '');
+                        return (
+                            <div className="my-6 overflow-x-auto rounded-xl border border-gray-200 bg-white p-4">
+                                <div className="markdown-mermaid" data-mermaid={definition}>
+                                    {definition}
+                                </div>
+                            </div>
+                        );
+                    }
+
                     return (
                         <div className="code-block">
                             <div className="code-header">
-                                <span>{className?.replace('language-', '') || 'code'}</span>
+                                <span>{language || 'code'}</span>
                             </div>
                             <pre className="code-content">
                                 <code>{children}</code>

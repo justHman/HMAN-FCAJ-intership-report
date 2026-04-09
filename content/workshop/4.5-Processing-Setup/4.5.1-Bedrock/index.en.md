@@ -1,20 +1,25 @@
 # 4.5.1 Bedrock — Model Access, IAM, Invocation Shape
 
-Amazon Bedrock is the only foundation-model service used by NutriTrack. This page covers the preflight setup (model access, region, IAM) and the exact invocation shape Qwen3-VL expects. If you skip the model-access step, every subsequent Lambda test will fail with `AccessDeniedException`.
+Amazon Bedrock is the only foundation-model service used by NutriTrack. This page covers the preflight setup (model access, region, IAM) and the exact invocation shape Qwen3-VL expects. If you skip the model access verification step, every subsequent Lambda test will fail with `AccessDeniedException`.
 
 ## Step 1 — Enable model access
 
-> WARNING: Bedrock foundation models are **off by default**, even if your account has Bedrock enabled. Access must be explicitly requested per model, per region. Approval is typically instant for Qwen models but can take minutes to hours in fresh accounts.
+> WARNING: AWS removed the old Qwen model-access request flow from the newer Bedrock UI. At this point, you only need to ensure your account has Anthropic model access per your organization policy; for Qwen3-VL, the required step is CLI verification that invocation works.
 
 Procedure:
 
 1. Open the AWS console → **Amazon Bedrock** → switch region to **Asia Pacific (Sydney) `ap-southeast-2`**. This is non-negotiable — the Lambda hard-codes the region, and moving models between regions is a separate approval.
-2. Left sidebar → **Model access** → **Modify model access**.
-3. Tick **Qwen3-VL 235B A22B** (model id `qwen.qwen3-vl-235b-a22b`).
-4. Click **Next** → **Submit**.
-5. Wait until the status column shows **Access granted**.
+2. Confirm your account is granted Anthropic model access in Bedrock via your team or organization process.
+3. Skip the old flow **Model access → Modify model access → tick Qwen → Submit** because that screen is no longer shown as before.
+4. Do a manual verification in AWS Console using the current test screen:
+  - Left sidebar → **Test** → **Playground**.
+  - Set **Mode** to `Chat`.
+  - Select model **Qwen3 VL 235B A22B**.
+  - Enter a short prompt (for example: `Say hello`) and click **Run**.
+  - If you receive a normal text response, the model is ready to invoke.
+5. Run the CLI verification below to confirm `qwen.qwen3-vl-235b-a22b` can be invoked in the current region.
 
-![Bedrock model access screen](images/bedrock-model-access.png)
+Note: The old Bedrock model access screen is no longer used; the manual verification screen is Bedrock **Playground** as described above.
 
 Verify from the CLI:
 
@@ -31,8 +36,9 @@ If the array is non-empty and `modelLifecycle.status == 'ACTIVE'`, you are good 
 Three reasons this workload picks Qwen3-VL:
 
 1. **Multimodal in one call**. The model accepts `type: 'image_url'` and `type: 'text'` in the same `messages[]` array. `analyzeFoodImage` sends a base64-encoded JPEG and a short Vietnamese prompt — one round trip.
-2. **Native Vietnamese**. Ollie's system prompts are full of Gen-Z Vietnamese phrasing (`ê`, `nhé`, `nha`, `nè`). Qwen handles this without a separate translation hop.
-3. **Cost**. For the typical NutriTrack mix (80% text, 20% vision), Qwen3-VL comes in substantially cheaper than Claude 3.5 Sonnet per 1M tokens. Exact per-token pricing moves — check the AWS Bedrock pricing page for current numbers in `ap-southeast-2`.
+2. **Reasoning + tool-calling + OCR + VLM**. Qwen3-VL can reason across multi-step meal context, works well with AI Engine tool-calling flows, performs OCR on packaging or menu text, and acts as a native VLM for image-grounded nutrition analysis.
+3. **Native Vietnamese**. Ollie's system prompts are full of Gen-Z Vietnamese phrasing (`ê`, `nhé`, `nha`, `nè`). Qwen handles this without a separate translation hop.
+4. **Cost**. For the typical NutriTrack mix (80% text, 20% vision), Qwen3-VL comes in substantially cheaper than Claude 3.5 Sonnet per 1M tokens. Exact per-token pricing moves — check the AWS Bedrock pricing page for current numbers in `ap-southeast-2`.
 
 Order-of-magnitude sanity check: per-user per-day cost sits in the single-digit US cents range for an active logger.
 

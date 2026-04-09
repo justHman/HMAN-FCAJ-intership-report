@@ -1,20 +1,19 @@
 # 4.5.1 Bedrock — Model Access, IAM, Cấu trúc Invocation
 
-Amazon Bedrock là dịch vụ foundation-model duy nhất mà NutriTrack dùng. Trang này bao phủ phần chuẩn bị (model access, region, IAM) và cấu trúc request chính xác mà Qwen3-VL mong đợi. Bỏ qua bước xin model access thì mọi lần test Lambda sau đó sẽ fail với `AccessDeniedException`.
+Amazon Bedrock là dịch vụ foundation-model duy nhất mà NutriTrack dùng. Trang này bao phủ phần chuẩn bị (model access, region, IAM) và cấu trúc request chính xác mà Qwen3-VL mong đợi. Bỏ qua bước kiểm tra quyền truy cập model thì mọi lần test Lambda sau đó sẽ fail với `AccessDeniedException`.
 
 ## Bước 1 — Bật model access
 
-> CẢNH BÁO: Các foundation model của Bedrock **mặc định bị tắt**, kể cả khi account đã bật Bedrock. Phải xin access rõ ràng cho từng model, từng region. Model Qwen thường được duyệt ngay, nhưng account mới có thể mất vài phút đến vài giờ.
-
 Thao tác:
 
-1. Mở AWS console → **Amazon Bedrock** → chuyển region sang **Asia Pacific (Sydney) `ap-southeast-2`**. Không thương lượng — Lambda hardcode region này, và chuyển model giữa các region là một quy trình duyệt khác.
-2. Sidebar trái → **Model access** → **Modify model access**.
-3. Tick **Qwen3-VL 235B A22B** (model id `qwen.qwen3-vl-235b-a22b`).
-4. **Next** → **Submit**.
-5. Chờ tới khi cột trạng thái hiện **Access granted**.
+1. Mở AWS console → **Amazon Bedrock** → chuyển region sang **Asia Pacific (Sydney) `ap-southeast-2`**. 
+2. Verify thủ công trên AWS Console theo màn hình test hiện tại:
+  - Sidebar trái → **Test** → **Playground**.
+  - Chọn select model.
+  - Tìm kiếm và chọn model **Qwen3 VL 235B A22B**.
+  - Nhập prompt ngắn (ví dụ: `Nói xin chào nhé`) rồi bấm **Run**.
+  - Nếu có phản hồi text bình thường, model đã sẵn sàng để invoke.
 
-![Bedrock model access screen](images/bedrock-model-access.png)
 
 Verify bằng CLI:
 
@@ -31,8 +30,9 @@ Nếu mảng trả về không rỗng và `modelLifecycle.status == 'ACTIVE'`, b
 Ba lý do workload này chọn Qwen3-VL:
 
 1. **Đa phương thức trong một lần gọi**. Model nhận `type: 'image_url'` và `type: 'text'` trong cùng mảng `messages[]`. `analyzeFoodImage` gửi JPEG base64 + prompt tiếng Việt ngắn — một round trip.
-2. **Tiếng Việt native**. System prompt của Ollie dày đặc giọng Gen-Z Việt (`ê`, `nhé`, `nha`, `nè`). Qwen xử lý thẳng, không cần dịch qua.
-3. **Chi phí**. Với tỷ lệ NutriTrack (80% text, 20% vision), Qwen3-VL rẻ hơn đáng kể so với Claude 3.5 Sonnet trên mỗi 1M token. Giá chính xác thay đổi — tra trang pricing Bedrock cho số hiện tại ở `ap-southeast-2`.
+2. **Suy luận + gọi tool + OCR + VLM**. Qwen3-VL có khả năng suy luận nhiều bước từ ngữ cảnh bữa ăn, tương thích tốt với luồng gọi tool của AI Engine, OCR được chữ trên bao bì hoặc thực đơn, và là VLM native cho bài toán phân tích ảnh món ăn.
+3. **Tiếng Việt native**. System prompt của Ollie dày đặc giọng Gen-Z Việt (`ê`, `nhé`, `nha`, `nè`). Qwen xử lý thẳng, không cần dịch qua.
+4. **Chi phí**. Với tỷ lệ NutriTrack (80% text, 20% vision), Qwen3-VL rẻ hơn đáng kể so với Claude 3.5 Sonnet trên mỗi 1M token. Giá chính xác thay đổi — tra trang pricing Bedrock cho số hiện tại ở `ap-southeast-2`.
 
 Kiểm tra thứ tự độ lớn: chi phí mỗi user mỗi ngày nằm trong khoảng vài cent USD với user tích cực log.
 
