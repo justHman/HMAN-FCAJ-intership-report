@@ -23,8 +23,8 @@ Showcased practical AI projects. Demo 1: an IoT smart cabinet for club equipment
 
 ## Outcomes
 
-- **Agentic AI is a major trend:** AI agents can automate complex workflows through iterative reasoning, environment evaluation, and external tool usage.
-- **Prompt engineering reduces cost:** Well-structured prompts and prioritizing English inputs can significantly reduce input/output token cost when calling large AI models.
-- **Serverless architecture is highly efficient:** Combining AWS Lambda, Cognito, S3, and API Gateway delivers a scalable backend without server management, while keeping costs low for AI projects.
-- **Amazon Rekognition is powerful for vision tasks:** It provides strong face and object recognition capabilities, and Custom Labels can be used for domain-specific training in hardware/IoT projects at reasonable cost.
-- **Amazon Textract improves document understanding:** AI-powered context awareness helps distinguish fields such as product names and prices, making it ideal for complex forms like receipts where traditional OCR often fails.
+- Agentic AI is a major trend: AI agents can automate complex workflows through iterative reasoning, environment evaluation, and external tool usage.
+- Prompt engineering reduces cost: Well-structured prompts and prioritizing English inputs can significantly reduce input/output token cost when calling large AI models.
+- Serverless architecture is highly efficient: Combining AWS Lambda, Cognito, S3, and API Gateway delivers a scalable backend without server management, while keeping costs low for AI projects.
+- Amazon Rekognition is powerful for vision tasks: It provides strong face and object recognition capabilities, and Custom Labels can be used for domain-specific training in hardware/IoT projects at reasonable cost.
+- Amazon Textract improves document understanding: AI-powered context awareness helps distinguish fields such as product names and prices, making it ideal for complex forms like receipts where traditional OCR often fails.

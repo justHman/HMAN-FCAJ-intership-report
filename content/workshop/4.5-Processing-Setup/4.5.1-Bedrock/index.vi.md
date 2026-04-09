@@ -208,6 +208,6 @@ Cho throughput bền vững, xin tăng quota qua Service Quotas → Amazon Bedro
 
 ## Liên kết
 
-- Lambda thực sự gọi Bedrock: [4.5.2 AIEngine](../4.5.2-AIEngine/)
-- Hybrid DB + Bedrock: [4.5.3 ProcessNutrition](../4.5.3-ProcessNutrition/)
-- CloudWatch log và alarm: [4.6 Automation Setup](../../4.6-Automation-Setup/)
+- Lambda thực sự gọi Bedrock: [4.5.2 AIEngine](/workshop/4.5.2-AIEngine)
+- Hybrid DB + Bedrock: [4.5.3 ProcessNutrition](/workshop/4.5.3-ProcessNutrition)
+- CloudWatch log và alarm: [4.6 Automation Setup](/workshop/4.6-Automation-Setup)

@@ -208,6 +208,6 @@ For sustained throughput, request a quota increase via Service Quotas → Amazon
 
 ## Cross-links
 
-- Lambda that actually calls Bedrock: [4.5.2 AIEngine](../4.5.2-AIEngine/)
-- Hybrid DB + Bedrock lookup: [4.5.3 ProcessNutrition](../4.5.3-ProcessNutrition/)
-- CloudWatch logs and alarms: [4.6 Automation Setup](../../4.6-Automation-Setup/)
+- Lambda that actually calls Bedrock: [4.5.2 AIEngine](/workshop/4.5.2-AIEngine)
+- Hybrid DB + Bedrock lookup: [4.5.3 ProcessNutrition](/workshop/4.5.3-ProcessNutrition)
+- CloudWatch logs and alarms: [4.6 Automation Setup](/workshop/4.6-Automation-Setup)

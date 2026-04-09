@@ -52,7 +52,7 @@ The handler routes on `event.arguments.action`. Every branch parses `event.argum
 | --- | --- | --- |
 | `analyzeFoodImage` | Photo of food → structured nutrition JSON | S3 get, Bedrock (vision) |
 | `generateCoachResponse` | Conversational Ollie replies with card delimiters | Bedrock (text) |
-| `searchFoodNutrition` | Food name lookup when DB misses | Bedrock (text) |
+| `generateFoodNutrition` | Food name lookup when DB misses | Bedrock (text) |
 | `fixFood` | User correction to a logged food item | Bedrock (text) |
 | `voiceToFood` | Audio upload → transcript → parsed food JSON | Transcribe, S3, Bedrock |
 | `ollieCoachTip` | One-sentence daily nudge based on stats | Bedrock (text) |
@@ -65,7 +65,7 @@ The handler routes on `event.arguments.action`. Every branch parses `event.argum
 
 Every action ships with a dedicated system prompt, all starting with `You are Ollie`. The five foundational prompts:
 
-1. **`GEN_FOOD_SYSTEM_PROMPT`** — used by `analyzeFoodImage` and `searchFoodNutrition`. Forces a rigid JSON schema (`food_id`, `name_vi`, `name_en`, `macros`, `micronutrients`, `serving`, `ingredients`, `verified`, `source`) and enforces the caloric-consistency rule `Protein*4 + Carbs*4 + Fat*9 ≈ calories`.
+1. **`GEN_FOOD_SYSTEM_PROMPT`** — used by `analyzeFoodImage` and `generateFoodNutrition`. Forces a rigid JSON schema (`food_id`, `name_vi`, `name_en`, `macros`, `micronutrients`, `serving`, `ingredients`, `verified`, `source`) and enforces the caloric-consistency rule `Protein*4 + Carbs*4 + Fat*9 ≈ calories`.
 2. **`FIX_FOOD_SYSTEM_PROMPT`** — used by `fixFood`. Same output schema but `"source": "AI Fixed"`. Recalculates all macros when weights change.
 3. **`VOICE_SYSTEM_PROMPT`** — used by `voiceToFood` after Transcribe. Returns `action: "log" | "clarify"` so the client knows whether to prompt the user or log immediately.
 4. **`OLLIE_COACH_SYSTEM_PROMPT`** — used by `ollieCoachTip`. Max 2 sentences, 1-2 emojis, references actual streak/calorie stats.
@@ -231,6 +231,6 @@ CloudWatch Logs group: `/aws/lambda/amplify-*-ai-engine-*`. Enable the `DEBUG=tr
 
 ## Cross-links
 
-- Bedrock prereqs: [4.5.1 Bedrock](../4.5.1-Bedrock/)
-- The other Lambdas: [4.5.3 ProcessNutrition](../4.5.3-ProcessNutrition/), [4.5.4 ResizeImage](../4.5.4-ResizeImage/)
-- Alerting on errors: [4.6 Automation Setup](../../4.6-Automation-Setup/)
+- Bedrock prereqs: [4.5.1 Bedrock](/workshop/4.5.1-Bedrock)
+- The other Lambdas: [4.5.3 ProcessNutrition](/workshop/4.5.3-ProcessNutrition), [4.5.4 ResizeImage](/workshop/4.5.4-ResizeImage)
+- Alerting on errors: [4.6 Automation Setup](/workshop/4.6-Automation-Setup)

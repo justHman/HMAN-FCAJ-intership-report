@@ -1,8 +1,8 @@
 # AWS re:Invent 2025 Recap - Phiên bản Việt Nam
 
-**Date:** 27 tháng 1, 2026
-**Location:** Văn phòng AWS Việt Nam (Tầng 26 & 36), TP. Hồ Chí Minh
-**Role:** Người tham dự (FCJ Cloud Intern - Team NeuraX)
+**Ngày:** 27 tháng 1, 2026
+**Địa điểm:** Văn phòng AWS Việt Nam (Tầng 26 & 36), TP. Hồ Chí Minh
+**Vai trò:** Người tham dự (FCJ Cloud Intern - Team NeuraX)
 
 ## Mô tả sự kiện
 

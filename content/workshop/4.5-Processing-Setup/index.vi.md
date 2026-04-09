@@ -80,9 +80,9 @@ Mỗi system prompt trong `ai-engine/handler.ts` đều bắt đầu bằng `You
 
 ## Trang con
 
-- [4.5.1 Bedrock — model access, pricing, IAM, cấu trúc invoke](4.5.1-Bedrock/)
-- [4.5.2 AIEngine — Lambda orchestrator 10 action](4.5.2-AIEngine/)
-- [4.5.3 ProcessNutrition — hybrid DB + Bedrock fuzzy lookup](4.5.3-ProcessNutrition/)
-- [4.5.4 ResizeImage — resize ảnh bằng sharp, trigger từ S3](4.5.4-ResizeImage/)
+- [4.5.1 Bedrock — model access, pricing, IAM, cấu trúc invoke](/workshop/4.5.1-Bedrock)
+- [4.5.2 AIEngine — Lambda orchestrator 10 action](/workshop/4.5.2-AIEngine)
+- [4.5.3 ProcessNutrition — hybrid DB + Bedrock fuzzy lookup](/workshop/4.5.3-ProcessNutrition)
+- [4.5.4 ResizeImage — resize ảnh bằng sharp, trigger từ S3](/workshop/4.5.4-ResizeImage)
 
-Kế tiếp: [4.6 Automation Setup](../4.6-Automation-Setup/).
+Kế tiếp: [4.6 Automation Setup](/workshop/4.6-Automation-Setup).

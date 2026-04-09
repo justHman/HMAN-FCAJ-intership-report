@@ -80,9 +80,9 @@ Every system prompt in `ai-engine/handler.ts` begins with `You are Ollie...`. Ol
 
 ## Sub-pages
 
-- [4.5.1 Bedrock — model access, pricing, IAM, invocation shape](4.5.1-Bedrock/)
-- [4.5.2 AIEngine — the 10-action Lambda orchestrator](4.5.2-AIEngine/)
-- [4.5.3 ProcessNutrition — hybrid DB + Bedrock fuzzy lookup](4.5.3-ProcessNutrition/)
-- [4.5.4 ResizeImage — S3-triggered sharp resizer](4.5.4-ResizeImage/)
+- [4.5.1 Bedrock — model access, pricing, IAM, invocation shape](/workshop/4.5.1-Bedrock)
+- [4.5.2 AIEngine — the 10-action Lambda orchestrator](/workshop/4.5.2-AIEngine)
+- [4.5.3 ProcessNutrition — hybrid DB + Bedrock fuzzy lookup](/workshop/4.5.3-ProcessNutrition)
+- [4.5.4 ResizeImage — S3-triggered sharp resizer](/workshop/4.5.4-ResizeImage)
 
-Next: [4.6 Automation Setup](../4.6-Automation-Setup/).
+Next: [4.6 Automation Setup](/workshop/4.6-Automation-Setup).
