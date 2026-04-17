@@ -24,8 +24,8 @@ export function loadContent(path: string, language: 'en' | 'vi'): string {
 
 /**
  * Load workshop section content from subfolder index files.
- * e.g. loadWorkshopSection('5.1-Workshop-overview', 'en')
- *   → /content/workshop/5.1-Workshop-overview/index.en.md
+ * e.g. loadWorkshopSection('4.5-ECS-Fargate/4.5.1-VPC-Network', 'en')
+ *   → /content/workshop/4.5-ECS-Fargate/4.5.1-VPC-Network/index.en.md
  */
 export function loadWorkshopSection(section: string, language: 'en' | 'vi'): string {
     const langPath = `/content/workshop/${section}/index.${language}.md`;

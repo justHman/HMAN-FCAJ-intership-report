@@ -1,4 +1,4 @@
-# AWS re:Invent 2025 Recap - Vietnam Edition
+# AWS re:Invent 2025 Recap (Vietnam Edition)
 
 **Date:** January 27, 2026
 **Location:** AWS Vietnam Office (Floor 26 & 36), Ho Chi Minh City
@@ -6,35 +6,28 @@
 
 ## Event Description
 
-This event was a comprehensive recap of the most important updates from AWS re:Invent 2025 (December 2025), organized for the Vietnamese tech community just before Tết 2026. The event brought together builders, developers, and cloud enthusiasts to learn about the latest AWS innovations directly from AWS Solution Architects and Account Managers.
+A community recap session that distilled the most important announcements from AWS re:Invent 2025 (December 2025). It was held in Ho Chi Minh City just before Tet 2026 and gathered builders, developers, and cloud learners to hear updates directly from AWS Solution Architects and Account Managers.
 
 ## Main Activities
 
-The event consisted of 5 technical sessions covering the latest AWS announcements:
+The agenda covered five highlight sessions:
+**Session 1: Generative AI & Agents** (Speaker: Thi - Solution Architect) - Introduced Amazon Bedrock and Nova models, plus agent orchestration/flow, memory, guardrails, and evaluation tooling.
+**Session 2: SageMaker Unified Studio & S3 Updates** - Showcased a unified IDE for data and AI roles, S3 Tables for native Iceberg storage, and S3 Vector for cost efficient vector storage.
+**Session 3: OpenSearch & Agentic Search** (Speaker: Tung) - Reviewed OpenSearch Serverless, MCP integration, agentic memory, and specialized agents, with a demo analyzing sales data.
+**Session 4: Advanced RAG & Multimodal AI** - Covered Nova multimodal embeddings for video and images, plus Bedrock Data Automation for multimedia extraction.
+**Session 5: AI Infrastructure & SageMaker Deep Dive** - Highlighted SageMaker HyperPod for GPU clusters, SageMaker MLflow for lifecycle management, and bidirectional streaming for voice to voice experiences.
 
-**Session 1: Generative AI & Agents** (Speaker: Thi - Solution Architect)  
-Amazon Bedrock & Nova Models introduction, Bedrock Agents with Orchestration/Flow, Memory, Policy/Guardrails, and Evaluation tools.
-
-**Session 2: SageMaker Unified Studio & S3 Updates**  
-Single IDE for Data Engineers, Data Scientists, and AI Engineers. S3 Tables for native Iceberg storage and S3 Vector for native vector storage with significant cost reduction.
-
-**Session 3: OpenSearch & Agentic Search** (Speaker: Tùng)  
-OpenSearch Serverless capabilities, MCP integration, Agentic Memory, and specialized agents with demo of Flow Agent analyzing sales data.
-
-**Session 4: Advanced RAG & Multimodal AI**  
-Nova Multimodal Embeddings for video/image to vectors, Bedrock Data Automation for multimedia extraction.
-
-**Session 5: AI Infrastructure & SageMaker Deep Dive**  
-SageMaker HyperPod for GPU cluster management, SageMaker MLflow for ML lifecycle, and Bi-directional streaming for Voice-to-Voice applications.
-
-The event concluded with networking opportunities, technology prizes, AWS Credits, and a Kindle Scribe as grand prize.
+**Photo Highlights**
+![Event 01 photo 1](images/events/event_01/1.jpg)
+![Event 01 photo 2](images/events/event_01/2.jpg)
+![Event 01 photo 3](images/events/event_01/3.jpg)
 
 ## Outcomes
 
-- Agentic AI is the future: Bedrock Agents with Memory and Guardrails enable sophisticated autonomous workflows
-- SageMaker Unified Studio breaks down silos between data and AI teams
-- S3 Vector offers dramatic cost savings for vector storage compared to dedicated vector databases
-- Multimodal RAG goes beyond text to include images, videos, and audio
-- Identified S3 and Cognito features directly applicable to NutriTrack architecture
-- Explored Bedrock Agents for potential conversational meal planning feature
-- Networked with AWS Solution Architects to learn serverless best practices
+- Agentic AI is accelerating; memory and guardrails enable dependable autonomous workflows.
+- SageMaker Unified Studio reduces friction between data and AI teams.
+- S3 Vector can lower vector storage costs compared to dedicated vector databases.
+- Multimodal RAG extends beyond text to include images, video, and audio.
+- Mapped S3 and Cognito features directly to the NutriTrack architecture.
+- Considered Bedrock Agents for a conversational meal planning feature.
+- Connected with AWS Solution Architects and reinforced serverless best practices.

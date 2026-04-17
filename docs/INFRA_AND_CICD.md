@@ -4,7 +4,7 @@ This document covers two complementary automation approaches:
 - **Part A — Terraform**: Provision AWS infrastructure as code (VPC, ECS, ALB, Auto Scaling, etc.)
 - **Part B — GitHub Actions**: Automate container builds and ECS deployments on every `git push`
 
-> **Prerequisite:** Complete the [AWS Console deployment guide](../content/workshop/4.8-Verify-Setup/) first to understand every resource being created. These tools automate that same setup.
+> **Prerequisite:** Complete the [ECS Fargate workshop section](../content/workshop/4.5-ECS-Fargate/) first to understand every resource being created. These tools automate that same setup.
 
 ---
 

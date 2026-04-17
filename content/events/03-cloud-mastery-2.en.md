@@ -1,4 +1,4 @@
-# AWS Cloud Mastery 2
+# AWS Cloud Mastery 2 - Cloud Engineering and IaC
 
 **Date:** April 4, 2026
 **Location:** Hall A - FPT University HCMC, Ho Chi Minh City
@@ -6,24 +6,23 @@
 
 ## Event Description
 
-The "Cloud Mastery 2" event was an in-depth knowledge-sharing meetup on cloud computing engineering and software development, bringing together members of the FCJ community. The event focused on solving system deployment challenges, optimizing performance using next-generation programming languages, and automating infrastructure through IaC (Infrastructure as Code) tools.
+An in depth meetup on cloud engineering and software development for the FCJ community. The event addressed deployment challenges, performance improvements with next generation languages, and infrastructure automation using IaC tools.
 
 ## Main Activities
 
-The event included 3 main technical presentation sessions:
+Three main technical sessions:
+**Session 1: Container Orchestration & Kubernetes** - Mapped the path from Docker and Compose to Kubernetes, explained control plane and worker node components, and compared managed Amazon EKS with self hosted clusters.
+**Session 2: Functional Programming with Elixir & IoT Applications** - Highlighted BEAM concurrency and fault tolerance, then demoed a smart greenhouse system using MQTT.
+**Session 3: Infrastructure as Code (IaC) Tools** - Compared CloudFormation, CDK, and Terraform, and demonstrated a static S3 site deployment with Terraform and LocalStack.
 
-**Session 1: Container Orchestration & Kubernetes**
-An overview from Docker and Docker Compose to the necessity of Kubernetes orchestration systems in enterprises. Deep dive into K8s structure (Control Plane, Worker Node, Pod, ConfigMap, Secret) and comparing the trade-offs between using a managed service like Amazon EKS (saves effort, flexible) versus building a Self-hosted Kubernetes (complex but cost-saving).
-
-**Session 2: Functional Programming with Elixir & IoT Applications**
-Presentation on the Elixir language and the BEAM virtual machine, with core strengths in concurrency and fault tolerance. Demonstrated the ability to initialize thousands of independent processes while consuming very little CPU, alongside a practical application demo for a Smart Greenhouse management project using MQTT.
-
-**Session 3: Infrastructure as Code (IaC) Tools**
-Analysis of 3 prominent infrastructure automation tools: AWS CloudFormation (using YAML/JSON templates), AWS CDK (using programming languages for developers with Construct Levels), and Terraform (multi-cloud platform, managed via HCL). The session included a demo of deploying a static S3 web host using Terraform combined with the LocalStack emulation tool directly on the workstation.
+**Photo Highlights**
+![Event 03 photo 1](images/events/event_03/1.jpg)
+![Event 03 photo 2](images/events/event_03/2.jpg)
+![Event 03 photo 3](images/events/event_03/3.jpg)
 
 ## Outcomes
 
-- Deep understanding of Kubernetes architecture: Recognized the limitations of Docker and when to transition to Kubernetes. Understood that Amazon EKS is the most suitable solution for enterprises that do not want to maintain a highly complex infrastructure operations team.
-- The potential of Elixir in distributed systems: Grasped the "let it crash" philosophy and the power of the supervisor process in Elixir, helping IoT Backend applications recover rapidly from failures without freezing the entire server.
-- Choosing the right IaC tool: Clearly distinguished the use cases between CloudFormation, CDK (advantage of coding with intuitive programming languages), and Terraform (strong in multi-platform and state management).
-- Safe infrastructure workflow: Understood the importance of running plan/checking for errors before applying in Terraform, not pushing sensitive state files or secrets to GitHub, and knowing how to modularize for easy source code reuse.
+- Deepened understanding of Kubernetes architecture and when to move beyond Docker.
+- Appreciated Elixir's "let it crash" model and supervisor trees for resilient IoT backends.
+- Clarified where CloudFormation, CDK, and Terraform each fit.
+- Reinforced safe IaC workflow: plan before apply, avoid committing state or secrets, and modularize for reuse.
