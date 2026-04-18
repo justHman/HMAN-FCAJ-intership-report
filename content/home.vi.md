@@ -10,8 +10,6 @@
 
 **Ngành:** Trí Tuệ Nhân Tạo
 
-**Lớp:** AWS082025
-
 **Công Ty Thực Tập:** Amazon Web Services Vietnam LLC
 
 **Vị Trí Thực Tập:** FCJ Cloud Intern

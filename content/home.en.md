@@ -10,8 +10,6 @@
 
 **Major:** Artificial Intelligence
 
-**Class:** AWS082025
-
 **Internship Company:** Amazon Web Services Vietnam LLC
 
 **Internship Position:** FCJ Cloud Intern
