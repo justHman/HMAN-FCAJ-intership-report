@@ -6,19 +6,6 @@
 
 Các ECS task chạy trong **Private Subnet** để đảm bảo an ninh; **Application Load Balancer (ALB)** nằm trong **Public Subnet** để tiếp nhận yêu cầu từ internet. Task truy cập vào các dịch vụ AWS khác thông qua **NAT Instance** (giúp tiết kiệm 70% chi phí so với NAT Gateway) hoặc **S3 Gateway Endpoint** (miễn phí).
 
-## Ước tính Chi phí
-
-| Thành phần | Chi phí ước tính/tháng |
-| :--- | :--- |
-| 2× NAT Instance `t4g.nano` | ≈$9 |
-| 2× Fargate Task (0.5 vCPU / 1 GB) | ≈$17 |
-| Application Load Balancer (ALB) | ≈$16 |
-| CloudWatch Logs (5 GB) | ≈$2 |
-| **Tổng cộng** | **≈$44** |
-
-> [!TIP]
-> Sử dụng NAT Instance thay vì NAT Gateway có thể tiết kiệm cho bạn khoảng $32 mỗi tháng, một con số đáng kể cho các dự án khởi nghiệp hoặc thử nghiệm.
-
 ## Các bước triển khai:
 
 1. [4.5.1 Hạ tầng Mạng (VPC & Network)](4.5.1-VPC-Network/)
